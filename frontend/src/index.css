@@ -1,0 +1,273 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* DevOps Dashboard Design System - Modern Dark Theme with Vibrant Accents */
+
+@layer base {
+  :root {
+    /* Dark theme optimized for DevOps dashboards */
+    --background: 222 15% 7%;
+    --foreground: 213 31% 91%;
+
+    --card: 222 13% 9%;
+    --card-foreground: 213 31% 91%;
+
+    --popover: 222 13% 9%;
+    --popover-foreground: 213 31% 91%;
+
+    /* Vibrant cyan primary for DevOps tools */
+    --primary: 195 100% 50%;
+    --primary-foreground: 222 15% 7%;
+    --primary-glow: 195 100% 60%;
+
+    --secondary: 217 19% 18%;
+    --secondary-foreground: 213 31% 91%;
+
+    --muted: 217 19% 18%;
+    --muted-foreground: 218 11% 65%;
+
+    --accent: 217 19% 18%;
+    --accent-foreground: 213 31% 91%;
+
+    /* Success and error states for pipeline status */
+    --success: 142 76% 36%;
+    --success-foreground: 213 31% 91%;
+    --success-glow: 142 76% 46%;
+
+    --warning: 38 92% 50%;
+    --warning-foreground: 222 15% 7%;
+
+    --destructive: 0 75% 60%;
+    --destructive-foreground: 213 31% 91%;
+
+    --border: 217 19% 18%;
+    --input: 217 19% 18%;
+    --ring: 195 100% 50%;
+
+    /* DevOps-specific colors */
+    --pipeline-running: 43 96% 56%;
+    --pipeline-success: 142 76% 36%;
+    --pipeline-failed: 0 75% 60%;
+    --pipeline-pending: 218 11% 65%;
+
+    /* Gradients for modern look */
+    --gradient-primary: linear-gradient(135deg, hsl(195 100% 50%), hsl(195 100% 60%));
+    --gradient-card: linear-gradient(135deg, hsl(222 13% 9%), hsl(217 19% 12%));
+    --gradient-success: linear-gradient(135deg, hsl(142 76% 36%), hsl(142 76% 46%));
+    --gradient-danger: linear-gradient(135deg, hsl(0 75% 60%), hsl(0 75% 70%));
+
+    /* Shadows and effects */
+    --shadow-card: 0 4px 6px -1px hsl(222 15% 4% / 0.3), 0 2px 4px -1px hsl(222 15% 4% / 0.2);
+    --shadow-glow: 0 0 20px hsl(var(--primary) / 0.3);
+    --shadow-success-glow: 0 0 20px hsl(var(--success) / 0.3);
+
+    /* Animations */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-bounce: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+
+    --radius: 0.5rem;
+
+    --sidebar-background: 0 0% 98%;
+
+    --sidebar-foreground: 240 5.3% 26.1%;
+
+    --sidebar-primary: 240 5.9% 10%;
+
+    --sidebar-primary-foreground: 0 0% 98%;
+
+    --sidebar-accent: 240 4.8% 95.9%;
+
+    --sidebar-accent-foreground: 240 5.9% 10%;
+
+    --sidebar-border: 220 13% 91%;
+
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .light {
+    /* Light mode for those who prefer it */
+    --background: 0 0% 100%;
+    --foreground: 222 15% 7%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222 15% 7%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 15% 7%;
+
+    --primary: 195 100% 45%;
+    --primary-foreground: 0 0% 100%;
+    --primary-glow: 195 100% 55%;
+
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 222 15% 7%;
+
+    --muted: 210 40% 96%;
+    --muted-foreground: 215 16% 47%;
+
+    --accent: 210 40% 96%;
+    --accent-foreground: 222 15% 7%;
+
+    --success: 142 76% 36%;
+    --success-foreground: 0 0% 100%;
+    --success-glow: 142 76% 46%;
+
+    --warning: 38 92% 50%;
+    --warning-foreground: 222 15% 7%;
+
+    --destructive: 0 75% 55%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 195 100% 45%;
+
+    --pipeline-running: 43 96% 56%;
+    --pipeline-success: 142 76% 36%;
+    --pipeline-failed: 0 75% 55%;
+    --pipeline-pending: 215 16% 47%;
+
+    --gradient-primary: linear-gradient(135deg, hsl(195 100% 45%), hsl(195 100% 55%));
+    --gradient-card: linear-gradient(135deg, hsl(0 0% 100%), hsl(210 40% 98%));
+    --gradient-success: linear-gradient(135deg, hsl(142 76% 36%), hsl(142 76% 46%));
+    --gradient-danger: linear-gradient(135deg, hsl(0 75% 55%), hsl(0 75% 65%));
+
+    --shadow-card: 0 4px 6px -1px hsl(0 0% 0% / 0.1), 0 2px 4px -1px hsl(0 0% 0% / 0.06);
+    --shadow-glow: 0 0 20px hsl(var(--primary) / 0.2);
+    --shadow-success-glow: 0 0 20px hsl(var(--success) / 0.2);
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans;
+    font-feature-settings: 'rlig' 1, 'calt' 1;
+  }
+
+  /* Custom scrollbars for DevOps theme */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: hsl(var(--muted));
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: hsl(var(--muted-foreground) / 0.3);
+    border-radius: 4px;
+    transition: var(--transition-smooth);
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--muted-foreground) / 0.5);
+  }
+}
+
+/* Custom utilities for DevOps dashboard */
+@layer utilities {
+  .gradient-primary {
+    background: var(--gradient-primary);
+  }
+
+  .gradient-card {
+    background: var(--gradient-card);
+  }
+
+  .gradient-success {
+    background: var(--gradient-success);
+  }
+
+  .gradient-danger {
+    background: var(--gradient-danger);
+  }
+
+  .shadow-glow {
+    box-shadow: var(--shadow-glow);
+  }
+
+  .shadow-success-glow {
+    box-shadow: var(--shadow-success-glow);
+  }
+
+  .shadow-card {
+    box-shadow: var(--shadow-card);
+  }
+
+  .transition-smooth {
+    transition: var(--transition-smooth);
+  }
+
+  .transition-bounce {
+    transition: var(--transition-bounce);
+  }
+
+  /* Pipeline status indicators */
+  .status-running {
+    color: hsl(var(--pipeline-running));
+  }
+
+  .status-success {
+    color: hsl(var(--pipeline-success));
+  }
+
+  .status-failed {
+    color: hsl(var(--pipeline-failed));
+  }
+
+  .status-pending {
+    color: hsl(var(--pipeline-pending));
+  }
+
+  /* Pulse animation for live indicators */
+  .pulse-glow {
+    animation: pulse-glow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  @keyframes pulse-glow {
+    0%, 100% {
+      opacity: 1;
+      box-shadow: 0 0 0 0 hsl(var(--primary) / 0.7);
+    }
+    50% {
+      opacity: 0.8;
+      box-shadow: 0 0 0 10px hsl(var(--primary) / 0);
+    }
+  }
+
+  /* Shimmer loading effect */
+  .shimmer {
+    background: linear-gradient(
+      90deg,
+      hsl(var(--muted)) 0%,
+      hsl(var(--muted-foreground) / 0.1) 50%,
+      hsl(var(--muted)) 100%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.5s ease-in-out infinite;
+  }
+
+  @keyframes shimmer {
+    0% {
+      background-position: -200% 0;
+    }
+    100% {
+      background-position: 200% 0;
+    }
+  }
+}
