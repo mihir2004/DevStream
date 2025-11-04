@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 export interface DashboardStats {
   activePipelines: number;
@@ -18,22 +18,36 @@ interface DashboardState {
   error: string | null;
 }
 
-// Mock analytics data for mihir user
+// ✅ Utility to generate live recent execution data
+const generateRecentExecutions = () => {
+  const now = new Date();
+  return Array.from({ length: 7 }).map((_, i) => {
+    const date = new Date();
+    date.setDate(now.getDate() - (6 - i)); // last 7 days ending today
+    const isoDate = date.toISOString().split("T")[0]; // e.g. "2025-11-05"
+
+    // Add random variation for mock data realism
+    const successful = Math.floor(Math.random() * 5);
+    const failed = Math.random() > 0.7 ? Math.floor(Math.random() * 2) : 0;
+
+    return { date: isoDate, successful, failed };
+  });
+};
+
+// ✅ Generate mock data dynamically
 const mockStats: DashboardStats = {
   activePipelines: 3,
   successRate: 91.6,
-  avgExecutionTime: '4m 25s',
-  totalRuns: 12,
-  recentExecutions: [
-    { date: '2024-01-15', successful: 3, failed: 0 },
-    { date: '2024-01-14', successful: 2, failed: 1 },
-    { date: '2024-01-13', successful: 4, failed: 0 },
-    { date: '2024-01-12', successful: 2, failed: 0 },
-    { date: '2024-01-11', successful: 1, failed: 0 },
-    { date: '2024-01-10', successful: 0, failed: 0 },
-    { date: '2024-01-09', successful: 0, failed: 0 },
-  ],
+  avgExecutionTime: "4m 25s",
+  totalRuns: 0, // will compute below
+  recentExecutions: generateRecentExecutions(),
 };
+
+// Compute total runs based on generated executions
+mockStats.totalRuns = mockStats.recentExecutions.reduce(
+  (sum, d) => sum + d.successful + d.failed,
+  0
+);
 
 const initialState: DashboardState = {
   stats: null,
@@ -42,25 +56,28 @@ const initialState: DashboardState = {
 };
 
 export const fetchDashboardStats = createAsyncThunk(
-  'dashboard/fetchStats',
+  "dashboard/fetchStats",
   async (_, { getState }) => {
     const state = getState() as any;
     const user = state.auth.user;
 
-    // Return mock data for mihir user
+    // ✅ Return live mock data for mihir user
     if (user?.isMockUser) {
       return mockStats;
     }
 
-    // Real API call for other users
-    const response = await fetch(`${process.env.REACT_APP_API_URL}/api/analytics/stats`, {
-      headers: {
-        Authorization: `Bearer ${state.auth.token}`,
-      },
-    });
+    // ✅ Otherwise fetch real API data
+    const response = await fetch(
+      `${process.env.REACT_APP_API_URL}/api/analytics/stats`,
+      {
+        headers: {
+          Authorization: `Bearer ${state.auth.token}`,
+        },
+      }
+    );
 
     if (!response.ok) {
-      throw new Error('Failed to fetch dashboard stats');
+      throw new Error("Failed to fetch dashboard stats");
     }
 
     return await response.json();
@@ -68,7 +85,7 @@ export const fetchDashboardStats = createAsyncThunk(
 );
 
 const dashboardSlice = createSlice({
-  name: 'dashboard',
+  name: "dashboard",
   initialState,
   reducers: {
     clearError: (state) => {
@@ -87,7 +104,7 @@ const dashboardSlice = createSlice({
       })
       .addCase(fetchDashboardStats.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message || 'Failed to fetch dashboard stats';
+        state.error = action.error.message || "Failed to fetch dashboard stats";
       });
   },
 });
