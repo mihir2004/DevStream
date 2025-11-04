@@ -1,73 +1,188 @@
-# Welcome to your Lovable project
+# 🚀 DevOpStream
 
-## Project info
+A modern DevOps analytics dashboard that brings **repositories, pipelines, deployments, and logs** together in one elegant interface.
 
-**URL**: https://lovable.dev/projects/f7d93c30-580d-49f5-a30f-867f7c5dfa54
+Built with **React + TypeScript + Tailwind + shadcn/ui**, powered by a **Node.js + Prisma + PostgreSQL backend**.
 
-## How can I edit this code?
+Live Demo → [https://devopstream.vercel.app](https://devopstream.vercel.app/dashboard)
 
-There are several ways of editing your application.
+---
 
-**Use Lovable**
+## ✨ Features
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/f7d93c30-580d-49f5-a30f-867f7c5dfa54) and start prompting.
+✅ **Unified DevOps Dashboard** – Monitor builds, deployments, and logs in real-time  
+✅ **Repository Integration** – Connect and manage GitHub repositories  
+✅ **Pipeline Execution Tracking** – View build history, logs, and metrics  
+✅ **Realtime Log Viewer** – Live streaming build logs via WebSockets  
+✅ **Analytics & Insights** – Success rates, average build time, run history  
+✅ **Responsive Design** – Optimized for all screen sizes  
+✅ **Configurable Backend** – Switch between mock or live GitHub/Vercel integrations
 
-Changes made via Lovable will be committed automatically to this repo.
+---
 
-**Use your preferred IDE**
+## 🧱 Tech Stack
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+### Frontend
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+- ⚛️ **React + TypeScript**
+- 🎨 **Tailwind CSS + shadcn/ui**
+- 🔄 **Redux Toolkit**
+- 📈 **Recharts** (for analytics visualization)
+- 🧩 **Lucide React Icons**
+- ⚡ **Vite** for blazing-fast builds
 
-Follow these steps:
+### Backend (Pluggable)
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+- 🚀 **Express + TypeScript**
+- 🧰 **Prisma ORM + PostgreSQL**
+- 🔗 **GitHub API** (for repo data)
+- ☁️ **Vercel API** (for deployment stats)
+- 🔊 **Socket.IO** (for live logs)
+- 🧪 Mock fallback (for local testing)
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+---
 
-# Step 3: Install the necessary dependencies.
-npm i
+## 🛠️ Getting Started (Local Development)
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+### 1️⃣ Clone the repository
+
+```bash
+git clone https://github.com/<your-username>/devopstream.git
+cd devopstream
+```
+
+### 2️⃣ Install dependencies
+
+Frontend:
+
+```bash
+cd frontend
+npm install
+```
+
+Backend:
+
+```bash
+cd backend
+npm install
+```
+
+### 3️⃣ Environment setup
+
+#### Frontend (`frontend/.env`)
+
+```bash
+VITE_API_URL=http://localhost:5000
+```
+
+#### Backend (`backend/.env`)
+
+```bash
+PORT=5000
+DATABASE_URL="postgresql://postgres:postgres@localhost:5432/devopstream"
+FRONTEND_URL=http://localhost:5173
+
+# Optional: external integrations
+GITHUB_TOKEN=
+VERCEL_TOKEN=
+JWT_SECRET="supersecretkey"
+```
+
+### 4️⃣ Database setup
+
+```bash
+cd backend
+npx prisma migrate dev --name init
+```
+
+### 5️⃣ Run locally
+
+Frontend:
+
+```bash
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+Backend:
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+```bash
+npm run dev
+```
 
-**Use GitHub Codespaces**
+Visit → **http://localhost:5173**
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+---
 
-## What technologies are used for this project?
+## 🐳 Docker Support
 
-This project is built with:
+The project includes a ready-to-use `docker-compose.yml`:
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+```bash
+docker-compose up --build
+```
 
-## How can I deploy this project?
+This starts:
 
-Simply open [Lovable](https://lovable.dev/projects/f7d93c30-580d-49f5-a30f-867f7c5dfa54) and click on Share -> Publish.
+- 🧩 Backend (port 5000)
+- ⚛️ Frontend (port 5173)
+- 🗄️ PostgreSQL (port 5432)
 
-## Can I connect a custom domain to my Lovable project?
+---
 
-Yes, you can!
+## 🌐 Deployment
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+### Frontend
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+- Host via **Vercel** (already live at [devopstream.vercel.app](https://devopstream.vercel.app/dashboard))
+- Set `VITE_API_URL` to your backend API URL
+
+### Backend
+
+- Deploy using **Render**, **Railway**, or **Fly.io**
+- Add `.env` variables in your host settings
+- Connect to a managed PostgreSQL instance (Render, Supabase, or Neon)
+
+---
+
+## 🧩 Project Structure
+
+```
+devopstream/
+ ├── backend/
+ │   ├── src/
+ │   │   ├── routes/
+ │   │   ├── services/
+ │   │   ├── prisma/
+ │   │   └── utils/
+ │   ├── prisma/schema.prisma
+ │   └── package.json
+ ├── frontend/
+ │   ├── src/
+ │   │   ├── components/
+ │   │   ├── views/
+ │   │   ├── state/
+ │   │   └── lib/
+ │   ├── .env.example
+ │   └── package.json
+ ├── docker-compose.yml
+ ├── .env.example
+ └── README.md
+```
+
+---
+
+## 👨‍💻 Author
+
+**Mihir Kasare**  
+Building intelligent developer tools and modern full-stack experiences.  
+💼 GitHub: [@mihir2004](https://github.com/mihir2004)
+
+---
+
+## 🧠 License
+
+This project is licensed under the **MIT License** – feel free to fork and build on it.
+
+---
+
+> 💡 _DevOpStream: Where DevOps meets design — pipeline visibility, beautifully reimagined._
