@@ -419,26 +419,34 @@ function isDraftable(value) {
   return isPlainObject2(value) || Array.isArray(value) || !!value[DRAFTABLE] || !!((_a = value.constructor) == null ? void 0 : _a[DRAFTABLE]) || isMap(value) || isSet(value);
 }
 var objectCtorString = Object.prototype.constructor.toString();
+var cachedCtorStrings = /* @__PURE__ */ new WeakMap();
 function isPlainObject2(value) {
   if (!value || typeof value !== "object")
     return false;
-  const proto2 = getPrototypeOf(value);
-  if (proto2 === null) {
+  const proto2 = Object.getPrototypeOf(value);
+  if (proto2 === null || proto2 === Object.prototype)
     return true;
-  }
   const Ctor = Object.hasOwnProperty.call(proto2, "constructor") && proto2.constructor;
   if (Ctor === Object)
     return true;
-  return typeof Ctor == "function" && Function.toString.call(Ctor) === objectCtorString;
+  if (typeof Ctor !== "function")
+    return false;
+  let ctorString = cachedCtorStrings.get(Ctor);
+  if (ctorString === void 0) {
+    ctorString = Function.toString.call(Ctor);
+    cachedCtorStrings.set(Ctor, ctorString);
+  }
+  return ctorString === objectCtorString;
 }
 function original(value) {
   if (!isDraft(value))
     die(15, value);
   return value[DRAFT_STATE].base_;
 }
-function each(obj, iter) {
+function each(obj, iter, strict = true) {
   if (getArchtype(obj) === 0) {
-    Reflect.ownKeys(obj).forEach((key) => {
+    const keys = strict ? Reflect.ownKeys(obj) : Object.keys(obj);
+    keys.forEach((key) => {
       iter(key, obj[key], obj);
     });
   } else {
@@ -522,10 +530,10 @@ function freeze(obj, deep = false) {
     return obj;
   if (getArchtype(obj) > 1) {
     Object.defineProperties(obj, {
-      set: { value: dontMutateFrozenCollections },
-      add: { value: dontMutateFrozenCollections },
-      clear: { value: dontMutateFrozenCollections },
-      delete: { value: dontMutateFrozenCollections }
+      set: dontMutateMethodOverride,
+      add: dontMutateMethodOverride,
+      clear: dontMutateMethodOverride,
+      delete: dontMutateMethodOverride
     });
   }
   Object.freeze(obj);
@@ -536,7 +544,12 @@ function freeze(obj, deep = false) {
 function dontMutateFrozenCollections() {
   die(2);
 }
+var dontMutateMethodOverride = {
+  value: dontMutateFrozenCollections
+};
 function isFrozen(obj) {
+  if (obj === null || typeof obj !== "object")
+    return true;
   return Object.isFrozen(obj);
 }
 var plugins = {};
@@ -624,11 +637,13 @@ function processResult(result, scope) {
 function finalize(rootScope, value, path) {
   if (isFrozen(value))
     return value;
+  const useStrictIteration = rootScope.immer_.shouldUseStrictIteration();
   const state = value[DRAFT_STATE];
   if (!state) {
     each(
       value,
-      (key, childValue) => finalizeProperty(rootScope, state, value, key, childValue, path)
+      (key, childValue) => finalizeProperty(rootScope, state, value, key, childValue, path),
+      useStrictIteration
     );
     return value;
   }
@@ -651,7 +666,16 @@ function finalize(rootScope, value, path) {
     }
     each(
       resultEach,
-      (key, childValue) => finalizeProperty(rootScope, state, result, key, childValue, path, isSet2)
+      (key, childValue) => finalizeProperty(
+        rootScope,
+        state,
+        result,
+        key,
+        childValue,
+        path,
+        isSet2
+      ),
+      useStrictIteration
     );
     maybeFreeze(rootScope, result, false);
     if (path && rootScope.patches_) {
@@ -666,6 +690,16 @@ function finalize(rootScope, value, path) {
   return state.copy_;
 }
 function finalizeProperty(rootScope, parentState, targetObject, prop, childValue, rootPath, targetIsSet) {
+  if (childValue == null) {
+    return;
+  }
+  if (typeof childValue !== "object" && !targetIsSet) {
+    return;
+  }
+  const childIsFrozen = isFrozen(childValue);
+  if (childIsFrozen && !targetIsSet) {
+    return;
+  }
   if (childValue === targetObject)
     die(5);
   if (isDraft(childValue)) {
@@ -680,8 +714,11 @@ function finalizeProperty(rootScope, parentState, targetObject, prop, childValue
   } else if (targetIsSet) {
     targetObject.add(childValue);
   }
-  if (isDraftable(childValue) && !isFrozen(childValue)) {
+  if (isDraftable(childValue) && !childIsFrozen) {
     if (!rootScope.immer_.autoFreeze_ && rootScope.unfinalizedDrafts_ < 1) {
+      return;
+    }
+    if (parentState && parentState.base_ && parentState.base_[prop] === childValue && childIsFrozen) {
       return;
     }
     finalize(rootScope, childValue);
@@ -881,6 +918,7 @@ var Immer2 = class {
   constructor(config) {
     this.autoFreeze_ = true;
     this.useStrictShallowCopy_ = false;
+    this.useStrictIteration_ = true;
     this.produce = (base, recipe, patchListener) => {
       if (typeof base === "function" && typeof recipe !== "function") {
         const defaultBase = recipe;
@@ -943,6 +981,8 @@ var Immer2 = class {
       this.setAutoFreeze(config.autoFreeze);
     if (typeof (config == null ? void 0 : config.useStrictShallowCopy) === "boolean")
       this.setUseStrictShallowCopy(config.useStrictShallowCopy);
+    if (typeof (config == null ? void 0 : config.useStrictIteration) === "boolean")
+      this.setUseStrictIteration(config.useStrictIteration);
   }
   createDraft(base) {
     if (!isDraftable(base))
@@ -978,6 +1018,18 @@ var Immer2 = class {
    */
   setUseStrictShallowCopy(value) {
     this.useStrictShallowCopy_ = value;
+  }
+  /**
+   * Pass false to use faster iteration that skips non-enumerable properties
+   * but still handles symbols for compatibility.
+   *
+   * By default, strict iteration is enabled (includes all own properties).
+   */
+  setUseStrictIteration(value) {
+    this.useStrictIteration_ = value;
+  }
+  shouldUseStrictIteration() {
+    return this.useStrictIteration_;
   }
   applyPatches(base, patches) {
     let i;
@@ -1017,17 +1069,23 @@ function currentImpl(value) {
     return value;
   const state = value[DRAFT_STATE];
   let copy;
+  let strict = true;
   if (state) {
     if (!state.modified_)
       return state.base_;
     state.finalized_ = true;
     copy = shallowCopy(value, state.scope_.immer_.useStrictShallowCopy_);
+    strict = state.scope_.immer_.shouldUseStrictIteration();
   } else {
     copy = shallowCopy(value, true);
   }
-  each(copy, (key, childValue) => {
-    set(copy, key, currentImpl(childValue));
-  });
+  each(
+    copy,
+    (key, childValue) => {
+      set(copy, key, currentImpl(childValue));
+    },
+    strict
+  );
   if (state) {
     state.finalized_ = false;
   }
@@ -1040,6 +1098,9 @@ var produceWithPatches = immer.produceWithPatches.bind(
 );
 var setAutoFreeze = immer.setAutoFreeze.bind(immer);
 var setUseStrictShallowCopy = immer.setUseStrictShallowCopy.bind(
+  immer
+);
+var setUseStrictIteration = immer.setUseStrictIteration.bind(
   immer
 );
 var applyPatches = immer.applyPatches.bind(immer);
@@ -2103,6 +2164,7 @@ function executeReducerBuilderCallback(builderCallback) {
   builderCallback(builder);
   return [actionsMap, actionMatchers, defaultCaseReducer];
 }
+setUseStrictIteration(false);
 function isStateFunction(x) {
   return typeof x === "function";
 }
@@ -2986,7 +3048,13 @@ function createSortedStateAdapter(selectId, comparer) {
   function addManyMutably(newEntities, state, existingIds) {
     newEntities = ensureEntitiesArray(newEntities);
     const existingKeys = new Set(existingIds ?? getCurrent(state.ids));
-    const models = newEntities.filter((model) => !existingKeys.has(selectIdValue(model, selectId)));
+    const addedKeys = /* @__PURE__ */ new Set();
+    const models = newEntities.filter((model) => {
+      const modelId = selectIdValue(model, selectId);
+      const notAdded = !addedKeys.has(modelId);
+      if (notAdded) addedKeys.add(modelId);
+      return !existingKeys.has(modelId) && notAdded;
+    });
     if (models.length !== 0) {
       mergeFunction(state, models);
     }
@@ -2995,11 +3063,15 @@ function createSortedStateAdapter(selectId, comparer) {
     return setManyMutably([entity], state);
   }
   function setManyMutably(newEntities, state) {
+    let deduplicatedEntities = {};
     newEntities = ensureEntitiesArray(newEntities);
     if (newEntities.length !== 0) {
       for (const item of newEntities) {
-        delete state.entities[selectId(item)];
+        const entityId = selectId(item);
+        deduplicatedEntities[entityId] = item;
+        delete state.entities[entityId];
       }
+      newEntities = ensureEntitiesArray(deduplicatedEntities);
       mergeFunction(state, newEntities);
     }
   }
@@ -3355,9 +3427,11 @@ var cancelActiveListeners = (entry) => {
     abortControllerWithReason(controller, listenerCancelled);
   });
 };
-var createClearListenerMiddleware = (listenerMap) => {
+var createClearListenerMiddleware = (listenerMap, executingListeners) => {
   return () => {
-    listenerMap.forEach(cancelActiveListeners);
+    for (const listener2 of executingListeners.keys()) {
+      cancelActiveListeners(listener2);
+    }
     listenerMap.clear();
   };
 };
@@ -3382,6 +3456,19 @@ var defaultErrorHandler = (...args) => {
 };
 var createListenerMiddleware = (middlewareOptions = {}) => {
   const listenerMap = /* @__PURE__ */ new Map();
+  const executingListeners = /* @__PURE__ */ new Map();
+  const trackExecutingListener = (entry) => {
+    const count = executingListeners.get(entry) ?? 0;
+    executingListeners.set(entry, count + 1);
+  };
+  const untrackExecutingListener = (entry) => {
+    const count = executingListeners.get(entry) ?? 1;
+    if (count === 1) {
+      executingListeners.delete(entry);
+    } else {
+      executingListeners.set(entry, count - 1);
+    }
+  };
   const {
     extra,
     onError = defaultErrorHandler
@@ -3423,6 +3510,7 @@ var createListenerMiddleware = (middlewareOptions = {}) => {
     const autoJoinPromises = [];
     try {
       entry.pending.add(internalTaskController);
+      trackExecutingListener(entry);
       await Promise.resolve(entry.effect(
         action,
         // Use assign() rather than ... to avoid extra helper functions added to bundle
@@ -3465,10 +3553,11 @@ var createListenerMiddleware = (middlewareOptions = {}) => {
     } finally {
       await Promise.all(autoJoinPromises);
       abortControllerWithReason(internalTaskController, listenerCompleted);
+      untrackExecutingListener(entry);
       entry.pending.delete(internalTaskController);
     }
   };
-  const clearListenerMiddleware = createClearListenerMiddleware(listenerMap);
+  const clearListenerMiddleware = createClearListenerMiddleware(listenerMap, executingListeners);
   const middleware = (api) => (next) => (action) => {
     if (!isAction(action)) {
       return next(action);
@@ -3710,4 +3799,4 @@ export {
   combineSlices,
   formatProdErrorMessage
 };
-//# sourceMappingURL=chunk-ZS7TB5Y6.js.map
+//# sourceMappingURL=chunk-XUD4ISI2.js.map

@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Outlet } from 'react-router-dom';
-import Sidebar from '@/components/layout/Sidebar';
-import Header from '@/components/layout/Header';
-import { RootState, AppDispatch } from '@/store';
-import { loadFromStorage } from '@/store/slices/authSlice';
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Outlet } from "react-router-dom";
+import Sidebar from "@/components/layout/Sidebar";
+import Header from "@/components/layout/Header";
+import { RootState, AppDispatch } from "@/store";
+import { loadFromStorage } from "@/store/slices/authSlice";
 
 const DashboardLayout: React.FC = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
@@ -17,19 +17,21 @@ const DashboardLayout: React.FC = () => {
   }, [dispatch]);
 
   if (!isAuthenticated) {
-    return null; // This will be handled by the route protection
+    <div className="flex items-center justify-center h-screen text-muted-foreground">
+      Loading dashboard...
+    </div>; // This will be handled by the route protection
   }
 
   return (
     <div className="h-screen bg-background flex overflow-hidden">
-      <Sidebar 
-        collapsed={sidebarCollapsed} 
-        onToggle={() => setSidebarCollapsed(!sidebarCollapsed)} 
+      <Sidebar
+        collapsed={sidebarCollapsed}
+        onToggle={() => setSidebarCollapsed(!sidebarCollapsed)}
       />
-      
+
       <div className="flex-1 flex flex-col min-w-0">
         <Header />
-        
+
         <main className="flex-1 overflow-auto p-6">
           <Outlet />
         </main>

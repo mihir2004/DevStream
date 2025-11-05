@@ -1,7 +1,5 @@
 import {
-  Provider_default
-} from "./chunk-QALH3YK2.js";
-import {
+  autoBatchEnhancer,
   castDraft,
   combineReducers,
   configureStore,
@@ -9,8 +7,12 @@ import {
   createListenerMiddleware,
   createSelector,
   createSlice,
-  current
-} from "./chunk-ZS7TB5Y6.js";
+  current,
+  prepareAutoBatched
+} from "./chunk-XUD4ISI2.js";
+import {
+  Provider_default
+} from "./chunk-QALH3YK2.js";
 import {
   clsx
 } from "./chunk-KDVGFZWC.js";
@@ -80,12 +82,46 @@ var require_toKey = __commonJS({
   }
 });
 
+// node_modules/es-toolkit/dist/compat/util/toString.js
+var require_toString = __commonJS({
+  "node_modules/es-toolkit/dist/compat/util/toString.js"(exports) {
+    "use strict";
+    Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
+    function toString2(value) {
+      if (value == null) {
+        return "";
+      }
+      if (typeof value === "string") {
+        return value;
+      }
+      if (Array.isArray(value)) {
+        return value.map(toString2).join(",");
+      }
+      const result = String(value);
+      if (result === "0" && Object.is(Number(value), -0)) {
+        return "-0";
+      }
+      return result;
+    }
+    exports.toString = toString2;
+  }
+});
+
 // node_modules/es-toolkit/dist/compat/util/toPath.js
 var require_toPath = __commonJS({
   "node_modules/es-toolkit/dist/compat/util/toPath.js"(exports) {
     "use strict";
     Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
+    var toString2 = require_toString();
+    var toKey = require_toKey();
     function toPath(deepKey) {
+      if (Array.isArray(deepKey)) {
+        return deepKey.map(toKey.toKey);
+      }
+      if (typeof deepKey === "symbol") {
+        return [deepKey];
+      }
+      deepKey = toString2.toString(deepKey);
       const result = [];
       const length = deepKey.length;
       if (length === 0) {
@@ -236,113 +272,6 @@ var require_get2 = __commonJS({
   }
 });
 
-// node_modules/react-is/cjs/react-is.development.js
-var require_react_is_development = __commonJS({
-  "node_modules/react-is/cjs/react-is.development.js"(exports) {
-    "use strict";
-    (function() {
-      function typeOf(object) {
-        if ("object" === typeof object && null !== object) {
-          var $$typeof = object.$$typeof;
-          switch ($$typeof) {
-            case REACT_ELEMENT_TYPE:
-              switch (object = object.type, object) {
-                case REACT_FRAGMENT_TYPE:
-                case REACT_PROFILER_TYPE:
-                case REACT_STRICT_MODE_TYPE:
-                case REACT_SUSPENSE_TYPE:
-                case REACT_SUSPENSE_LIST_TYPE:
-                case REACT_VIEW_TRANSITION_TYPE:
-                  return object;
-                default:
-                  switch (object = object && object.$$typeof, object) {
-                    case REACT_CONTEXT_TYPE:
-                    case REACT_FORWARD_REF_TYPE:
-                    case REACT_LAZY_TYPE:
-                    case REACT_MEMO_TYPE:
-                      return object;
-                    case REACT_CONSUMER_TYPE:
-                      return object;
-                    default:
-                      return $$typeof;
-                  }
-              }
-            case REACT_PORTAL_TYPE:
-              return $$typeof;
-          }
-        }
-      }
-      var REACT_ELEMENT_TYPE = Symbol.for("react.transitional.element"), REACT_PORTAL_TYPE = Symbol.for("react.portal"), REACT_FRAGMENT_TYPE = Symbol.for("react.fragment"), REACT_STRICT_MODE_TYPE = Symbol.for("react.strict_mode"), REACT_PROFILER_TYPE = Symbol.for("react.profiler");
-      Symbol.for("react.provider");
-      var REACT_CONSUMER_TYPE = Symbol.for("react.consumer"), REACT_CONTEXT_TYPE = Symbol.for("react.context"), REACT_FORWARD_REF_TYPE = Symbol.for("react.forward_ref"), REACT_SUSPENSE_TYPE = Symbol.for("react.suspense"), REACT_SUSPENSE_LIST_TYPE = Symbol.for("react.suspense_list"), REACT_MEMO_TYPE = Symbol.for("react.memo"), REACT_LAZY_TYPE = Symbol.for("react.lazy"), REACT_VIEW_TRANSITION_TYPE = Symbol.for("react.view_transition"), REACT_CLIENT_REFERENCE = Symbol.for("react.client.reference");
-      exports.ContextConsumer = REACT_CONSUMER_TYPE;
-      exports.ContextProvider = REACT_CONTEXT_TYPE;
-      exports.Element = REACT_ELEMENT_TYPE;
-      exports.ForwardRef = REACT_FORWARD_REF_TYPE;
-      exports.Fragment = REACT_FRAGMENT_TYPE;
-      exports.Lazy = REACT_LAZY_TYPE;
-      exports.Memo = REACT_MEMO_TYPE;
-      exports.Portal = REACT_PORTAL_TYPE;
-      exports.Profiler = REACT_PROFILER_TYPE;
-      exports.StrictMode = REACT_STRICT_MODE_TYPE;
-      exports.Suspense = REACT_SUSPENSE_TYPE;
-      exports.SuspenseList = REACT_SUSPENSE_LIST_TYPE;
-      exports.isContextConsumer = function(object) {
-        return typeOf(object) === REACT_CONSUMER_TYPE;
-      };
-      exports.isContextProvider = function(object) {
-        return typeOf(object) === REACT_CONTEXT_TYPE;
-      };
-      exports.isElement = function(object) {
-        return "object" === typeof object && null !== object && object.$$typeof === REACT_ELEMENT_TYPE;
-      };
-      exports.isForwardRef = function(object) {
-        return typeOf(object) === REACT_FORWARD_REF_TYPE;
-      };
-      exports.isFragment = function(object) {
-        return typeOf(object) === REACT_FRAGMENT_TYPE;
-      };
-      exports.isLazy = function(object) {
-        return typeOf(object) === REACT_LAZY_TYPE;
-      };
-      exports.isMemo = function(object) {
-        return typeOf(object) === REACT_MEMO_TYPE;
-      };
-      exports.isPortal = function(object) {
-        return typeOf(object) === REACT_PORTAL_TYPE;
-      };
-      exports.isProfiler = function(object) {
-        return typeOf(object) === REACT_PROFILER_TYPE;
-      };
-      exports.isStrictMode = function(object) {
-        return typeOf(object) === REACT_STRICT_MODE_TYPE;
-      };
-      exports.isSuspense = function(object) {
-        return typeOf(object) === REACT_SUSPENSE_TYPE;
-      };
-      exports.isSuspenseList = function(object) {
-        return typeOf(object) === REACT_SUSPENSE_LIST_TYPE;
-      };
-      exports.isValidElementType = function(type) {
-        return "string" === typeof type || "function" === typeof type || type === REACT_FRAGMENT_TYPE || type === REACT_PROFILER_TYPE || type === REACT_STRICT_MODE_TYPE || type === REACT_SUSPENSE_TYPE || type === REACT_SUSPENSE_LIST_TYPE || "object" === typeof type && null !== type && (type.$$typeof === REACT_LAZY_TYPE || type.$$typeof === REACT_MEMO_TYPE || type.$$typeof === REACT_CONTEXT_TYPE || type.$$typeof === REACT_CONSUMER_TYPE || type.$$typeof === REACT_FORWARD_REF_TYPE || type.$$typeof === REACT_CLIENT_REFERENCE || void 0 !== type.getModuleId) ? true : false;
-      };
-      exports.typeOf = typeOf;
-    })();
-  }
-});
-
-// node_modules/react-is/index.js
-var require_react_is = __commonJS({
-  "node_modules/react-is/index.js"(exports, module) {
-    "use strict";
-    if (false) {
-      module.exports = null;
-    } else {
-      module.exports = require_react_is_development();
-    }
-  }
-});
-
 // node_modules/es-toolkit/dist/array/uniqBy.js
 var require_uniqBy = __commonJS({
   "node_modules/es-toolkit/dist/array/uniqBy.js"(exports) {
@@ -405,10 +334,10 @@ var require_isObjectLike = __commonJS({
   "node_modules/es-toolkit/dist/compat/predicate/isObjectLike.js"(exports) {
     "use strict";
     Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
-    function isObjectLike2(value) {
+    function isObjectLike(value) {
       return typeof value === "object" && value !== null;
     }
-    exports.isObjectLike = isObjectLike2;
+    exports.isObjectLike = isObjectLike;
   }
 });
 
@@ -418,9 +347,9 @@ var require_isArrayLikeObject = __commonJS({
     "use strict";
     Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
     var isArrayLike = require_isArrayLike();
-    var isObjectLike2 = require_isObjectLike();
+    var isObjectLike = require_isObjectLike();
     function isArrayLikeObject(value) {
-      return isObjectLike2.isObjectLike(value) && isArrayLike.isArrayLike(value);
+      return isObjectLike.isObjectLike(value) && isArrayLike.isArrayLike(value);
     }
     exports.isArrayLikeObject = isArrayLikeObject;
   }
@@ -482,13 +411,12 @@ var require_isMatchWith = __commonJS({
   "node_modules/es-toolkit/dist/compat/predicate/isMatchWith.js"(exports) {
     "use strict";
     Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
-    var isMatch = require_isMatch();
     var isObject = require_isObject();
     var isPrimitive2 = require_isPrimitive();
     var eq2 = require_eq();
     function isMatchWith(target, source, compare) {
       if (typeof compare !== "function") {
-        return isMatch.isMatch(target, source);
+        return isMatchWith(target, source, () => void 0);
       }
       return isMatchWithInternal(target, source, function doesMatch(objValue, srcValue, key, object, source2, stack) {
         const isEqual2 = compare(objValue, srcValue, key, object, source2, stack);
@@ -544,12 +472,10 @@ var require_isMatchWith = __commonJS({
       if (keys.length === 0) {
         return true;
       }
-      if (stack && stack.has(source)) {
+      if (stack == null ? void 0 : stack.has(source)) {
         return stack.get(source) === target;
       }
-      if (stack) {
-        stack.set(source, target);
-      }
+      stack == null ? void 0 : stack.set(source, target);
       try {
         for (let i = 0; i < keys.length; i++) {
           const key = keys[i];
@@ -569,9 +495,7 @@ var require_isMatchWith = __commonJS({
         }
         return true;
       } finally {
-        if (stack) {
-          stack.delete(source);
-        }
+        stack == null ? void 0 : stack.delete(source);
       }
     }
     function isMapMatch(target, source, compare, stack) {
@@ -839,7 +763,7 @@ var require_cloneDeepWith = __commonJS({
         copyProperties(result, valueToClone, objectToClone, stack, cloneValue);
         return result;
       }
-      if (valueToClone instanceof Blob) {
+      if (typeof Blob !== "undefined" && valueToClone instanceof Blob) {
         const result = new Blob([valueToClone], { type: valueToClone.type });
         stack.set(valueToClone, result);
         copyProperties(result, valueToClone, objectToClone, stack, cloneValue);
@@ -852,6 +776,24 @@ var require_cloneDeepWith = __commonJS({
         result.name = valueToClone.name;
         result.stack = valueToClone.stack;
         result.cause = valueToClone.cause;
+        copyProperties(result, valueToClone, objectToClone, stack, cloneValue);
+        return result;
+      }
+      if (valueToClone instanceof Boolean) {
+        const result = new Boolean(valueToClone.valueOf());
+        stack.set(valueToClone, result);
+        copyProperties(result, valueToClone, objectToClone, stack, cloneValue);
+        return result;
+      }
+      if (valueToClone instanceof Number) {
+        const result = new Number(valueToClone.valueOf());
+        stack.set(valueToClone, result);
+        copyProperties(result, valueToClone, objectToClone, stack, cloneValue);
+        return result;
+      }
+      if (valueToClone instanceof String) {
+        const result = new String(valueToClone.valueOf());
+        stack.set(valueToClone, result);
         copyProperties(result, valueToClone, objectToClone, stack, cloneValue);
         return result;
       }
@@ -1176,9 +1118,9 @@ var require_with_selector_development = __commonJS({
         return x2 === y2 && (0 !== x2 || 1 / x2 === 1 / y2) || x2 !== x2 && y2 !== y2;
       }
       "undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(Error());
-      var React73 = require_react(), shim = require_shim(), objectIs = "function" === typeof Object.is ? Object.is : is, useSyncExternalStore = shim.useSyncExternalStore, useRef19 = React73.useRef, useEffect28 = React73.useEffect, useMemo12 = React73.useMemo, useDebugValue = React73.useDebugValue;
+      var React73 = require_react(), shim = require_shim(), objectIs = "function" === typeof Object.is ? Object.is : is, useSyncExternalStore = shim.useSyncExternalStore, useRef21 = React73.useRef, useEffect24 = React73.useEffect, useMemo12 = React73.useMemo, useDebugValue = React73.useDebugValue;
       exports.useSyncExternalStoreWithSelector = function(subscribe, getSnapshot, getServerSnapshot, selector, isEqual2) {
-        var instRef = useRef19(null);
+        var instRef = useRef21(null);
         if (null === instRef.current) {
           var inst = { hasValue: false, value: null };
           instRef.current = inst;
@@ -1219,7 +1161,7 @@ var require_with_selector_development = __commonJS({
           [getSnapshot, getServerSnapshot, selector, isEqual2]
         );
         var value = useSyncExternalStore(subscribe, instRef[0], instRef[1]);
-        useEffect28(
+        useEffect24(
           function() {
             inst.hasValue = true;
             inst.value = value;
@@ -1475,6 +1417,152 @@ var require_sortBy2 = __commonJS({
   }
 });
 
+// node_modules/es-toolkit/dist/function/debounce.js
+var require_debounce = __commonJS({
+  "node_modules/es-toolkit/dist/function/debounce.js"(exports) {
+    "use strict";
+    Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
+    function debounce2(func, debounceMs, { signal, edges } = {}) {
+      let pendingThis = void 0;
+      let pendingArgs = null;
+      const leading = edges != null && edges.includes("leading");
+      const trailing = edges == null || edges.includes("trailing");
+      const invoke = () => {
+        if (pendingArgs !== null) {
+          func.apply(pendingThis, pendingArgs);
+          pendingThis = void 0;
+          pendingArgs = null;
+        }
+      };
+      const onTimerEnd = () => {
+        if (trailing) {
+          invoke();
+        }
+        cancel();
+      };
+      let timeoutId = null;
+      const schedule = () => {
+        if (timeoutId != null) {
+          clearTimeout(timeoutId);
+        }
+        timeoutId = setTimeout(() => {
+          timeoutId = null;
+          onTimerEnd();
+        }, debounceMs);
+      };
+      const cancelTimer = () => {
+        if (timeoutId !== null) {
+          clearTimeout(timeoutId);
+          timeoutId = null;
+        }
+      };
+      const cancel = () => {
+        cancelTimer();
+        pendingThis = void 0;
+        pendingArgs = null;
+      };
+      const flush = () => {
+        invoke();
+      };
+      const debounced = function(...args) {
+        if (signal == null ? void 0 : signal.aborted) {
+          return;
+        }
+        pendingThis = this;
+        pendingArgs = args;
+        const isFirstCall = timeoutId == null;
+        schedule();
+        if (leading && isFirstCall) {
+          invoke();
+        }
+      };
+      debounced.schedule = schedule;
+      debounced.cancel = cancel;
+      debounced.flush = flush;
+      signal == null ? void 0 : signal.addEventListener("abort", cancel, { once: true });
+      return debounced;
+    }
+    exports.debounce = debounce2;
+  }
+});
+
+// node_modules/es-toolkit/dist/compat/function/debounce.js
+var require_debounce2 = __commonJS({
+  "node_modules/es-toolkit/dist/compat/function/debounce.js"(exports) {
+    "use strict";
+    Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
+    var debounce$1 = require_debounce();
+    function debounce2(func, debounceMs = 0, options3 = {}) {
+      if (typeof options3 !== "object") {
+        options3 = {};
+      }
+      const { leading = false, trailing = true, maxWait } = options3;
+      const edges = Array(2);
+      if (leading) {
+        edges[0] = "leading";
+      }
+      if (trailing) {
+        edges[1] = "trailing";
+      }
+      let result = void 0;
+      let pendingAt = null;
+      const _debounced = debounce$1.debounce(function(...args) {
+        result = func.apply(this, args);
+        pendingAt = null;
+      }, debounceMs, { edges });
+      const debounced = function(...args) {
+        if (maxWait != null) {
+          if (pendingAt === null) {
+            pendingAt = Date.now();
+          }
+          if (Date.now() - pendingAt >= maxWait) {
+            result = func.apply(this, args);
+            pendingAt = Date.now();
+            _debounced.cancel();
+            _debounced.schedule();
+            return result;
+          }
+        }
+        _debounced.apply(this, args);
+        return result;
+      };
+      const flush = () => {
+        _debounced.flush();
+        return result;
+      };
+      debounced.cancel = _debounced.cancel;
+      debounced.flush = flush;
+      return debounced;
+    }
+    exports.debounce = debounce2;
+  }
+});
+
+// node_modules/es-toolkit/dist/compat/function/throttle.js
+var require_throttle = __commonJS({
+  "node_modules/es-toolkit/dist/compat/function/throttle.js"(exports) {
+    "use strict";
+    Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
+    var debounce2 = require_debounce2();
+    function throttle3(func, throttleMs = 0, options3 = {}) {
+      const { leading = true, trailing = true } = options3;
+      return debounce2.debounce(func, throttleMs, {
+        leading,
+        maxWait: throttleMs,
+        trailing
+      });
+    }
+    exports.throttle = throttle3;
+  }
+});
+
+// node_modules/es-toolkit/compat/throttle.js
+var require_throttle2 = __commonJS({
+  "node_modules/es-toolkit/compat/throttle.js"(exports, module) {
+    module.exports = require_throttle().throttle;
+  }
+});
+
 // node_modules/es-toolkit/dist/compat/util/toNumber.js
 var require_toNumber = __commonJS({
   "node_modules/es-toolkit/dist/compat/util/toNumber.js"(exports) {
@@ -1712,152 +1800,6 @@ var require_eventemitter3 = __commonJS({
   }
 });
 
-// node_modules/es-toolkit/dist/function/debounce.js
-var require_debounce = __commonJS({
-  "node_modules/es-toolkit/dist/function/debounce.js"(exports) {
-    "use strict";
-    Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
-    function debounce2(func, debounceMs, { signal, edges } = {}) {
-      let pendingThis = void 0;
-      let pendingArgs = null;
-      const leading = edges != null && edges.includes("leading");
-      const trailing = edges == null || edges.includes("trailing");
-      const invoke = () => {
-        if (pendingArgs !== null) {
-          func.apply(pendingThis, pendingArgs);
-          pendingThis = void 0;
-          pendingArgs = null;
-        }
-      };
-      const onTimerEnd = () => {
-        if (trailing) {
-          invoke();
-        }
-        cancel();
-      };
-      let timeoutId = null;
-      const schedule = () => {
-        if (timeoutId != null) {
-          clearTimeout(timeoutId);
-        }
-        timeoutId = setTimeout(() => {
-          timeoutId = null;
-          onTimerEnd();
-        }, debounceMs);
-      };
-      const cancelTimer = () => {
-        if (timeoutId !== null) {
-          clearTimeout(timeoutId);
-          timeoutId = null;
-        }
-      };
-      const cancel = () => {
-        cancelTimer();
-        pendingThis = void 0;
-        pendingArgs = null;
-      };
-      const flush = () => {
-        invoke();
-      };
-      const debounced = function(...args) {
-        if (signal == null ? void 0 : signal.aborted) {
-          return;
-        }
-        pendingThis = this;
-        pendingArgs = args;
-        const isFirstCall = timeoutId == null;
-        schedule();
-        if (leading && isFirstCall) {
-          invoke();
-        }
-      };
-      debounced.schedule = schedule;
-      debounced.cancel = cancel;
-      debounced.flush = flush;
-      signal == null ? void 0 : signal.addEventListener("abort", cancel, { once: true });
-      return debounced;
-    }
-    exports.debounce = debounce2;
-  }
-});
-
-// node_modules/es-toolkit/dist/compat/function/debounce.js
-var require_debounce2 = __commonJS({
-  "node_modules/es-toolkit/dist/compat/function/debounce.js"(exports) {
-    "use strict";
-    Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
-    var debounce$1 = require_debounce();
-    function debounce2(func, debounceMs = 0, options3 = {}) {
-      if (typeof options3 !== "object") {
-        options3 = {};
-      }
-      const { leading = false, trailing = true, maxWait } = options3;
-      const edges = Array(2);
-      if (leading) {
-        edges[0] = "leading";
-      }
-      if (trailing) {
-        edges[1] = "trailing";
-      }
-      let result = void 0;
-      let pendingAt = null;
-      const _debounced = debounce$1.debounce(function(...args) {
-        result = func.apply(this, args);
-        pendingAt = null;
-      }, debounceMs, { edges });
-      const debounced = function(...args) {
-        if (maxWait != null) {
-          if (pendingAt === null) {
-            pendingAt = Date.now();
-          }
-          if (Date.now() - pendingAt >= maxWait) {
-            result = func.apply(this, args);
-            pendingAt = Date.now();
-            _debounced.cancel();
-            _debounced.schedule();
-            return result;
-          }
-        }
-        _debounced.apply(this, args);
-        return result;
-      };
-      const flush = () => {
-        _debounced.flush();
-        return result;
-      };
-      debounced.cancel = _debounced.cancel;
-      debounced.flush = flush;
-      return debounced;
-    }
-    exports.debounce = debounce2;
-  }
-});
-
-// node_modules/es-toolkit/dist/compat/function/throttle.js
-var require_throttle = __commonJS({
-  "node_modules/es-toolkit/dist/compat/function/throttle.js"(exports) {
-    "use strict";
-    Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
-    var debounce2 = require_debounce2();
-    function throttle3(func, throttleMs = 0, options3 = {}) {
-      const { leading = true, trailing = true } = options3;
-      return debounce2.debounce(func, throttleMs, {
-        leading,
-        maxWait: throttleMs,
-        trailing
-      });
-    }
-    exports.throttle = throttle3;
-  }
-});
-
-// node_modules/es-toolkit/compat/throttle.js
-var require_throttle2 = __commonJS({
-  "node_modules/es-toolkit/compat/throttle.js"(exports, module) {
-    module.exports = require_throttle().throttle;
-  }
-});
-
 // node_modules/es-toolkit/dist/array/last.js
 var require_last = __commonJS({
   "node_modules/es-toolkit/dist/array/last.js"(exports) {
@@ -2007,6 +1949,111 @@ var require_minBy3 = __commonJS({
   }
 });
 
+// node_modules/react-is/cjs/react-is.development.js
+var require_react_is_development = __commonJS({
+  "node_modules/react-is/cjs/react-is.development.js"(exports) {
+    "use strict";
+    (function() {
+      function typeOf(object) {
+        if ("object" === typeof object && null !== object) {
+          var $$typeof = object.$$typeof;
+          switch ($$typeof) {
+            case REACT_ELEMENT_TYPE:
+              switch (object = object.type, object) {
+                case REACT_FRAGMENT_TYPE:
+                case REACT_PROFILER_TYPE:
+                case REACT_STRICT_MODE_TYPE:
+                case REACT_SUSPENSE_TYPE:
+                case REACT_SUSPENSE_LIST_TYPE:
+                case REACT_VIEW_TRANSITION_TYPE:
+                  return object;
+                default:
+                  switch (object = object && object.$$typeof, object) {
+                    case REACT_CONTEXT_TYPE:
+                    case REACT_FORWARD_REF_TYPE:
+                    case REACT_LAZY_TYPE:
+                    case REACT_MEMO_TYPE:
+                      return object;
+                    case REACT_CONSUMER_TYPE:
+                      return object;
+                    default:
+                      return $$typeof;
+                  }
+              }
+            case REACT_PORTAL_TYPE:
+              return $$typeof;
+          }
+        }
+      }
+      var REACT_ELEMENT_TYPE = Symbol.for("react.transitional.element"), REACT_PORTAL_TYPE = Symbol.for("react.portal"), REACT_FRAGMENT_TYPE = Symbol.for("react.fragment"), REACT_STRICT_MODE_TYPE = Symbol.for("react.strict_mode"), REACT_PROFILER_TYPE = Symbol.for("react.profiler"), REACT_CONSUMER_TYPE = Symbol.for("react.consumer"), REACT_CONTEXT_TYPE = Symbol.for("react.context"), REACT_FORWARD_REF_TYPE = Symbol.for("react.forward_ref"), REACT_SUSPENSE_TYPE = Symbol.for("react.suspense"), REACT_SUSPENSE_LIST_TYPE = Symbol.for("react.suspense_list"), REACT_MEMO_TYPE = Symbol.for("react.memo"), REACT_LAZY_TYPE = Symbol.for("react.lazy"), REACT_VIEW_TRANSITION_TYPE = Symbol.for("react.view_transition"), REACT_CLIENT_REFERENCE = Symbol.for("react.client.reference");
+      exports.ContextConsumer = REACT_CONSUMER_TYPE;
+      exports.ContextProvider = REACT_CONTEXT_TYPE;
+      exports.Element = REACT_ELEMENT_TYPE;
+      exports.ForwardRef = REACT_FORWARD_REF_TYPE;
+      exports.Fragment = REACT_FRAGMENT_TYPE;
+      exports.Lazy = REACT_LAZY_TYPE;
+      exports.Memo = REACT_MEMO_TYPE;
+      exports.Portal = REACT_PORTAL_TYPE;
+      exports.Profiler = REACT_PROFILER_TYPE;
+      exports.StrictMode = REACT_STRICT_MODE_TYPE;
+      exports.Suspense = REACT_SUSPENSE_TYPE;
+      exports.SuspenseList = REACT_SUSPENSE_LIST_TYPE;
+      exports.isContextConsumer = function(object) {
+        return typeOf(object) === REACT_CONSUMER_TYPE;
+      };
+      exports.isContextProvider = function(object) {
+        return typeOf(object) === REACT_CONTEXT_TYPE;
+      };
+      exports.isElement = function(object) {
+        return "object" === typeof object && null !== object && object.$$typeof === REACT_ELEMENT_TYPE;
+      };
+      exports.isForwardRef = function(object) {
+        return typeOf(object) === REACT_FORWARD_REF_TYPE;
+      };
+      exports.isFragment = function(object) {
+        return typeOf(object) === REACT_FRAGMENT_TYPE;
+      };
+      exports.isLazy = function(object) {
+        return typeOf(object) === REACT_LAZY_TYPE;
+      };
+      exports.isMemo = function(object) {
+        return typeOf(object) === REACT_MEMO_TYPE;
+      };
+      exports.isPortal = function(object) {
+        return typeOf(object) === REACT_PORTAL_TYPE;
+      };
+      exports.isProfiler = function(object) {
+        return typeOf(object) === REACT_PROFILER_TYPE;
+      };
+      exports.isStrictMode = function(object) {
+        return typeOf(object) === REACT_STRICT_MODE_TYPE;
+      };
+      exports.isSuspense = function(object) {
+        return typeOf(object) === REACT_SUSPENSE_TYPE;
+      };
+      exports.isSuspenseList = function(object) {
+        return typeOf(object) === REACT_SUSPENSE_LIST_TYPE;
+      };
+      exports.isValidElementType = function(type) {
+        return "string" === typeof type || "function" === typeof type || type === REACT_FRAGMENT_TYPE || type === REACT_PROFILER_TYPE || type === REACT_STRICT_MODE_TYPE || type === REACT_SUSPENSE_TYPE || type === REACT_SUSPENSE_LIST_TYPE || "object" === typeof type && null !== type && (type.$$typeof === REACT_LAZY_TYPE || type.$$typeof === REACT_MEMO_TYPE || type.$$typeof === REACT_CONTEXT_TYPE || type.$$typeof === REACT_CONSUMER_TYPE || type.$$typeof === REACT_FORWARD_REF_TYPE || type.$$typeof === REACT_CLIENT_REFERENCE || void 0 !== type.getModuleId) ? true : false;
+      };
+      exports.typeOf = typeOf;
+    })();
+  }
+});
+
+// node_modules/react-is/index.js
+var require_react_is = __commonJS({
+  "node_modules/react-is/index.js"(exports, module) {
+    "use strict";
+    if (false) {
+      module.exports = null;
+    } else {
+      module.exports = require_react_is_development();
+    }
+  }
+});
+
 // node_modules/es-toolkit/dist/compat/predicate/isPlainObject.js
 var require_isPlainObject = __commonJS({
   "node_modules/es-toolkit/dist/compat/predicate/isPlainObject.js"(exports) {
@@ -2048,6 +2095,140 @@ var require_isPlainObject = __commonJS({
 var require_isPlainObject2 = __commonJS({
   "node_modules/es-toolkit/compat/isPlainObject.js"(exports, module) {
     module.exports = require_isPlainObject().isPlainObject;
+  }
+});
+
+// node_modules/es-toolkit/dist/predicate/isBuffer.js
+var require_isBuffer = __commonJS({
+  "node_modules/es-toolkit/dist/predicate/isBuffer.js"(exports) {
+    "use strict";
+    Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
+    function isBuffer2(x2) {
+      return typeof Buffer !== "undefined" && Buffer.isBuffer(x2);
+    }
+    exports.isBuffer = isBuffer2;
+  }
+});
+
+// node_modules/es-toolkit/dist/compat/_internal/isPrototype.js
+var require_isPrototype = __commonJS({
+  "node_modules/es-toolkit/dist/compat/_internal/isPrototype.js"(exports) {
+    "use strict";
+    Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
+    function isPrototype(value) {
+      const constructor = value == null ? void 0 : value.constructor;
+      const prototype = typeof constructor === "function" ? constructor.prototype : Object.prototype;
+      return value === prototype;
+    }
+    exports.isPrototype = isPrototype;
+  }
+});
+
+// node_modules/es-toolkit/dist/compat/predicate/isTypedArray.js
+var require_isTypedArray2 = __commonJS({
+  "node_modules/es-toolkit/dist/compat/predicate/isTypedArray.js"(exports) {
+    "use strict";
+    Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
+    var isTypedArray$1 = require_isTypedArray();
+    function isTypedArray2(x2) {
+      return isTypedArray$1.isTypedArray(x2);
+    }
+    exports.isTypedArray = isTypedArray2;
+  }
+});
+
+// node_modules/es-toolkit/dist/compat/util/toInteger.js
+var require_toInteger = __commonJS({
+  "node_modules/es-toolkit/dist/compat/util/toInteger.js"(exports) {
+    "use strict";
+    Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
+    var toFinite2 = require_toFinite();
+    function toInteger2(value) {
+      const finite = toFinite2.toFinite(value);
+      const remainder = finite % 1;
+      return remainder ? finite - remainder : finite;
+    }
+    exports.toInteger = toInteger2;
+  }
+});
+
+// node_modules/es-toolkit/dist/compat/util/times.js
+var require_times = __commonJS({
+  "node_modules/es-toolkit/dist/compat/util/times.js"(exports) {
+    "use strict";
+    Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
+    var toInteger2 = require_toInteger();
+    function times(n, getValue2) {
+      n = toInteger2.toInteger(n);
+      if (n < 1 || !Number.isSafeInteger(n)) {
+        return [];
+      }
+      const result = new Array(n);
+      for (let i = 0; i < n; i++) {
+        result[i] = typeof getValue2 === "function" ? getValue2(i) : i;
+      }
+      return result;
+    }
+    exports.times = times;
+  }
+});
+
+// node_modules/es-toolkit/dist/compat/object/keysIn.js
+var require_keysIn = __commonJS({
+  "node_modules/es-toolkit/dist/compat/object/keysIn.js"(exports) {
+    "use strict";
+    Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
+    var isBuffer2 = require_isBuffer();
+    var isPrototype = require_isPrototype();
+    var isArrayLike = require_isArrayLike();
+    var isTypedArray2 = require_isTypedArray2();
+    var times = require_times();
+    function keysIn(object) {
+      if (object == null) {
+        return [];
+      }
+      switch (typeof object) {
+        case "object":
+        case "function": {
+          if (isArrayLike.isArrayLike(object)) {
+            return arrayLikeKeysIn(object);
+          }
+          if (isPrototype.isPrototype(object)) {
+            return prototypeKeysIn(object);
+          }
+          return keysInImpl(object);
+        }
+        default: {
+          return keysInImpl(Object(object));
+        }
+      }
+    }
+    function keysInImpl(object) {
+      const result = [];
+      for (const key in object) {
+        result.push(key);
+      }
+      return result;
+    }
+    function prototypeKeysIn(object) {
+      const keys = keysInImpl(object);
+      return keys.filter((key) => key !== "constructor");
+    }
+    function arrayLikeKeysIn(object) {
+      const indices = times.times(object.length, (index2) => `${index2}`);
+      const filteredKeys = new Set(indices);
+      if (isBuffer2.isBuffer(object)) {
+        filteredKeys.add("offset");
+        filteredKeys.add("parent");
+      }
+      if (isTypedArray2.isTypedArray(object)) {
+        filteredKeys.add("buffer");
+        filteredKeys.add("byteLength");
+        filteredKeys.add("byteOffset");
+      }
+      return [...indices, ...keysInImpl(object).filter((key) => !filteredKeys.has(key))];
+    }
+    exports.keysIn = keysIn;
   }
 });
 
@@ -2111,7 +2292,7 @@ var require_unset = __commonJS({
       }
     }
     function unsetWithPath(obj, path2) {
-      const parent = get9.get(obj, path2.slice(0, -1), obj);
+      const parent = path2.length === 1 ? obj : get9.get(obj, path2.slice(0, -1));
       const lastKey = path2[path2.length - 1];
       if ((parent == null ? void 0 : parent[lastKey]) === void 0) {
         return true;
@@ -2130,18 +2311,75 @@ var require_unset = __commonJS({
   }
 });
 
+// node_modules/es-toolkit/dist/compat/_internal/getSymbolsIn.js
+var require_getSymbolsIn = __commonJS({
+  "node_modules/es-toolkit/dist/compat/_internal/getSymbolsIn.js"(exports) {
+    "use strict";
+    Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
+    var getSymbols2 = require_getSymbols();
+    function getSymbolsIn(object) {
+      const result = [];
+      while (object) {
+        result.push(...getSymbols2.getSymbols(object));
+        object = Object.getPrototypeOf(object);
+      }
+      return result;
+    }
+    exports.getSymbolsIn = getSymbolsIn;
+  }
+});
+
+// node_modules/es-toolkit/dist/compat/array/flatten.js
+var require_flatten2 = __commonJS({
+  "node_modules/es-toolkit/dist/compat/array/flatten.js"(exports) {
+    "use strict";
+    Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
+    var isArrayLike = require_isArrayLike();
+    function flatten2(value, depth = 1) {
+      const result = [];
+      const flooredDepth = Math.floor(depth);
+      if (!isArrayLike.isArrayLike(value)) {
+        return result;
+      }
+      const recursive = (arr, currentDepth) => {
+        for (let i = 0; i < arr.length; i++) {
+          const item = arr[i];
+          if (currentDepth < flooredDepth && (Array.isArray(item) || Boolean(item == null ? void 0 : item[Symbol.isConcatSpreadable]) || item !== null && typeof item === "object" && Object.prototype.toString.call(item) === "[object Arguments]")) {
+            if (Array.isArray(item)) {
+              recursive(item, currentDepth + 1);
+            } else {
+              recursive(Array.from(item), currentDepth + 1);
+            }
+          } else {
+            result.push(item);
+          }
+        }
+      };
+      recursive(Array.from(value), 0);
+      return result;
+    }
+    exports.flatten = flatten2;
+  }
+});
+
 // node_modules/es-toolkit/dist/compat/object/omit.js
 var require_omit = __commonJS({
   "node_modules/es-toolkit/dist/compat/object/omit.js"(exports) {
     "use strict";
     Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
+    var cloneDeepWith2 = require_cloneDeepWith2();
+    var keysIn = require_keysIn();
     var unset = require_unset();
-    var cloneDeep2 = require_cloneDeep();
+    var getSymbolsIn = require_getSymbolsIn();
+    var isDeepKey = require_isDeepKey();
+    var flatten2 = require_flatten2();
+    var isPlainObject4 = require_isPlainObject();
     function omit4(obj, ...keysArr) {
       if (obj == null) {
         return {};
       }
-      const result = cloneDeep2.cloneDeep(obj);
+      keysArr = flatten2.flatten(keysArr);
+      const result = cloneInOmit(obj, keysArr);
       for (let i = 0; i < keysArr.length; i++) {
         let keys = keysArr[i];
         switch (typeof keys) {
@@ -2162,6 +2400,36 @@ var require_omit = __commonJS({
             break;
           }
         }
+      }
+      return result;
+    }
+    function cloneInOmit(obj, keys) {
+      const hasDeepKey = keys.some((key) => Array.isArray(key) || isDeepKey.isDeepKey(key));
+      if (hasDeepKey) {
+        return deepCloneInOmit(obj);
+      }
+      return shallowCloneInOmit(obj);
+    }
+    function shallowCloneInOmit(obj) {
+      const result = {};
+      const keysToCopy = [...keysIn.keysIn(obj), ...getSymbolsIn.getSymbolsIn(obj)];
+      for (let i = 0; i < keysToCopy.length; i++) {
+        const key = keysToCopy[i];
+        result[key] = obj[key];
+      }
+      return result;
+    }
+    function deepCloneInOmit(obj) {
+      const result = {};
+      const keysToCopy = [...keysIn.keysIn(obj), ...getSymbolsIn.getSymbolsIn(obj)];
+      for (let i = 0; i < keysToCopy.length; i++) {
+        const key = keysToCopy[i];
+        result[key] = cloneDeepWith2.cloneDeepWith(obj[key], (valueToClone) => {
+          if (isPlainObject4.isPlainObject(valueToClone)) {
+            return void 0;
+          }
+          return valueToClone;
+        });
       }
       return result;
     }
@@ -2217,133 +2485,8 @@ var require_sumBy2 = __commonJS({
 var React = __toESM(require_react());
 var import_react3 = __toESM(require_react());
 
-// node_modules/recharts/es6/util/ReactUtils.js
-var import_get2 = __toESM(require_get2());
+// node_modules/recharts/es6/util/svgPropertiesAndEvents.js
 var import_react2 = __toESM(require_react());
-var import_react_is = __toESM(require_react_is());
-
-// node_modules/recharts/es6/util/DataUtils.js
-var import_get = __toESM(require_get2());
-var mathSign = (value) => {
-  if (value === 0) {
-    return 0;
-  }
-  if (value > 0) {
-    return 1;
-  }
-  return -1;
-};
-var isNan = (value) => {
-  return typeof value == "number" && value != +value;
-};
-var isPercent = (value) => typeof value === "string" && value.indexOf("%") === value.length - 1;
-var isNumber = (value) => (typeof value === "number" || value instanceof Number) && !isNan(value);
-var isNumOrStr = (value) => isNumber(value) || typeof value === "string";
-var idCounter = 0;
-var uniqueId = (prefix2) => {
-  var id = ++idCounter;
-  return "".concat(prefix2 || "").concat(id);
-};
-var getPercentValue = function getPercentValue2(percent, totalValue) {
-  var defaultValue = arguments.length > 2 && arguments[2] !== void 0 ? arguments[2] : 0;
-  var validate = arguments.length > 3 && arguments[3] !== void 0 ? arguments[3] : false;
-  if (!isNumber(percent) && typeof percent !== "string") {
-    return defaultValue;
-  }
-  var value;
-  if (isPercent(percent)) {
-    if (totalValue == null) {
-      return defaultValue;
-    }
-    var index2 = percent.indexOf("%");
-    value = totalValue * parseFloat(percent.slice(0, index2)) / 100;
-  } else {
-    value = +percent;
-  }
-  if (isNan(value)) {
-    value = defaultValue;
-  }
-  if (validate && totalValue != null && value > totalValue) {
-    value = totalValue;
-  }
-  return value;
-};
-var hasDuplicate = (ary2) => {
-  if (!Array.isArray(ary2)) {
-    return false;
-  }
-  var len = ary2.length;
-  var cache = {};
-  for (var i = 0; i < len; i++) {
-    if (!cache[ary2[i]]) {
-      cache[ary2[i]] = true;
-    } else {
-      return true;
-    }
-  }
-  return false;
-};
-var interpolateNumber = (numberA, numberB) => {
-  if (isNumber(numberA) && isNumber(numberB)) {
-    return (t) => numberA + t * (numberB - numberA);
-  }
-  return () => numberB;
-};
-function interpolate(start, end, t) {
-  if (isNumber(start) && isNumber(end)) {
-    return start + t * (end - start);
-  }
-  return end;
-}
-function findEntryInArray(ary2, specifiedKey, specifiedValue) {
-  if (!ary2 || !ary2.length) {
-    return void 0;
-  }
-  return ary2.find((entry) => entry && (typeof specifiedKey === "function" ? specifiedKey(entry) : (0, import_get.default)(entry, specifiedKey)) === specifiedValue);
-}
-var getLinearRegression = (data) => {
-  if (!data || !data.length) {
-    return null;
-  }
-  var len = data.length;
-  var xsum = 0;
-  var ysum = 0;
-  var xysum = 0;
-  var xxsum = 0;
-  var xmin = Infinity;
-  var xmax = -Infinity;
-  var xcurrent = 0;
-  var ycurrent = 0;
-  for (var i = 0; i < len; i++) {
-    xcurrent = data[i].cx || 0;
-    ycurrent = data[i].cy || 0;
-    xsum += xcurrent;
-    ysum += ycurrent;
-    xysum += xcurrent * ycurrent;
-    xxsum += xcurrent * xcurrent;
-    xmin = Math.min(xmin, xcurrent);
-    xmax = Math.max(xmax, xcurrent);
-  }
-  var a2 = len * xxsum !== xsum * xsum ? (len * xysum - xsum * ysum) / (len * xxsum - xsum * xsum) : 0;
-  return {
-    xmin,
-    xmax,
-    a: a2,
-    b: (ysum - a2 * xsum) / len
-  };
-};
-var isNullish = (value) => {
-  return value === null || typeof value === "undefined";
-};
-var upperFirst = (value) => {
-  if (isNullish(value)) {
-    return value;
-  }
-  return "".concat(value.charAt(0).toUpperCase()).concat(value.slice(1));
-};
-
-// node_modules/recharts/es6/util/types.js
-var import_react = __toESM(require_react());
 
 // node_modules/recharts/es6/util/excludeEventProps.js
 var EventKeys = ["dangerouslySetInnerHTML", "onCopy", "onCopyCapture", "onCut", "onCutCapture", "onPaste", "onPasteCapture", "onCompositionEnd", "onCompositionEndCapture", "onCompositionStart", "onCompositionStartCapture", "onCompositionUpdate", "onCompositionUpdateCapture", "onFocus", "onFocusCapture", "onBlur", "onBlurCapture", "onChange", "onChangeCapture", "onBeforeInput", "onBeforeInputCapture", "onInput", "onInputCapture", "onReset", "onResetCapture", "onSubmit", "onSubmitCapture", "onInvalid", "onInvalidCapture", "onLoad", "onLoadCapture", "onError", "onErrorCapture", "onKeyDown", "onKeyDownCapture", "onKeyPress", "onKeyPressCapture", "onKeyUp", "onKeyUpCapture", "onAbort", "onAbortCapture", "onCanPlay", "onCanPlayCapture", "onCanPlayThrough", "onCanPlayThroughCapture", "onDurationChange", "onDurationChangeCapture", "onEmptied", "onEmptiedCapture", "onEncrypted", "onEncryptedCapture", "onEnded", "onEndedCapture", "onLoadedData", "onLoadedDataCapture", "onLoadedMetadata", "onLoadedMetadataCapture", "onLoadStart", "onLoadStartCapture", "onPause", "onPauseCapture", "onPlay", "onPlayCapture", "onPlaying", "onPlayingCapture", "onProgress", "onProgressCapture", "onRateChange", "onRateChangeCapture", "onSeeked", "onSeekedCapture", "onSeeking", "onSeekingCapture", "onStalled", "onStalledCapture", "onSuspend", "onSuspendCapture", "onTimeUpdate", "onTimeUpdateCapture", "onVolumeChange", "onVolumeChangeCapture", "onWaiting", "onWaitingCapture", "onAuxClick", "onAuxClickCapture", "onClick", "onClickCapture", "onContextMenu", "onContextMenuCapture", "onDoubleClick", "onDoubleClickCapture", "onDrag", "onDragCapture", "onDragEnd", "onDragEndCapture", "onDragEnter", "onDragEnterCapture", "onDragExit", "onDragExitCapture", "onDragLeave", "onDragLeaveCapture", "onDragOver", "onDragOverCapture", "onDragStart", "onDragStartCapture", "onDrop", "onDropCapture", "onMouseDown", "onMouseDownCapture", "onMouseEnter", "onMouseLeave", "onMouseMove", "onMouseMoveCapture", "onMouseOut", "onMouseOutCapture", "onMouseOver", "onMouseOverCapture", "onMouseUp", "onMouseUpCapture", "onSelect", "onSelectCapture", "onTouchCancel", "onTouchCancelCapture", "onTouchEnd", "onTouchEndCapture", "onTouchMove", "onTouchMoveCapture", "onTouchStart", "onTouchStartCapture", "onPointerDown", "onPointerDownCapture", "onPointerMove", "onPointerMoveCapture", "onPointerUp", "onPointerUpCapture", "onPointerCancel", "onPointerCancelCapture", "onPointerEnter", "onPointerEnterCapture", "onPointerLeave", "onPointerLeaveCapture", "onPointerOver", "onPointerOverCapture", "onPointerOut", "onPointerOutCapture", "onGotPointerCapture", "onGotPointerCaptureCapture", "onLostPointerCapture", "onLostPointerCaptureCapture", "onScroll", "onScrollCapture", "onWheel", "onWheelCapture", "onAnimationStart", "onAnimationStartCapture", "onAnimationEnd", "onAnimationEndCapture", "onAnimationIteration", "onAnimationIterationCapture", "onTransitionEnd", "onTransitionEndCapture"];
@@ -2355,53 +2498,8 @@ function isEventKey(key) {
   return allowedEventKeys.includes(key);
 }
 
-// node_modules/recharts/es6/util/types.js
-var SVGContainerPropKeys = ["viewBox", "children"];
-var PolyElementKeys = ["points", "pathLength"];
-var FilteredElementKeyMap = {
-  svg: SVGContainerPropKeys,
-  polygon: PolyElementKeys,
-  polyline: PolyElementKeys
-};
-var adaptEventHandlers = (props, newHandler) => {
-  if (!props || typeof props === "function" || typeof props === "boolean") {
-    return null;
-  }
-  var inputProps = props;
-  if ((0, import_react.isValidElement)(props)) {
-    inputProps = props.props;
-  }
-  if (typeof inputProps !== "object" && typeof inputProps !== "function") {
-    return null;
-  }
-  var out = {};
-  Object.keys(inputProps).forEach((key) => {
-    if (isEventKey(key)) {
-      out[key] = newHandler || ((e) => inputProps[key](inputProps, e));
-    }
-  });
-  return out;
-};
-var getEventHandlerOfChild = (originalHandler, data, index2) => (e) => {
-  originalHandler(data, index2, e);
-  return null;
-};
-var adaptEventsOfChild = (props, data, index2) => {
-  if (props === null || typeof props !== "object" && typeof props !== "function") {
-    return null;
-  }
-  var out = null;
-  Object.keys(props).forEach((key) => {
-    var item = props[key];
-    if (isEventKey(key) && typeof item === "function") {
-      if (!out) out = {};
-      out[key] = getEventHandlerOfChild(item, data, index2);
-    }
-  });
-  return out;
-};
-
 // node_modules/recharts/es6/util/svgPropertiesNoEvents.js
+var import_react = __toESM(require_react());
 var SVGElementPropKeys = [
   "aria-activedescendant",
   "aria-atomic",
@@ -2719,96 +2817,50 @@ function isSvgElementPropKey(key) {
   var allowedSvgKeys = SVGElementPropKeys;
   return allowedSvgKeys.includes(key);
 }
+function isDataAttribute(key) {
+  return typeof key === "string" && key.startsWith("data-");
+}
 function svgPropertiesNoEvents(obj) {
   var filteredEntries = Object.entries(obj).filter((_ref2) => {
     var [key] = _ref2;
-    return isSvgElementPropKey(key);
+    return isSvgElementPropKey(key) || isDataAttribute(key);
   });
   return Object.fromEntries(filteredEntries);
 }
-
-// node_modules/recharts/es6/util/ReactUtils.js
-var getDisplayName = (Comp) => {
-  if (typeof Comp === "string") {
-    return Comp;
+function svgPropertiesNoEventsFromUnknown(input) {
+  if (input == null) {
+    return null;
   }
-  if (!Comp) {
-    return "";
+  if ((0, import_react.isValidElement)(input) && typeof input.props === "object" && input.props !== null) {
+    var p = input.props;
+    return svgPropertiesNoEvents(p);
   }
-  return Comp.displayName || Comp.name || "Component";
-};
-var lastChildren = null;
-var lastResult = null;
-var toArray = (children) => {
-  if (children === lastChildren && Array.isArray(lastResult)) {
-    return lastResult;
+  if (typeof input === "object" && !Array.isArray(input)) {
+    return svgPropertiesNoEvents(input);
   }
-  var result = [];
-  import_react2.Children.forEach(children, (child) => {
-    if (isNullish(child)) return;
-    if ((0, import_react_is.isFragment)(child)) {
-      result = result.concat(toArray(child.props.children));
-    } else {
-      result.push(child);
-    }
-  });
-  lastResult = result;
-  lastChildren = children;
-  return result;
-};
-function findAllByType(children, type) {
-  var result = [];
-  var types = [];
-  if (Array.isArray(type)) {
-    types = type.map((t) => getDisplayName(t));
-  } else {
-    types = [getDisplayName(type)];
-  }
-  toArray(children).forEach((child) => {
-    var childType = (0, import_get2.default)(child, "type.displayName") || (0, import_get2.default)(child, "type.name");
-    if (types.indexOf(childType) !== -1) {
-      result.push(child);
-    }
-  });
-  return result;
+  return null;
 }
-var isClipDot = (dot) => {
-  if (dot && typeof dot === "object" && "clipDot" in dot) {
-    return Boolean(dot.clipDot);
-  }
-  return true;
-};
-var isValidSpreadableProp = (property, key, includeEvents, svgElementType) => {
-  var _ref2;
-  if (typeof key === "symbol" || typeof key === "number") {
-    return true;
-  }
-  var matchingElementTypeKeys = (_ref2 = svgElementType && (FilteredElementKeyMap === null || FilteredElementKeyMap === void 0 ? void 0 : FilteredElementKeyMap[svgElementType])) !== null && _ref2 !== void 0 ? _ref2 : [];
-  var isDataAttribute = key.startsWith("data-");
-  var isSpecificSvgAttribute = typeof property !== "function" && (Boolean(svgElementType) && matchingElementTypeKeys.includes(key) || isSvgElementPropKey(key));
-  var isEventAttribute = Boolean(includeEvents) && isEventKey(key);
-  return isDataAttribute || isSpecificSvgAttribute || isEventAttribute;
-};
-var filterProps = (props, includeEvents, svgElementType) => {
-  if (!props || typeof props === "function" || typeof props === "boolean") {
-    return null;
-  }
-  var inputProps = props;
-  if ((0, import_react2.isValidElement)(props)) {
-    inputProps = props.props;
-  }
-  if (typeof inputProps !== "object" && typeof inputProps !== "function") {
-    return null;
-  }
-  var out = {};
-  Object.keys(inputProps).forEach((key) => {
-    var _inputProps;
-    if (isValidSpreadableProp((_inputProps = inputProps) === null || _inputProps === void 0 ? void 0 : _inputProps[key], key, includeEvents, svgElementType)) {
-      out[key] = inputProps[key];
-    }
+
+// node_modules/recharts/es6/util/svgPropertiesAndEvents.js
+function svgPropertiesAndEvents(obj) {
+  var filteredEntries = Object.entries(obj).filter((_ref2) => {
+    var [key] = _ref2;
+    return isSvgElementPropKey(key) || isDataAttribute(key) || isEventKey(key);
   });
-  return out;
-};
+  return Object.fromEntries(filteredEntries);
+}
+function svgPropertiesAndEventsFromUnknown(input) {
+  if (input == null) {
+    return null;
+  }
+  if ((0, import_react2.isValidElement)(input)) {
+    return svgPropertiesAndEvents(input.props);
+  }
+  if (typeof input === "object" && !Array.isArray(input)) {
+    return svgPropertiesAndEvents(input);
+  }
+  return null;
+}
 
 // node_modules/recharts/es6/container/Surface.js
 var _excluded = ["children", "width", "height", "viewBox", "className", "style", "title", "desc"];
@@ -2857,7 +2909,7 @@ var Surface = (0, import_react3.forwardRef)((props, ref) => {
     y: 0
   };
   var layerClass = clsx("recharts-surface", className);
-  return React.createElement("svg", _extends({}, filterProps(others, true, "svg"), {
+  return React.createElement("svg", _extends({}, svgPropertiesAndEvents(others), {
     className: layerClass,
     width,
     height,
@@ -2905,14 +2957,14 @@ var Layer = React2.forwardRef((props, ref) => {
   var layerClass = clsx("recharts-layer", className);
   return React2.createElement("g", _extends2({
     className: layerClass
-  }, filterProps(others, true), {
+  }, svgPropertiesAndEvents(others), {
     ref
   }), children);
 });
 
 // node_modules/recharts/es6/component/Legend.js
-var React6 = __toESM(require_react());
-var import_react12 = __toESM(require_react());
+var React7 = __toESM(require_react());
+var import_react14 = __toESM(require_react());
 var import_react_dom = __toESM(require_react_dom());
 
 // node_modules/recharts/es6/context/legendPortalContext.js
@@ -2922,7 +2974,7 @@ var useLegendPortal = () => (0, import_react4.useContext)(LegendPortalContext);
 
 // node_modules/recharts/es6/component/DefaultLegendContent.js
 var React4 = __toESM(require_react());
-var import_react5 = __toESM(require_react());
+var import_react6 = __toESM(require_react());
 
 // node_modules/recharts/es6/shape/Symbols.js
 var React3 = __toESM(require_react());
@@ -4363,6 +4415,126 @@ function wiggle_default(series, order) {
   none_default(series, order);
 }
 
+// node_modules/recharts/es6/util/DataUtils.js
+var import_get = __toESM(require_get2());
+var mathSign = (value) => {
+  if (value === 0) {
+    return 0;
+  }
+  if (value > 0) {
+    return 1;
+  }
+  return -1;
+};
+var isNan = (value) => {
+  return typeof value == "number" && value != +value;
+};
+var isPercent = (value) => typeof value === "string" && value.indexOf("%") === value.length - 1;
+var isNumber = (value) => (typeof value === "number" || value instanceof Number) && !isNan(value);
+var isNumOrStr = (value) => isNumber(value) || typeof value === "string";
+var idCounter = 0;
+var uniqueId = (prefix2) => {
+  var id = ++idCounter;
+  return "".concat(prefix2 || "").concat(id);
+};
+var getPercentValue = function getPercentValue2(percent, totalValue) {
+  var defaultValue = arguments.length > 2 && arguments[2] !== void 0 ? arguments[2] : 0;
+  var validate = arguments.length > 3 && arguments[3] !== void 0 ? arguments[3] : false;
+  if (!isNumber(percent) && typeof percent !== "string") {
+    return defaultValue;
+  }
+  var value;
+  if (isPercent(percent)) {
+    if (totalValue == null) {
+      return defaultValue;
+    }
+    var index2 = percent.indexOf("%");
+    value = totalValue * parseFloat(percent.slice(0, index2)) / 100;
+  } else {
+    value = +percent;
+  }
+  if (isNan(value)) {
+    value = defaultValue;
+  }
+  if (validate && totalValue != null && value > totalValue) {
+    value = totalValue;
+  }
+  return value;
+};
+var hasDuplicate = (ary2) => {
+  if (!Array.isArray(ary2)) {
+    return false;
+  }
+  var len = ary2.length;
+  var cache = {};
+  for (var i = 0; i < len; i++) {
+    if (!cache[ary2[i]]) {
+      cache[ary2[i]] = true;
+    } else {
+      return true;
+    }
+  }
+  return false;
+};
+var interpolateNumber = (numberA, numberB) => {
+  if (isNumber(numberA) && isNumber(numberB)) {
+    return (t) => numberA + t * (numberB - numberA);
+  }
+  return () => numberB;
+};
+function interpolate(start, end, t) {
+  if (isNumber(start) && isNumber(end)) {
+    return start + t * (end - start);
+  }
+  return end;
+}
+function findEntryInArray(ary2, specifiedKey, specifiedValue) {
+  if (!ary2 || !ary2.length) {
+    return void 0;
+  }
+  return ary2.find((entry) => entry && (typeof specifiedKey === "function" ? specifiedKey(entry) : (0, import_get.default)(entry, specifiedKey)) === specifiedValue);
+}
+var getLinearRegression = (data) => {
+  if (!data || !data.length) {
+    return null;
+  }
+  var len = data.length;
+  var xsum = 0;
+  var ysum = 0;
+  var xysum = 0;
+  var xxsum = 0;
+  var xmin = Infinity;
+  var xmax = -Infinity;
+  var xcurrent = 0;
+  var ycurrent = 0;
+  for (var i = 0; i < len; i++) {
+    xcurrent = data[i].cx || 0;
+    ycurrent = data[i].cy || 0;
+    xsum += xcurrent;
+    ysum += ycurrent;
+    xysum += xcurrent * ycurrent;
+    xxsum += xcurrent * xcurrent;
+    xmin = Math.min(xmin, xcurrent);
+    xmax = Math.max(xmax, xcurrent);
+  }
+  var a2 = len * xxsum !== xsum * xsum ? (len * xysum - xsum * ysum) / (len * xxsum - xsum * xsum) : 0;
+  return {
+    xmin,
+    xmax,
+    a: a2,
+    b: (ysum - a2 * xsum) / len
+  };
+};
+var isNullish = (value) => {
+  return value === null || typeof value === "undefined";
+};
+var upperFirst = (value) => {
+  if (isNullish(value)) {
+    return value;
+  }
+  return "".concat(value.charAt(0).toUpperCase()).concat(value.slice(1));
+};
+
 // node_modules/recharts/es6/shape/Symbols.js
 var _excluded3 = ["type", "size", "sizeType"];
 function _extends3() {
@@ -4488,14 +4660,18 @@ var Symbols = (_ref2) => {
   var getPath3 = () => {
     var symbolFactory = getSymbolFactory(realType);
     var symbol = Symbol2().type(symbolFactory).size(calculateAreaSize(size, sizeType, realType));
-    return symbol();
+    var s2 = symbol();
+    if (s2 === null) {
+      return void 0;
+    }
+    return s2;
   };
   var {
     className,
     cx,
     cy
   } = props;
-  var filteredProps = filterProps(props, true);
+  var filteredProps = svgPropertiesAndEvents(props);
   if (cx === +cx && cy === +cy && size === +size) {
     return React3.createElement("path", _extends3({}, filteredProps, {
       className: clsx("recharts-symbols", className),
@@ -4506,6 +4682,46 @@ var Symbols = (_ref2) => {
   return null;
 };
 Symbols.registerSymbol = registerSymbol;
+
+// node_modules/recharts/es6/util/types.js
+var import_react5 = __toESM(require_react());
+var adaptEventHandlers = (props, newHandler) => {
+  if (!props || typeof props === "function" || typeof props === "boolean") {
+    return null;
+  }
+  var inputProps = props;
+  if ((0, import_react5.isValidElement)(props)) {
+    inputProps = props.props;
+  }
+  if (typeof inputProps !== "object" && typeof inputProps !== "function") {
+    return null;
+  }
+  var out = {};
+  Object.keys(inputProps).forEach((key) => {
+    if (isEventKey(key)) {
+      out[key] = newHandler || ((e) => inputProps[key](inputProps, e));
+    }
+  });
+  return out;
+};
+var getEventHandlerOfChild = (originalHandler, data, index2) => (e) => {
+  originalHandler(data, index2, e);
+  return null;
+};
+var adaptEventsOfChild = (props, data, index2) => {
+  if (props === null || typeof props !== "object" && typeof props !== "function") {
+    return null;
+  }
+  var out = null;
+  Object.keys(props).forEach((key) => {
+    var item = props[key];
+    if (isEventKey(key) && typeof item === "function") {
+      if (!out) out = {};
+      out[key] = getEventHandlerOfChild(item, data, index2);
+    }
+  });
+  return out;
+};
 
 // node_modules/recharts/es6/component/DefaultLegendContent.js
 function _extends4() {
@@ -4556,7 +4772,7 @@ function _toPrimitive2(t, r) {
   return ("string" === r ? String : Number)(t);
 }
 var SIZE = 32;
-var DefaultLegendContent = class extends import_react5.PureComponent {
+var DefaultLegendContent = class extends import_react6.PureComponent {
   /**
    * Render the path of icon
    * @param data Data of each legend item
@@ -4720,16 +4936,16 @@ function getUniqPayload(payload, option, defaultUniqBy3) {
 
 // node_modules/recharts/es6/state/hooks.js
 var import_with_selector = __toESM(require_with_selector());
-var import_react7 = __toESM(require_react());
+var import_react8 = __toESM(require_react());
 
 // node_modules/recharts/es6/state/RechartsReduxContext.js
-var import_react6 = __toESM(require_react());
-var RechartsReduxContext = (0, import_react6.createContext)(null);
+var import_react7 = __toESM(require_react());
+var RechartsReduxContext = (0, import_react7.createContext)(null);
 
 // node_modules/recharts/es6/state/hooks.js
 var noopDispatch = (a2) => a2;
 var useAppDispatch = () => {
-  var context = (0, import_react7.useContext)(RechartsReduxContext);
+  var context = (0, import_react8.useContext)(RechartsReduxContext);
   if (context) {
     return context.store.dispatch;
   }
@@ -4740,7 +4956,7 @@ var noop = () => {
 var addNestedSubNoop = () => noop;
 var refEquality = (a2, b) => a2 === b;
 function useAppSelector(selector) {
-  var context = (0, import_react7.useContext)(RechartsReduxContext);
+  var context = (0, import_react8.useContext)(RechartsReduxContext);
   return (0, import_with_selector.useSyncExternalStoreWithSelector)(context ? context.subscription.addNestedSub : addNestedSubNoop, context ? context.store.getState : noop, context ? context.store.getState : noop, context ? selector : noop, refEquality);
 }
 
@@ -4763,17 +4979,17 @@ function useLegendPayload() {
 }
 
 // node_modules/recharts/es6/util/useElementOffset.js
-var import_react8 = __toESM(require_react());
+var import_react9 = __toESM(require_react());
 var EPS = 1;
 function useElementOffset() {
   var extraDependencies = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : [];
-  var [lastBoundingBox, setLastBoundingBox] = (0, import_react8.useState)({
+  var [lastBoundingBox, setLastBoundingBox] = (0, import_react9.useState)({
     height: 0,
     left: 0,
     top: 0,
     width: 0
   });
-  var updateBoundingBox = (0, import_react8.useCallback)(
+  var updateBoundingBox = (0, import_react9.useCallback)(
     (node) => {
       if (node != null) {
         var rect = node.getBoundingClientRect();
@@ -4800,7 +5016,7 @@ function useElementOffset() {
 }
 
 // node_modules/recharts/es6/context/chartLayoutContext.js
-var import_react11 = __toESM(require_react());
+var import_react13 = __toESM(require_react());
 
 // node_modules/recharts/es6/state/layoutSlice.js
 var initialState = {
@@ -4848,10 +5064,10 @@ var chartLayoutReducer = chartLayoutSlice.reducer;
 
 // node_modules/recharts/es6/util/ChartUtils.js
 var import_sortBy2 = __toESM(require_sortBy2());
-var import_get3 = __toESM(require_get2());
+var import_get2 = __toESM(require_get2());
 
 // node_modules/recharts/es6/util/PolarUtils.js
-var import_react9 = __toESM(require_react());
+var import_react10 = __toESM(require_react());
 function ownKeys3(e, r) {
   var t = Object.keys(e);
   if (Object.getOwnPropertySymbols) {
@@ -5029,7 +5245,7 @@ var inRangeOfSector = (_ref5, viewBox) => {
   }
   return null;
 };
-var getTickClassName = (tick) => !(0, import_react9.isValidElement)(tick) && typeof tick !== "function" && typeof tick !== "boolean" && tick != null ? tick.className : "";
+var getTickClassName = (tick) => !(0, import_react10.isValidElement)(tick) && typeof tick !== "function" && typeof tick !== "boolean" && tick != null ? tick.className : "";
 
 // node_modules/recharts/es6/util/getSliced.js
 function getSliced(arr, startIndex, endIndex) {
@@ -5086,7 +5302,7 @@ function getValueByDataKey(obj, dataKey, defaultValue) {
     return defaultValue;
   }
   if (isNumOrStr(dataKey)) {
-    return (0, import_get3.default)(obj, dataKey, defaultValue);
+    return (0, import_get2.default)(obj, dataKey, defaultValue);
   }
   if (typeof dataKey === "function") {
     return dataKey(obj);
@@ -5682,9 +5898,9 @@ var selectAxisViewBox = createSelector(selectChartWidth, selectChartHeight, (wid
 
 // node_modules/recharts/es6/context/PanoramaContext.js
 var React5 = __toESM(require_react());
-var import_react10 = __toESM(require_react());
-var PanoramaContext = (0, import_react10.createContext)(null);
-var useIsPanorama = () => (0, import_react10.useContext)(PanoramaContext) != null;
+var import_react11 = __toESM(require_react());
+var PanoramaContext = (0, import_react11.createContext)(null);
+var useIsPanorama = () => (0, import_react11.useContext)(PanoramaContext) != null;
 var PanoramaContextProvider = (_ref2) => {
   var {
     children
@@ -5703,114 +5919,120 @@ var selectBrushDimensions = createSelector([selectBrushSettings, selectChartOffs
   width: isNumber(brushSettings.width) ? brushSettings.width : offset.width
 }));
 
-// node_modules/recharts/es6/context/chartLayoutContext.js
-var useViewBox = () => {
-  var _useAppSelector;
-  var panorama = useIsPanorama();
-  var rootViewBox = useAppSelector(selectChartViewBox);
-  var brushDimensions = useAppSelector(selectBrushDimensions);
-  var brushPadding = (_useAppSelector = useAppSelector(selectBrushSettings)) === null || _useAppSelector === void 0 ? void 0 : _useAppSelector.padding;
-  if (!panorama || !brushDimensions || !brushPadding) {
-    return rootViewBox;
-  }
-  return {
-    width: brushDimensions.width - brushPadding.left - brushPadding.right,
-    height: brushDimensions.height - brushPadding.top - brushPadding.bottom,
-    x: brushPadding.left,
-    y: brushPadding.top
-  };
-};
-var manyComponentsThrowErrorsIfOffsetIsUndefined = {
-  top: 0,
-  bottom: 0,
-  left: 0,
-  right: 0,
-  width: 0,
-  height: 0,
-  brushBottom: 0
-};
-var useOffsetInternal = () => {
-  var _useAppSelector2;
-  return (_useAppSelector2 = useAppSelector(selectChartOffsetInternal)) !== null && _useAppSelector2 !== void 0 ? _useAppSelector2 : manyComponentsThrowErrorsIfOffsetIsUndefined;
-};
-var useChartWidth = () => {
-  return useAppSelector(selectChartWidth);
-};
-var useChartHeight = () => {
-  return useAppSelector(selectChartHeight);
-};
-var useMargin = () => {
-  return useAppSelector((state) => state.layout.margin);
-};
-var selectChartLayout = (state) => state.layout.layoutType;
-var useChartLayout = () => useAppSelector(selectChartLayout);
-var ReportChartSize = (props) => {
-  var dispatch = useAppDispatch();
-  (0, import_react11.useEffect)(() => {
-    dispatch(setChartSize(props));
-  }, [dispatch, props]);
-  return null;
-};
-var ReportChartMargin = (_ref2) => {
-  var {
-    margin
-  } = _ref2;
-  var dispatch = useAppDispatch();
-  (0, import_react11.useEffect)(() => {
-    dispatch(setMargin(margin));
-  }, [dispatch, margin]);
-  return null;
-};
+// node_modules/recharts/es6/component/ResponsiveContainer.js
+var React6 = __toESM(require_react());
+var import_react12 = __toESM(require_react());
+var import_throttle = __toESM(require_throttle2());
 
-// node_modules/recharts/es6/state/legendSlice.js
-var initialState2 = {
-  settings: {
-    layout: "horizontal",
-    align: "center",
-    verticalAlign: "middle",
-    itemSorter: "value"
-  },
-  size: {
-    width: 0,
-    height: 0
-  },
-  payload: []
-};
-var legendSlice = createSlice({
-  name: "legend",
-  initialState: initialState2,
-  reducers: {
-    setLegendSize(state, action) {
-      state.size.width = action.payload.width;
-      state.size.height = action.payload.height;
-    },
-    setLegendSettings(state, action) {
-      state.settings.align = action.payload.align;
-      state.settings.layout = action.payload.layout;
-      state.settings.verticalAlign = action.payload.verticalAlign;
-      state.settings.itemSorter = action.payload.itemSorter;
-    },
-    addLegendPayload(state, action) {
-      state.payload.push(castDraft(action.payload));
-    },
-    removeLegendPayload(state, action) {
-      var index2 = current(state).payload.indexOf(castDraft(action.payload));
-      if (index2 > -1) {
-        state.payload.splice(index2, 1);
+// node_modules/recharts/es6/util/LogUtils.js
+var isDev = true;
+var warn = function warn2(condition, format2) {
+  for (var _len = arguments.length, args = new Array(_len > 2 ? _len - 2 : 0), _key = 2; _key < _len; _key++) {
+    args[_key - 2] = arguments[_key];
+  }
+  if (isDev && typeof console !== "undefined" && console.warn) {
+    if (format2 === void 0) {
+      console.warn("LogUtils requires an error message argument");
+    }
+    if (!condition) {
+      if (format2 === void 0) {
+        console.warn("Minified exception occurred; use the non-minified dev environment for the full error message and additional helpful warnings.");
+      } else {
+        var argIndex = 0;
+        console.warn(format2.replace(/%s/g, () => args[argIndex++]));
       }
     }
   }
-});
-var {
-  setLegendSize,
-  setLegendSettings,
-  addLegendPayload,
-  removeLegendPayload
-} = legendSlice.actions;
-var legendReducer = legendSlice.reducer;
+};
 
-// node_modules/recharts/es6/component/Legend.js
-var _excluded4 = ["contextPayload"];
+// node_modules/recharts/es6/component/responsiveContainerUtils.js
+var calculateChartDimensions = (containerWidth, containerHeight, props) => {
+  var {
+    width = "100%",
+    height = "100%",
+    aspect,
+    maxHeight
+  } = props;
+  var calculatedWidth = isPercent(width) ? containerWidth : Number(width);
+  var calculatedHeight = isPercent(height) ? containerHeight : Number(height);
+  if (aspect && aspect > 0) {
+    if (calculatedWidth) {
+      calculatedHeight = calculatedWidth / aspect;
+    } else if (calculatedHeight) {
+      calculatedWidth = calculatedHeight * aspect;
+    }
+    if (maxHeight && calculatedHeight > maxHeight) {
+      calculatedHeight = maxHeight;
+    }
+  }
+  return {
+    calculatedWidth,
+    calculatedHeight
+  };
+};
+var bothOverflow = {
+  width: 0,
+  height: 0,
+  overflow: "visible"
+};
+var overflowX = {
+  width: 0,
+  overflowX: "visible"
+};
+var overflowY = {
+  height: 0,
+  overflowY: "visible"
+};
+var noStyle = {};
+var getInnerDivStyle = (props) => {
+  var {
+    width,
+    height
+  } = props;
+  var isWidthPercent = isPercent(width);
+  var isHeightPercent = isPercent(height);
+  if (isWidthPercent && isHeightPercent) {
+    return bothOverflow;
+  }
+  if (isWidthPercent) {
+    return overflowX;
+  }
+  if (isHeightPercent) {
+    return overflowY;
+  }
+  return noStyle;
+};
+function getDefaultWidthAndHeight(_ref2) {
+  var {
+    width,
+    height,
+    aspect
+  } = _ref2;
+  var calculatedWidth = width;
+  var calculatedHeight = height;
+  if (calculatedWidth === void 0 && calculatedHeight === void 0) {
+    calculatedWidth = "100%";
+    calculatedHeight = "100%";
+  } else if (calculatedWidth === void 0) {
+    calculatedWidth = aspect && aspect > 0 ? void 0 : "100%";
+  } else if (calculatedHeight === void 0) {
+    calculatedHeight = aspect && aspect > 0 ? void 0 : "100%";
+  }
+  return {
+    width: calculatedWidth,
+    height: calculatedHeight
+  };
+}
+
+// node_modules/recharts/es6/util/isWellBehavedNumber.js
+function isWellBehavedNumber(n) {
+  return Number.isFinite(n);
+}
+function isPositiveNumber(n) {
+  return typeof n === "number" && n > 0 && Number.isFinite(n);
+}
+
+// node_modules/recharts/es6/component/ResponsiveContainer.js
 function _extends5() {
   return _extends5 = Object.assign ? Object.assign.bind() : function(n) {
     for (var e = 1; e < arguments.length; e++) {
@@ -5858,180 +6080,301 @@ function _toPrimitive6(t, r) {
   }
   return ("string" === r ? String : Number)(t);
 }
-function _objectWithoutProperties4(e, t) {
-  if (null == e) return {};
-  var o, r, i = _objectWithoutPropertiesLoose4(e, t);
-  if (Object.getOwnPropertySymbols) {
-    var n = Object.getOwnPropertySymbols(e);
-    for (r = 0; r < n.length; r++) o = n[r], -1 === t.indexOf(o) && {}.propertyIsEnumerable.call(e, o) && (i[o] = e[o]);
-  }
-  return i;
-}
-function _objectWithoutPropertiesLoose4(r, e) {
-  if (null == r) return {};
-  var t = {};
-  for (var n in r) if ({}.hasOwnProperty.call(r, n)) {
-    if (-1 !== e.indexOf(n)) continue;
-    t[n] = r[n];
-  }
-  return t;
-}
-function defaultUniqBy(entry) {
-  return entry.value;
-}
-function LegendContent(props) {
+var ResponsiveContainerContext = (0, import_react12.createContext)({
+  width: -1,
+  height: -1
+});
+function ResponsiveContainerContextProvider(_ref2) {
   var {
-    contextPayload
-  } = props, otherProps = _objectWithoutProperties4(props, _excluded4);
-  var finalPayload = getUniqPayload(contextPayload, props.payloadUniqBy, defaultUniqBy);
-  var contentProps = _objectSpread6(_objectSpread6({}, otherProps), {}, {
-    payload: finalPayload
+    children,
+    width,
+    height
+  } = _ref2;
+  var size = (0, import_react12.useMemo)(() => ({
+    width,
+    height
+  }), [width, height]);
+  if (width <= 0 || height <= 0) {
+    return null;
+  }
+  return React6.createElement(ResponsiveContainerContext.Provider, {
+    value: size
+  }, children);
+}
+var useResponsiveContainerContext = () => (0, import_react12.useContext)(ResponsiveContainerContext);
+var SizeDetectorContainer = (0, import_react12.forwardRef)((_ref2, ref) => {
+  var {
+    aspect,
+    initialDimension = {
+      width: -1,
+      height: -1
+    },
+    width,
+    height,
+    /*
+     * default min-width to 0 if not specified - 'auto' causes issues with flexbox
+     * https://github.com/recharts/recharts/issues/172
+     */
+    minWidth = 0,
+    minHeight,
+    maxHeight,
+    children,
+    debounce: debounce2 = 0,
+    id,
+    className,
+    onResize,
+    style = {}
+  } = _ref2;
+  var containerRef = (0, import_react12.useRef)(null);
+  var onResizeRef = (0, import_react12.useRef)();
+  onResizeRef.current = onResize;
+  (0, import_react12.useImperativeHandle)(ref, () => containerRef.current);
+  var [sizes, setSizes] = (0, import_react12.useState)({
+    containerWidth: initialDimension.width,
+    containerHeight: initialDimension.height
   });
-  if (React6.isValidElement(props.content)) {
-    return React6.cloneElement(props.content, contentProps);
-  }
-  if (typeof props.content === "function") {
-    return React6.createElement(props.content, contentProps);
-  }
-  return React6.createElement(DefaultLegendContent, contentProps);
-}
-function getDefaultPosition(style, props, margin, chartWidth, chartHeight, box) {
-  var {
-    layout,
-    align,
-    verticalAlign
-  } = props;
-  var hPos, vPos;
-  if (!style || (style.left === void 0 || style.left === null) && (style.right === void 0 || style.right === null)) {
-    if (align === "center" && layout === "vertical") {
-      hPos = {
-        left: ((chartWidth || 0) - box.width) / 2
+  var setContainerSize = (0, import_react12.useCallback)((newWidth, newHeight) => {
+    setSizes((prevState) => {
+      var roundedWidth = Math.round(newWidth);
+      var roundedHeight = Math.round(newHeight);
+      if (prevState.containerWidth === roundedWidth && prevState.containerHeight === roundedHeight) {
+        return prevState;
+      }
+      return {
+        containerWidth: roundedWidth,
+        containerHeight: roundedHeight
       };
-    } else {
-      hPos = align === "right" ? {
-        right: margin && margin.right || 0
-      } : {
-        left: margin && margin.left || 0
-      };
-    }
-  }
-  if (!style || (style.top === void 0 || style.top === null) && (style.bottom === void 0 || style.bottom === null)) {
-    if (verticalAlign === "middle") {
-      vPos = {
-        top: ((chartHeight || 0) - box.height) / 2
-      };
-    } else {
-      vPos = verticalAlign === "bottom" ? {
-        bottom: margin && margin.bottom || 0
-      } : {
-        top: margin && margin.top || 0
-      };
-    }
-  }
-  return _objectSpread6(_objectSpread6({}, hPos), vPos);
-}
-function LegendSettingsDispatcher(props) {
-  var dispatch = useAppDispatch();
+    });
+  }, []);
   (0, import_react12.useEffect)(() => {
-    dispatch(setLegendSettings(props));
-  }, [dispatch, props]);
-  return null;
-}
-function LegendSizeDispatcher(props) {
-  var dispatch = useAppDispatch();
-  (0, import_react12.useEffect)(() => {
-    dispatch(setLegendSize(props));
-    return () => {
-      dispatch(setLegendSize({
-        width: 0,
-        height: 0
-      }));
+    var callback = (entries) => {
+      var _onResizeRef$current;
+      var {
+        width: containerWidth3,
+        height: containerHeight3
+      } = entries[0].contentRect;
+      setContainerSize(containerWidth3, containerHeight3);
+      (_onResizeRef$current = onResizeRef.current) === null || _onResizeRef$current === void 0 || _onResizeRef$current.call(onResizeRef, containerWidth3, containerHeight3);
     };
-  }, [dispatch, props]);
-  return null;
-}
-function LegendWrapper(props) {
-  var contextPayload = useLegendPayload();
-  var legendPortalFromContext = useLegendPortal();
-  var margin = useMargin();
+    if (debounce2 > 0) {
+      callback = (0, import_throttle.default)(callback, debounce2, {
+        trailing: true,
+        leading: false
+      });
+    }
+    var observer = new ResizeObserver(callback);
+    var {
+      width: containerWidth2,
+      height: containerHeight2
+    } = containerRef.current.getBoundingClientRect();
+    setContainerSize(containerWidth2, containerHeight2);
+    observer.observe(containerRef.current);
+    return () => {
+      observer.disconnect();
+    };
+  }, [setContainerSize, debounce2]);
   var {
-    width: widthFromProps,
-    height: heightFromProps,
-    wrapperStyle,
-    portal: portalFromProps
-  } = props;
-  var [lastBoundingBox, updateBoundingBox] = useElementOffset([contextPayload]);
-  var chartWidth = useChartWidth();
-  var chartHeight = useChartHeight();
-  if (chartWidth == null || chartHeight == null) {
-    return null;
+    containerWidth,
+    containerHeight
+  } = sizes;
+  warn(!aspect || aspect > 0, "The aspect(%s) must be greater than zero.", aspect);
+  var {
+    calculatedWidth,
+    calculatedHeight
+  } = calculateChartDimensions(containerWidth, containerHeight, {
+    width,
+    height,
+    aspect,
+    maxHeight
+  });
+  warn(calculatedWidth > 0 || calculatedHeight > 0, "The width(%s) and height(%s) of chart should be greater than 0,\n       please check the style of container, or the props width(%s) and height(%s),\n       or add a minWidth(%s) or minHeight(%s) or use aspect(%s) to control the\n       height and width.", calculatedWidth, calculatedHeight, width, height, minWidth, minHeight, aspect);
+  return React6.createElement("div", {
+    id: id ? "".concat(id) : void 0,
+    className: clsx("recharts-responsive-container", className),
+    style: _objectSpread6(_objectSpread6({}, style), {}, {
+      width,
+      height,
+      minWidth,
+      minHeight,
+      maxHeight
+    }),
+    ref: containerRef
+  }, React6.createElement("div", {
+    style: getInnerDivStyle({
+      width,
+      height
+    })
+  }, React6.createElement(ResponsiveContainerContextProvider, {
+    width: calculatedWidth,
+    height: calculatedHeight
+  }, children)));
+});
+var ResponsiveContainer = (0, import_react12.forwardRef)((props, ref) => {
+  var responsiveContainerContext = useResponsiveContainerContext();
+  if (isPositiveNumber(responsiveContainerContext.width) && isPositiveNumber(responsiveContainerContext.height)) {
+    return props.children;
   }
-  var maxWidth = chartWidth - (margin.left || 0) - (margin.right || 0);
-  var widthOrHeight = Legend.getWidthOrHeight(props.layout, heightFromProps, widthFromProps, maxWidth);
-  var outerStyle = portalFromProps ? wrapperStyle : _objectSpread6(_objectSpread6({
-    position: "absolute",
-    width: (widthOrHeight === null || widthOrHeight === void 0 ? void 0 : widthOrHeight.width) || widthFromProps || "auto",
-    height: (widthOrHeight === null || widthOrHeight === void 0 ? void 0 : widthOrHeight.height) || heightFromProps || "auto"
-  }, getDefaultPosition(wrapperStyle, props, margin, chartWidth, chartHeight, lastBoundingBox)), wrapperStyle);
-  var legendPortal = portalFromProps !== null && portalFromProps !== void 0 ? portalFromProps : legendPortalFromContext;
-  if (legendPortal == null) {
-    return null;
+  var {
+    width,
+    height
+  } = getDefaultWidthAndHeight({
+    width: props.width,
+    height: props.height,
+    aspect: props.aspect
+  });
+  var {
+    calculatedWidth,
+    calculatedHeight
+  } = calculateChartDimensions(void 0, void 0, {
+    width,
+    height,
+    aspect: props.aspect,
+    maxHeight: props.maxHeight
+  });
+  if (isNumber(calculatedWidth) && isNumber(calculatedHeight)) {
+    return React6.createElement(ResponsiveContainerContextProvider, {
+      width: calculatedWidth,
+      height: calculatedHeight
+    }, props.children);
   }
-  var legendElement = React6.createElement("div", {
-    className: "recharts-legend-wrapper",
-    style: outerStyle,
-    ref: updateBoundingBox
-  }, React6.createElement(LegendSettingsDispatcher, {
-    layout: props.layout,
-    align: props.align,
-    verticalAlign: props.verticalAlign,
-    itemSorter: props.itemSorter
-  }), React6.createElement(LegendSizeDispatcher, {
-    width: lastBoundingBox.width,
-    height: lastBoundingBox.height
-  }), React6.createElement(LegendContent, _extends5({}, props, widthOrHeight, {
-    margin,
-    chartWidth,
-    chartHeight,
-    contextPayload
-  })));
-  return (0, import_react_dom.createPortal)(legendElement, legendPortal);
-}
-var Legend = class extends import_react12.PureComponent {
-  static getWidthOrHeight(layout, height, width, maxWidth) {
-    if (layout === "vertical" && isNumber(height)) {
-      return {
-        height
-      };
-    }
-    if (layout === "horizontal") {
-      return {
-        width: width || maxWidth
-      };
-    }
-    return null;
-  }
-  render() {
-    return React6.createElement(LegendWrapper, this.props);
-  }
-};
-_defineProperty6(Legend, "displayName", "Legend");
-_defineProperty6(Legend, "defaultProps", {
-  align: "center",
-  iconSize: 14,
-  itemSorter: "value",
-  layout: "horizontal",
-  verticalAlign: "bottom"
+  return React6.createElement(SizeDetectorContainer, _extends5({}, props, {
+    width,
+    height,
+    ref
+  }));
 });
 
-// node_modules/recharts/es6/component/Tooltip.js
-var React14 = __toESM(require_react());
-var import_react21 = __toESM(require_react());
-var import_react_dom2 = __toESM(require_react_dom());
+// node_modules/recharts/es6/context/chartLayoutContext.js
+var useViewBox = () => {
+  var _useAppSelector;
+  var panorama = useIsPanorama();
+  var rootViewBox = useAppSelector(selectChartViewBox);
+  var brushDimensions = useAppSelector(selectBrushDimensions);
+  var brushPadding = (_useAppSelector = useAppSelector(selectBrushSettings)) === null || _useAppSelector === void 0 ? void 0 : _useAppSelector.padding;
+  if (!panorama || !brushDimensions || !brushPadding) {
+    return rootViewBox;
+  }
+  return {
+    width: brushDimensions.width - brushPadding.left - brushPadding.right,
+    height: brushDimensions.height - brushPadding.top - brushPadding.bottom,
+    x: brushPadding.left,
+    y: brushPadding.top
+  };
+};
+var manyComponentsThrowErrorsIfOffsetIsUndefined = {
+  top: 0,
+  bottom: 0,
+  left: 0,
+  right: 0,
+  width: 0,
+  height: 0,
+  brushBottom: 0
+};
+var useOffsetInternal = () => {
+  var _useAppSelector2;
+  return (_useAppSelector2 = useAppSelector(selectChartOffsetInternal)) !== null && _useAppSelector2 !== void 0 ? _useAppSelector2 : manyComponentsThrowErrorsIfOffsetIsUndefined;
+};
+var useChartWidth = () => {
+  return useAppSelector(selectChartWidth);
+};
+var useChartHeight = () => {
+  return useAppSelector(selectChartHeight);
+};
+var useMargin = () => {
+  return useAppSelector((state) => state.layout.margin);
+};
+var selectChartLayout = (state) => state.layout.layoutType;
+var useChartLayout = () => useAppSelector(selectChartLayout);
+var ReportChartSize = (props) => {
+  var dispatch = useAppDispatch();
+  var isPanorama = useIsPanorama();
+  var {
+    width: widthFromProps,
+    height: heightFromProps
+  } = props;
+  var responsiveContainerCalculations = useResponsiveContainerContext();
+  var width = widthFromProps;
+  var height = heightFromProps;
+  if (responsiveContainerCalculations) {
+    width = responsiveContainerCalculations.width > 0 ? responsiveContainerCalculations.width : widthFromProps;
+    height = responsiveContainerCalculations.height > 0 ? responsiveContainerCalculations.height : heightFromProps;
+  }
+  (0, import_react13.useEffect)(() => {
+    if (!isPanorama && isPositiveNumber(width) && isPositiveNumber(height)) {
+      dispatch(setChartSize({
+        width,
+        height
+      }));
+    }
+  }, [dispatch, isPanorama, width, height]);
+  return null;
+};
+var ReportChartMargin = (_ref2) => {
+  var {
+    margin
+  } = _ref2;
+  var dispatch = useAppDispatch();
+  (0, import_react13.useEffect)(() => {
+    dispatch(setMargin(margin));
+  }, [dispatch, margin]);
+  return null;
+};
 
-// node_modules/recharts/es6/component/DefaultTooltipContent.js
-var React7 = __toESM(require_react());
-var import_sortBy3 = __toESM(require_sortBy2());
+// node_modules/recharts/es6/state/legendSlice.js
+var initialState2 = {
+  settings: {
+    layout: "horizontal",
+    align: "center",
+    verticalAlign: "middle",
+    itemSorter: "value"
+  },
+  size: {
+    width: 0,
+    height: 0
+  },
+  payload: []
+};
+var legendSlice = createSlice({
+  name: "legend",
+  initialState: initialState2,
+  reducers: {
+    setLegendSize(state, action) {
+      state.size.width = action.payload.width;
+      state.size.height = action.payload.height;
+    },
+    setLegendSettings(state, action) {
+      state.settings.align = action.payload.align;
+      state.settings.layout = action.payload.layout;
+      state.settings.verticalAlign = action.payload.verticalAlign;
+      state.settings.itemSorter = action.payload.itemSorter;
+    },
+    addLegendPayload: {
+      reducer(state, action) {
+        state.payload.push(castDraft(action.payload));
+      },
+      prepare: prepareAutoBatched()
+    },
+    removeLegendPayload: {
+      reducer(state, action) {
+        var index2 = current(state).payload.indexOf(castDraft(action.payload));
+        if (index2 > -1) {
+          state.payload.splice(index2, 1);
+        }
+      },
+      prepare: prepareAutoBatched()
+    }
+  }
+});
+var {
+  setLegendSize,
+  setLegendSettings,
+  addLegendPayload,
+  removeLegendPayload
+} = legendSlice.actions;
+var legendReducer = legendSlice.reducer;
+
+// node_modules/recharts/es6/component/Legend.js
+var _excluded4 = ["contextPayload"];
 function _extends6() {
   return _extends6 = Object.assign ? Object.assign.bind() : function(n) {
     for (var e = 1; e < arguments.length; e++) {
@@ -6070,6 +6413,227 @@ function _toPropertyKey7(t) {
   return "symbol" == typeof i ? i : i + "";
 }
 function _toPrimitive7(t, r) {
+  if ("object" != typeof t || !t) return t;
+  var e = t[Symbol.toPrimitive];
+  if (void 0 !== e) {
+    var i = e.call(t, r || "default");
+    if ("object" != typeof i) return i;
+    throw new TypeError("@@toPrimitive must return a primitive value.");
+  }
+  return ("string" === r ? String : Number)(t);
+}
+function _objectWithoutProperties4(e, t) {
+  if (null == e) return {};
+  var o, r, i = _objectWithoutPropertiesLoose4(e, t);
+  if (Object.getOwnPropertySymbols) {
+    var n = Object.getOwnPropertySymbols(e);
+    for (r = 0; r < n.length; r++) o = n[r], -1 === t.indexOf(o) && {}.propertyIsEnumerable.call(e, o) && (i[o] = e[o]);
+  }
+  return i;
+}
+function _objectWithoutPropertiesLoose4(r, e) {
+  if (null == r) return {};
+  var t = {};
+  for (var n in r) if ({}.hasOwnProperty.call(r, n)) {
+    if (-1 !== e.indexOf(n)) continue;
+    t[n] = r[n];
+  }
+  return t;
+}
+function defaultUniqBy(entry) {
+  return entry.value;
+}
+function LegendContent(props) {
+  var {
+    contextPayload
+  } = props, otherProps = _objectWithoutProperties4(props, _excluded4);
+  var finalPayload = getUniqPayload(contextPayload, props.payloadUniqBy, defaultUniqBy);
+  var contentProps = _objectSpread7(_objectSpread7({}, otherProps), {}, {
+    payload: finalPayload
+  });
+  if (React7.isValidElement(props.content)) {
+    return React7.cloneElement(props.content, contentProps);
+  }
+  if (typeof props.content === "function") {
+    return React7.createElement(props.content, contentProps);
+  }
+  return React7.createElement(DefaultLegendContent, contentProps);
+}
+function getDefaultPosition(style, props, margin, chartWidth, chartHeight, box) {
+  var {
+    layout,
+    align,
+    verticalAlign
+  } = props;
+  var hPos, vPos;
+  if (!style || (style.left === void 0 || style.left === null) && (style.right === void 0 || style.right === null)) {
+    if (align === "center" && layout === "vertical") {
+      hPos = {
+        left: ((chartWidth || 0) - box.width) / 2
+      };
+    } else {
+      hPos = align === "right" ? {
+        right: margin && margin.right || 0
+      } : {
+        left: margin && margin.left || 0
+      };
+    }
+  }
+  if (!style || (style.top === void 0 || style.top === null) && (style.bottom === void 0 || style.bottom === null)) {
+    if (verticalAlign === "middle") {
+      vPos = {
+        top: ((chartHeight || 0) - box.height) / 2
+      };
+    } else {
+      vPos = verticalAlign === "bottom" ? {
+        bottom: margin && margin.bottom || 0
+      } : {
+        top: margin && margin.top || 0
+      };
+    }
+  }
+  return _objectSpread7(_objectSpread7({}, hPos), vPos);
+}
+function LegendSettingsDispatcher(props) {
+  var dispatch = useAppDispatch();
+  (0, import_react14.useEffect)(() => {
+    dispatch(setLegendSettings(props));
+  }, [dispatch, props]);
+  return null;
+}
+function LegendSizeDispatcher(props) {
+  var dispatch = useAppDispatch();
+  (0, import_react14.useEffect)(() => {
+    dispatch(setLegendSize(props));
+    return () => {
+      dispatch(setLegendSize({
+        width: 0,
+        height: 0
+      }));
+    };
+  }, [dispatch, props]);
+  return null;
+}
+function LegendWrapper(props) {
+  var contextPayload = useLegendPayload();
+  var legendPortalFromContext = useLegendPortal();
+  var margin = useMargin();
+  var {
+    width: widthFromProps,
+    height: heightFromProps,
+    wrapperStyle,
+    portal: portalFromProps
+  } = props;
+  var [lastBoundingBox, updateBoundingBox] = useElementOffset([contextPayload]);
+  var chartWidth = useChartWidth();
+  var chartHeight = useChartHeight();
+  if (chartWidth == null || chartHeight == null) {
+    return null;
+  }
+  var maxWidth = chartWidth - (margin.left || 0) - (margin.right || 0);
+  var widthOrHeight = Legend.getWidthOrHeight(props.layout, heightFromProps, widthFromProps, maxWidth);
+  var outerStyle = portalFromProps ? wrapperStyle : _objectSpread7(_objectSpread7({
+    position: "absolute",
+    width: (widthOrHeight === null || widthOrHeight === void 0 ? void 0 : widthOrHeight.width) || widthFromProps || "auto",
+    height: (widthOrHeight === null || widthOrHeight === void 0 ? void 0 : widthOrHeight.height) || heightFromProps || "auto"
+  }, getDefaultPosition(wrapperStyle, props, margin, chartWidth, chartHeight, lastBoundingBox)), wrapperStyle);
+  var legendPortal = portalFromProps !== null && portalFromProps !== void 0 ? portalFromProps : legendPortalFromContext;
+  if (legendPortal == null) {
+    return null;
+  }
+  var legendElement = React7.createElement("div", {
+    className: "recharts-legend-wrapper",
+    style: outerStyle,
+    ref: updateBoundingBox
+  }, React7.createElement(LegendSettingsDispatcher, {
+    layout: props.layout,
+    align: props.align,
+    verticalAlign: props.verticalAlign,
+    itemSorter: props.itemSorter
+  }), React7.createElement(LegendSizeDispatcher, {
+    width: lastBoundingBox.width,
+    height: lastBoundingBox.height
+  }), React7.createElement(LegendContent, _extends6({}, props, widthOrHeight, {
+    margin,
+    chartWidth,
+    chartHeight,
+    contextPayload
+  })));
+  return (0, import_react_dom.createPortal)(legendElement, legendPortal);
+}
+var Legend = class extends import_react14.PureComponent {
+  static getWidthOrHeight(layout, height, width, maxWidth) {
+    if (layout === "vertical" && isNumber(height)) {
+      return {
+        height
+      };
+    }
+    if (layout === "horizontal") {
+      return {
+        width: width || maxWidth
+      };
+    }
+    return null;
+  }
+  render() {
+    return React7.createElement(LegendWrapper, this.props);
+  }
+};
+_defineProperty7(Legend, "displayName", "Legend");
+_defineProperty7(Legend, "defaultProps", {
+  align: "center",
+  iconSize: 14,
+  itemSorter: "value",
+  layout: "horizontal",
+  verticalAlign: "bottom"
+});
+
+// node_modules/recharts/es6/component/Tooltip.js
+var React15 = __toESM(require_react());
+var import_react23 = __toESM(require_react());
+var import_react_dom2 = __toESM(require_react_dom());
+
+// node_modules/recharts/es6/component/DefaultTooltipContent.js
+var React8 = __toESM(require_react());
+var import_sortBy3 = __toESM(require_sortBy2());
+function _extends7() {
+  return _extends7 = Object.assign ? Object.assign.bind() : function(n) {
+    for (var e = 1; e < arguments.length; e++) {
+      var t = arguments[e];
+      for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]);
+    }
+    return n;
+  }, _extends7.apply(null, arguments);
+}
+function ownKeys8(e, r) {
+  var t = Object.keys(e);
+  if (Object.getOwnPropertySymbols) {
+    var o = Object.getOwnPropertySymbols(e);
+    r && (o = o.filter(function(r2) {
+      return Object.getOwnPropertyDescriptor(e, r2).enumerable;
+    })), t.push.apply(t, o);
+  }
+  return t;
+}
+function _objectSpread8(e) {
+  for (var r = 1; r < arguments.length; r++) {
+    var t = null != arguments[r] ? arguments[r] : {};
+    r % 2 ? ownKeys8(Object(t), true).forEach(function(r2) {
+      _defineProperty8(e, r2, t[r2]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys8(Object(t)).forEach(function(r2) {
+      Object.defineProperty(e, r2, Object.getOwnPropertyDescriptor(t, r2));
+    });
+  }
+  return e;
+}
+function _defineProperty8(e, r, t) {
+  return (r = _toPropertyKey8(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: true, configurable: true, writable: true }) : e[r] = t, e;
+}
+function _toPropertyKey8(t) {
+  var i = _toPrimitive8(t, "string");
+  return "symbol" == typeof i ? i : i + "";
+}
+function _toPrimitive8(t, r) {
   if ("object" != typeof t || !t) return t;
   var e = t[Symbol.toPrimitive];
   if (void 0 !== e) {
@@ -6124,7 +6688,7 @@ var DefaultTooltipContent = (props) => {
             return null;
           }
         }
-        var finalItemStyle = _objectSpread7({
+        var finalItemStyle = _objectSpread8({
           display: "block",
           paddingTop: 4,
           paddingBottom: 4,
@@ -6132,36 +6696,36 @@ var DefaultTooltipContent = (props) => {
         }, itemStyle);
         return (
           // eslint-disable-next-line react/no-array-index-key
-          React7.createElement("li", {
+          React8.createElement("li", {
             className: "recharts-tooltip-item",
             key: "tooltip-item-".concat(i),
             style: finalItemStyle
-          }, isNumOrStr(finalName) ? React7.createElement("span", {
+          }, isNumOrStr(finalName) ? React8.createElement("span", {
             className: "recharts-tooltip-item-name"
-          }, finalName) : null, isNumOrStr(finalName) ? React7.createElement("span", {
+          }, finalName) : null, isNumOrStr(finalName) ? React8.createElement("span", {
             className: "recharts-tooltip-item-separator"
-          }, separator) : null, React7.createElement("span", {
+          }, separator) : null, React8.createElement("span", {
             className: "recharts-tooltip-item-value"
-          }, finalValue), React7.createElement("span", {
+          }, finalValue), React8.createElement("span", {
             className: "recharts-tooltip-item-unit"
           }, entry.unit || ""))
         );
       });
-      return React7.createElement("ul", {
+      return React8.createElement("ul", {
         className: "recharts-tooltip-item-list",
         style: listStyle
       }, items);
     }
     return null;
   };
-  var finalStyle = _objectSpread7({
+  var finalStyle = _objectSpread8({
     margin: 0,
     padding: 10,
     backgroundColor: "#fff",
     border: "1px solid #ccc",
     whiteSpace: "nowrap"
   }, contentStyle);
-  var finalLabelStyle = _objectSpread7({
+  var finalLabelStyle = _objectSpread8({
     margin: 0
   }, labelStyle);
   var hasLabel = !isNullish(label);
@@ -6175,18 +6739,18 @@ var DefaultTooltipContent = (props) => {
     role: "status",
     "aria-live": "assertive"
   } : {};
-  return React7.createElement("div", _extends6({
+  return React8.createElement("div", _extends7({
     className: wrapperCN,
     style: finalStyle
-  }, accessibilityAttributes), React7.createElement("p", {
+  }, accessibilityAttributes), React8.createElement("p", {
     className: labelCN,
     style: finalLabelStyle
-  }, React7.isValidElement(finalLabel) ? finalLabel : "".concat(finalLabel)), renderContent2());
+  }, React8.isValidElement(finalLabel) ? finalLabel : "".concat(finalLabel)), renderContent2());
 };
 
 // node_modules/recharts/es6/component/TooltipBoundingBox.js
-var React8 = __toESM(require_react());
-var import_react13 = __toESM(require_react());
+var React9 = __toESM(require_react());
+var import_react15 = __toESM(require_react());
 
 // node_modules/recharts/es6/util/tooltip/translate.js
 var CSS_CLASS_PREFIX = "recharts-tooltip-wrapper";
@@ -6312,7 +6876,7 @@ function getTooltipTranslate(_ref4) {
 }
 
 // node_modules/recharts/es6/component/TooltipBoundingBox.js
-function ownKeys8(e, r) {
+function ownKeys9(e, r) {
   var t = Object.keys(e);
   if (Object.getOwnPropertySymbols) {
     var o = Object.getOwnPropertySymbols(e);
@@ -6322,25 +6886,25 @@ function ownKeys8(e, r) {
   }
   return t;
 }
-function _objectSpread8(e) {
+function _objectSpread9(e) {
   for (var r = 1; r < arguments.length; r++) {
     var t = null != arguments[r] ? arguments[r] : {};
-    r % 2 ? ownKeys8(Object(t), true).forEach(function(r2) {
-      _defineProperty8(e, r2, t[r2]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys8(Object(t)).forEach(function(r2) {
+    r % 2 ? ownKeys9(Object(t), true).forEach(function(r2) {
+      _defineProperty9(e, r2, t[r2]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys9(Object(t)).forEach(function(r2) {
       Object.defineProperty(e, r2, Object.getOwnPropertyDescriptor(t, r2));
     });
   }
   return e;
 }
-function _defineProperty8(e, r, t) {
-  return (r = _toPropertyKey8(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: true, configurable: true, writable: true }) : e[r] = t, e;
+function _defineProperty9(e, r, t) {
+  return (r = _toPropertyKey9(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: true, configurable: true, writable: true }) : e[r] = t, e;
 }
-function _toPropertyKey8(t) {
-  var i = _toPrimitive8(t, "string");
+function _toPropertyKey9(t) {
+  var i = _toPrimitive9(t, "string");
   return "symbol" == typeof i ? i : i + "";
 }
-function _toPrimitive8(t, r) {
+function _toPrimitive9(t, r) {
   if ("object" != typeof t || !t) return t;
   var e = t[Symbol.toPrimitive];
   if (void 0 !== e) {
@@ -6350,17 +6914,17 @@ function _toPrimitive8(t, r) {
   }
   return ("string" === r ? String : Number)(t);
 }
-var TooltipBoundingBox = class extends import_react13.PureComponent {
+var TooltipBoundingBox = class extends import_react15.PureComponent {
   constructor() {
     super(...arguments);
-    _defineProperty8(this, "state", {
+    _defineProperty9(this, "state", {
       dismissed: false,
       dismissedAtCoordinate: {
         x: 0,
         y: 0
       }
     });
-    _defineProperty8(this, "handleKeyDown", (event) => {
+    _defineProperty9(this, "handleKeyDown", (event) => {
       if (event.key === "Escape") {
         var _this$props$coordinat, _this$props$coordinat2, _this$props$coordinat3, _this$props$coordinat4;
         this.setState({
@@ -6424,7 +6988,7 @@ var TooltipBoundingBox = class extends import_react13.PureComponent {
       useTranslate3d,
       viewBox
     });
-    var positionStyles = hasPortalFromProps ? {} : _objectSpread8(_objectSpread8({
+    var positionStyles = hasPortalFromProps ? {} : _objectSpread9(_objectSpread9({
       transition: isAnimationActive && active ? "transform ".concat(animationDuration, "ms ").concat(animationEasing) : void 0
     }, cssProperties), {}, {
       pointerEvents: "none",
@@ -6433,12 +6997,12 @@ var TooltipBoundingBox = class extends import_react13.PureComponent {
       top: 0,
       left: 0
     });
-    var outerStyle = _objectSpread8(_objectSpread8({}, positionStyles), {}, {
+    var outerStyle = _objectSpread9(_objectSpread9({}, positionStyles), {}, {
       visibility: !this.state.dismissed && active && hasPayload ? "visible" : "hidden"
     }, wrapperStyle);
     return (
       // This element allow listening to the `Escape` key. See https://github.com/recharts/recharts/pull/2925
-      React8.createElement("div", {
+      React9.createElement("div", {
         // @ts-expect-error typescript library does not recognize xmlns attribute, but it's required for an HTML chunk inside SVG.
         xmlns: "http://www.w3.org/1999/xhtml",
         tabIndex: -1,
@@ -6453,6 +7017,7 @@ var TooltipBoundingBox = class extends import_react13.PureComponent {
 // node_modules/recharts/es6/util/Global.js
 var parseIsSsrByDefault = () => !(typeof window !== "undefined" && window.document && Boolean(window.document.createElement) && window.setTimeout);
 var Global = {
+  devToolsEnabled: false,
   isSsr: parseIsSsrByDefault()
 };
 
@@ -6460,31 +7025,21 @@ var Global = {
 var useAccessibilityLayer = () => useAppSelector((state) => state.rootProps.accessibilityLayer);
 
 // node_modules/recharts/es6/component/Cursor.js
-var React13 = __toESM(require_react());
-var import_react18 = __toESM(require_react());
+var React14 = __toESM(require_react());
+var import_react20 = __toESM(require_react());
 
 // node_modules/recharts/es6/shape/Curve.js
-var React9 = __toESM(require_react());
-
-// node_modules/recharts/es6/util/isWellBehavedNumber.js
-function isWellBehavedNumber(n) {
-  return Number.isFinite(n);
-}
-function isPositiveNumber(n) {
-  return typeof n === "number" && n > 0 && Number.isFinite(n);
-}
-
-// node_modules/recharts/es6/shape/Curve.js
-function _extends7() {
-  return _extends7 = Object.assign ? Object.assign.bind() : function(n) {
+var React10 = __toESM(require_react());
+function _extends8() {
+  return _extends8 = Object.assign ? Object.assign.bind() : function(n) {
     for (var e = 1; e < arguments.length; e++) {
       var t = arguments[e];
       for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]);
     }
     return n;
-  }, _extends7.apply(null, arguments);
+  }, _extends8.apply(null, arguments);
 }
-function ownKeys9(e, r) {
+function ownKeys10(e, r) {
   var t = Object.keys(e);
   if (Object.getOwnPropertySymbols) {
     var o = Object.getOwnPropertySymbols(e);
@@ -6494,25 +7049,25 @@ function ownKeys9(e, r) {
   }
   return t;
 }
-function _objectSpread9(e) {
+function _objectSpread10(e) {
   for (var r = 1; r < arguments.length; r++) {
     var t = null != arguments[r] ? arguments[r] : {};
-    r % 2 ? ownKeys9(Object(t), true).forEach(function(r2) {
-      _defineProperty9(e, r2, t[r2]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys9(Object(t)).forEach(function(r2) {
+    r % 2 ? ownKeys10(Object(t), true).forEach(function(r2) {
+      _defineProperty10(e, r2, t[r2]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys10(Object(t)).forEach(function(r2) {
       Object.defineProperty(e, r2, Object.getOwnPropertyDescriptor(t, r2));
     });
   }
   return e;
 }
-function _defineProperty9(e, r, t) {
-  return (r = _toPropertyKey9(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: true, configurable: true, writable: true }) : e[r] = t, e;
+function _defineProperty10(e, r, t) {
+  return (r = _toPropertyKey10(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: true, configurable: true, writable: true }) : e[r] = t, e;
 }
-function _toPropertyKey9(t) {
-  var i = _toPrimitive9(t, "string");
+function _toPropertyKey10(t) {
+  var i = _toPrimitive10(t, "string");
   return "symbol" == typeof i ? i : i + "";
 }
-function _toPrimitive9(t, r) {
+function _toPrimitive10(t, r) {
   if ("object" != typeof t || !t) return t;
   var e = t[Symbol.toPrimitive];
   if (void 0 !== e) {
@@ -6563,7 +7118,7 @@ var getPath = (_ref2) => {
   var lineFunction;
   if (Array.isArray(baseLine)) {
     var formatBaseLine = connectNulls ? baseLine.filter((base) => defined(base)) : baseLine;
-    var areaPoints = formatPoints.map((entry, index2) => _objectSpread9(_objectSpread9({}, entry), {}, {
+    var areaPoints = formatPoints.map((entry, index2) => _objectSpread10(_objectSpread10({}, entry), {}, {
       base: formatBaseLine[index2]
     }));
     if (layout === "vertical") {
@@ -6595,7 +7150,7 @@ var Curve = (props) => {
     return null;
   }
   var realPath = points && points.length ? getPath(props) : path2;
-  return React9.createElement("path", _extends7({}, svgPropertiesNoEvents(props), adaptEventHandlers(props), {
+  return React10.createElement("path", _extends8({}, svgPropertiesNoEvents(props), adaptEventHandlers(props), {
     className: clsx("recharts-curve", className),
     d: realPath === null ? void 0 : realPath,
     ref: pathRef
@@ -6603,18 +7158,18 @@ var Curve = (props) => {
 };
 
 // node_modules/recharts/es6/shape/Cross.js
-var React10 = __toESM(require_react());
+var React11 = __toESM(require_react());
 var _excluded5 = ["x", "y", "top", "left", "width", "height", "className"];
-function _extends8() {
-  return _extends8 = Object.assign ? Object.assign.bind() : function(n) {
+function _extends9() {
+  return _extends9 = Object.assign ? Object.assign.bind() : function(n) {
     for (var e = 1; e < arguments.length; e++) {
       var t = arguments[e];
       for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]);
     }
     return n;
-  }, _extends8.apply(null, arguments);
+  }, _extends9.apply(null, arguments);
 }
-function ownKeys10(e, r) {
+function ownKeys11(e, r) {
   var t = Object.keys(e);
   if (Object.getOwnPropertySymbols) {
     var o = Object.getOwnPropertySymbols(e);
@@ -6624,25 +7179,25 @@ function ownKeys10(e, r) {
   }
   return t;
 }
-function _objectSpread10(e) {
+function _objectSpread11(e) {
   for (var r = 1; r < arguments.length; r++) {
     var t = null != arguments[r] ? arguments[r] : {};
-    r % 2 ? ownKeys10(Object(t), true).forEach(function(r2) {
-      _defineProperty10(e, r2, t[r2]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys10(Object(t)).forEach(function(r2) {
+    r % 2 ? ownKeys11(Object(t), true).forEach(function(r2) {
+      _defineProperty11(e, r2, t[r2]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys11(Object(t)).forEach(function(r2) {
       Object.defineProperty(e, r2, Object.getOwnPropertyDescriptor(t, r2));
     });
   }
   return e;
 }
-function _defineProperty10(e, r, t) {
-  return (r = _toPropertyKey10(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: true, configurable: true, writable: true }) : e[r] = t, e;
+function _defineProperty11(e, r, t) {
+  return (r = _toPropertyKey11(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: true, configurable: true, writable: true }) : e[r] = t, e;
 }
-function _toPropertyKey10(t) {
-  var i = _toPrimitive10(t, "string");
+function _toPropertyKey11(t) {
+  var i = _toPrimitive11(t, "string");
   return "symbol" == typeof i ? i : i + "";
 }
-function _toPrimitive10(t, r) {
+function _toPrimitive11(t, r) {
   if ("object" != typeof t || !t) return t;
   var e = t[Symbol.toPrimitive];
   if (void 0 !== e) {
@@ -6683,7 +7238,7 @@ var Cross = (_ref2) => {
     height = 0,
     className
   } = _ref2, rest2 = _objectWithoutProperties5(_ref2, _excluded5);
-  var props = _objectSpread10({
+  var props = _objectSpread11({
     x: x2,
     y: y2,
     top,
@@ -6694,7 +7249,7 @@ var Cross = (_ref2) => {
   if (!isNumber(x2) || !isNumber(y2) || !isNumber(width) || !isNumber(height) || !isNumber(top) || !isNumber(left)) {
     return null;
   }
-  return React10.createElement("path", _extends8({}, filterProps(props, true), {
+  return React11.createElement("path", _extends9({}, svgPropertiesAndEvents(props), {
     className: clsx("recharts-cross", className),
     d: getPath2(x2, y2, width, height, top, left)
   }));
@@ -6714,11 +7269,11 @@ function getCursorRectangle(layout, activeCoordinate, offset, tooltipAxisBandSiz
 }
 
 // node_modules/recharts/es6/shape/Rectangle.js
-var React11 = __toESM(require_react());
-var import_react17 = __toESM(require_react());
+var React12 = __toESM(require_react());
+var import_react19 = __toESM(require_react());
 
 // node_modules/recharts/es6/util/resolveDefaultProps.js
-function ownKeys11(e, r) {
+function ownKeys12(e, r) {
   var t = Object.keys(e);
   if (Object.getOwnPropertySymbols) {
     var o = Object.getOwnPropertySymbols(e);
@@ -6728,25 +7283,25 @@ function ownKeys11(e, r) {
   }
   return t;
 }
-function _objectSpread11(e) {
+function _objectSpread12(e) {
   for (var r = 1; r < arguments.length; r++) {
     var t = null != arguments[r] ? arguments[r] : {};
-    r % 2 ? ownKeys11(Object(t), true).forEach(function(r2) {
-      _defineProperty11(e, r2, t[r2]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys11(Object(t)).forEach(function(r2) {
+    r % 2 ? ownKeys12(Object(t), true).forEach(function(r2) {
+      _defineProperty12(e, r2, t[r2]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys12(Object(t)).forEach(function(r2) {
       Object.defineProperty(e, r2, Object.getOwnPropertyDescriptor(t, r2));
     });
   }
   return e;
 }
-function _defineProperty11(e, r, t) {
-  return (r = _toPropertyKey11(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: true, configurable: true, writable: true }) : e[r] = t, e;
+function _defineProperty12(e, r, t) {
+  return (r = _toPropertyKey12(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: true, configurable: true, writable: true }) : e[r] = t, e;
 }
-function _toPropertyKey11(t) {
-  var i = _toPrimitive11(t, "string");
+function _toPropertyKey12(t) {
+  var i = _toPrimitive12(t, "string");
   return "symbol" == typeof i ? i : i + "";
 }
-function _toPrimitive11(t, r) {
+function _toPrimitive12(t, r) {
   if ("object" != typeof t || !t) return t;
   var e = t[Symbol.toPrimitive];
   if (void 0 !== e) {
@@ -6757,7 +7312,7 @@ function _toPrimitive11(t, r) {
   return ("string" === r ? String : Number)(t);
 }
 function resolveDefaultProps(realProps, defaultProps11) {
-  var resolvedProps = _objectSpread11({}, realProps);
+  var resolvedProps = _objectSpread12({}, realProps);
   var dp = defaultProps11;
   var keys = Object.keys(defaultProps11);
   var withDefaults = keys.reduce((acc, key) => {
@@ -6770,7 +7325,7 @@ function resolveDefaultProps(realProps, defaultProps11) {
 }
 
 // node_modules/recharts/es6/animation/JavascriptAnimate.js
-var import_react15 = __toESM(require_react());
+var import_react17 = __toESM(require_react());
 
 // node_modules/es-toolkit/dist/function/noop.mjs
 function noop2() {
@@ -6822,6 +7377,11 @@ var DEFAULT_RETRIES = Number.POSITIVE_INFINITY;
 // node_modules/es-toolkit/dist/string/words.mjs
 var CASE_SPLIT_PATTERN = new RegExp("\\p{Lu}?\\p{Ll}+|[0-9]+|\\p{Lu}+(?!\\p{Ll})|\\p{Emoji_Presentation}|\\p{Extended_Pictographic}|\\p{L}+", "gu");
 
+// node_modules/es-toolkit/dist/predicate/isNotNil.mjs
+function isNotNil(x2) {
+  return x2 != null;
+}
+
 // node_modules/es-toolkit/dist/string/deburr.mjs
 var deburrMap = new Map(Object.entries({
   Æ: "Ae",
@@ -6856,52 +7416,6 @@ var deburrMap = new Map(Object.entries({
 }));
 
 // node_modules/recharts/es6/animation/util.js
-function ownKeys12(e, r) {
-  var t = Object.keys(e);
-  if (Object.getOwnPropertySymbols) {
-    var o = Object.getOwnPropertySymbols(e);
-    r && (o = o.filter(function(r2) {
-      return Object.getOwnPropertyDescriptor(e, r2).enumerable;
-    })), t.push.apply(t, o);
-  }
-  return t;
-}
-function _objectSpread12(e) {
-  for (var r = 1; r < arguments.length; r++) {
-    var t = null != arguments[r] ? arguments[r] : {};
-    r % 2 ? ownKeys12(Object(t), true).forEach(function(r2) {
-      _defineProperty12(e, r2, t[r2]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys12(Object(t)).forEach(function(r2) {
-      Object.defineProperty(e, r2, Object.getOwnPropertyDescriptor(t, r2));
-    });
-  }
-  return e;
-}
-function _defineProperty12(e, r, t) {
-  return (r = _toPropertyKey12(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: true, configurable: true, writable: true }) : e[r] = t, e;
-}
-function _toPropertyKey12(t) {
-  var i = _toPrimitive12(t, "string");
-  return "symbol" == typeof i ? i : i + "";
-}
-function _toPrimitive12(t, r) {
-  if ("object" != typeof t || !t) return t;
-  var e = t[Symbol.toPrimitive];
-  if (void 0 !== e) {
-    var i = e.call(t, r || "default");
-    if ("object" != typeof i) return i;
-    throw new TypeError("@@toPrimitive must return a primitive value.");
-  }
-  return ("string" === r ? String : Number)(t);
-}
-var getDashCase = (name) => name.replace(/([A-Z])/g, (v) => "-".concat(v.toLowerCase()));
-var getTransitionVal = (props, duration, easing) => props.map((prop) => "".concat(getDashCase(prop), " ").concat(duration, "ms ").concat(easing)).join(",");
-var getIntersectionKeys = (preObj, nextObj) => [Object.keys(preObj), Object.keys(nextObj)].reduce((a2, b) => a2.filter((c2) => b.includes(c2)));
-var mapObject = (fn, obj) => Object.keys(obj).reduce((res, key) => _objectSpread12(_objectSpread12({}, res), {}, {
-  [key]: fn(key, obj[key])
-}), {});
-
-// node_modules/recharts/es6/animation/configUpdate.js
 function ownKeys13(e, r) {
   var t = Object.keys(e);
   if (Object.getOwnPropertySymbols) {
@@ -6940,6 +7454,52 @@ function _toPrimitive13(t, r) {
   }
   return ("string" === r ? String : Number)(t);
 }
+var getDashCase = (name) => name.replace(/([A-Z])/g, (v) => "-".concat(v.toLowerCase()));
+var getTransitionVal = (props, duration, easing) => props.map((prop) => "".concat(getDashCase(prop), " ").concat(duration, "ms ").concat(easing)).join(",");
+var getIntersectionKeys = (preObj, nextObj) => [Object.keys(preObj), Object.keys(nextObj)].reduce((a2, b) => a2.filter((c2) => b.includes(c2)));
+var mapObject = (fn, obj) => Object.keys(obj).reduce((res, key) => _objectSpread13(_objectSpread13({}, res), {}, {
+  [key]: fn(key, obj[key])
+}), {});
+
+// node_modules/recharts/es6/animation/configUpdate.js
+function ownKeys14(e, r) {
+  var t = Object.keys(e);
+  if (Object.getOwnPropertySymbols) {
+    var o = Object.getOwnPropertySymbols(e);
+    r && (o = o.filter(function(r2) {
+      return Object.getOwnPropertyDescriptor(e, r2).enumerable;
+    })), t.push.apply(t, o);
+  }
+  return t;
+}
+function _objectSpread14(e) {
+  for (var r = 1; r < arguments.length; r++) {
+    var t = null != arguments[r] ? arguments[r] : {};
+    r % 2 ? ownKeys14(Object(t), true).forEach(function(r2) {
+      _defineProperty14(e, r2, t[r2]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys14(Object(t)).forEach(function(r2) {
+      Object.defineProperty(e, r2, Object.getOwnPropertyDescriptor(t, r2));
+    });
+  }
+  return e;
+}
+function _defineProperty14(e, r, t) {
+  return (r = _toPropertyKey14(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: true, configurable: true, writable: true }) : e[r] = t, e;
+}
+function _toPropertyKey14(t) {
+  var i = _toPrimitive14(t, "string");
+  return "symbol" == typeof i ? i : i + "";
+}
+function _toPrimitive14(t, r) {
+  if ("object" != typeof t || !t) return t;
+  var e = t[Symbol.toPrimitive];
+  if (void 0 !== e) {
+    var i = e.call(t, r || "default");
+    if ("object" != typeof i) return i;
+    throw new TypeError("@@toPrimitive must return a primitive value.");
+  }
+  return ("string" === r ? String : Number)(t);
+}
 var alpha = (begin, end, k2) => begin + (end - begin) * k2;
 var needContinue = (_ref2) => {
   var {
@@ -6952,7 +7512,7 @@ var calStepperVals = (easing, preVals, steps) => {
   var nextStepVals = mapObject((key, val) => {
     if (needContinue(val)) {
       var [newX, newV] = easing(val.from, val.to, val.velocity);
-      return _objectSpread13(_objectSpread13({}, val), {}, {
+      return _objectSpread14(_objectSpread14({}, val), {}, {
         from: newX,
         velocity: newV
       });
@@ -6962,7 +7522,7 @@ var calStepperVals = (easing, preVals, steps) => {
   if (steps < 1) {
     return mapObject((key, val) => {
       if (needContinue(val)) {
-        return _objectSpread13(_objectSpread13({}, val), {}, {
+        return _objectSpread14(_objectSpread14({}, val), {}, {
           velocity: alpha(val.velocity, nextStepVals[key].velocity, steps),
           from: alpha(val.from, nextStepVals[key].from, steps)
         });
@@ -6974,7 +7534,7 @@ var calStepperVals = (easing, preVals, steps) => {
 };
 function createStepperUpdate(from2, to2, easing, interKeys, render, timeoutController) {
   var preTime;
-  var stepperStyle = interKeys.reduce((res, key) => _objectSpread13(_objectSpread13({}, res), {}, {
+  var stepperStyle = interKeys.reduce((res, key) => _objectSpread14(_objectSpread14({}, res), {}, {
     [key]: {
       from: from2[key],
       velocity: 0,
@@ -6991,7 +7551,7 @@ function createStepperUpdate(from2, to2, easing, interKeys, render, timeoutContr
     var deltaTime = now - preTime;
     var steps = deltaTime / easing.dt;
     stepperStyle = calStepperVals(easing, stepperStyle, steps);
-    render(_objectSpread13(_objectSpread13(_objectSpread13({}, from2), to2), getCurrStyle()));
+    render(_objectSpread14(_objectSpread14(_objectSpread14({}, from2), to2), getCurrStyle()));
     preTime = now;
     if (!shouldStopAnimation()) {
       stopAnimation = timeoutController.setTimeout(stepperUpdate);
@@ -7006,7 +7566,7 @@ function createStepperUpdate(from2, to2, easing, interKeys, render, timeoutContr
 }
 function createTimingUpdate(from2, to2, easing, duration, interKeys, render, timeoutController) {
   var stopAnimation = null;
-  var timingStyle = interKeys.reduce((res, key) => _objectSpread13(_objectSpread13({}, res), {}, {
+  var timingStyle = interKeys.reduce((res, key) => _objectSpread14(_objectSpread14({}, res), {}, {
     [key]: [from2[key], to2[key]]
   }), {});
   var beginTime;
@@ -7016,12 +7576,12 @@ function createTimingUpdate(from2, to2, easing, duration, interKeys, render, tim
     }
     var t = (now - beginTime) / duration;
     var currStyle = mapObject((key, val) => alpha(...val, easing(t)), timingStyle);
-    render(_objectSpread13(_objectSpread13(_objectSpread13({}, from2), to2), currStyle));
+    render(_objectSpread14(_objectSpread14(_objectSpread14({}, from2), to2), currStyle));
     if (t < 1) {
       stopAnimation = timeoutController.setTimeout(timingUpdate);
     } else {
       var finalStyle = mapObject((key, val) => alpha(...val, easing(1)), timingStyle);
-      render(_objectSpread13(_objectSpread13(_objectSpread13({}, from2), to2), finalStyle));
+      render(_objectSpread14(_objectSpread14(_objectSpread14({}, from2), to2), finalStyle));
     }
   };
   return () => {
@@ -7154,7 +7714,7 @@ var configEasing = (easing) => {
 };
 
 // node_modules/recharts/es6/animation/useAnimationManager.js
-var import_react14 = __toESM(require_react());
+var import_react16 = __toESM(require_react());
 
 // node_modules/recharts/es6/animation/AnimationManager.js
 function createAnimateManager(timeoutController) {
@@ -7240,10 +7800,10 @@ function createDefaultAnimationManager() {
 }
 
 // node_modules/recharts/es6/animation/useAnimationManager.js
-var AnimationManagerContext = (0, import_react14.createContext)(createDefaultAnimationManager);
+var AnimationManagerContext = (0, import_react16.createContext)(createDefaultAnimationManager);
 function useAnimationManager(animationId, animationManagerFromProps) {
-  var contextAnimationManager = (0, import_react14.useContext)(AnimationManagerContext);
-  return (0, import_react14.useMemo)(() => animationManagerFromProps !== null && animationManagerFromProps !== void 0 ? animationManagerFromProps : contextAnimationManager(animationId), [animationId, animationManagerFromProps, contextAnimationManager]);
+  var contextAnimationManager = (0, import_react16.useContext)(AnimationManagerContext);
+  return (0, import_react16.useMemo)(() => animationManagerFromProps !== null && animationManagerFromProps !== void 0 ? animationManagerFromProps : contextAnimationManager(animationId), [animationId, animationManagerFromProps, contextAnimationManager]);
 }
 
 // node_modules/recharts/es6/animation/JavascriptAnimate.js
@@ -7277,14 +7837,14 @@ function JavascriptAnimate(outsideProps) {
     children
   } = props;
   var animationManager = useAnimationManager(props.animationId, props.animationManager);
-  var [style, setStyle] = (0, import_react15.useState)(isActive ? from : to);
-  var stopJSAnimation = (0, import_react15.useRef)(null);
-  (0, import_react15.useEffect)(() => {
+  var [style, setStyle] = (0, import_react17.useState)(isActive ? from : to);
+  var stopJSAnimation = (0, import_react17.useRef)(null);
+  (0, import_react17.useEffect)(() => {
     if (!isActive) {
       setStyle(to);
     }
   }, [isActive]);
-  (0, import_react15.useEffect)(() => {
+  (0, import_react17.useEffect)(() => {
     if (!isActive || !canBegin) {
       return noop2;
     }
@@ -7305,11 +7865,11 @@ function JavascriptAnimate(outsideProps) {
 }
 
 // node_modules/recharts/es6/util/useAnimationId.js
-var import_react16 = __toESM(require_react());
+var import_react18 = __toESM(require_react());
 function useAnimationId(input) {
   var prefix2 = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : "animation-";
-  var animationId = (0, import_react16.useRef)(uniqueId(prefix2));
-  var prevProps = (0, import_react16.useRef)(input);
+  var animationId = (0, import_react18.useRef)(uniqueId(prefix2));
+  var prevProps = (0, import_react18.useRef)(input);
   if (prevProps.current !== input) {
     animationId.current = uniqueId(prefix2);
     prevProps.current = input;
@@ -7318,7 +7878,9 @@ function useAnimationId(input) {
 }
 
 // node_modules/recharts/es6/shape/Rectangle.js
-function ownKeys14(e, r) {
+var _excluded6 = ["radius"];
+var _excluded22 = ["radius"];
+function ownKeys15(e, r) {
   var t = Object.keys(e);
   if (Object.getOwnPropertySymbols) {
     var o = Object.getOwnPropertySymbols(e);
@@ -7328,25 +7890,25 @@ function ownKeys14(e, r) {
   }
   return t;
 }
-function _objectSpread14(e) {
+function _objectSpread15(e) {
   for (var r = 1; r < arguments.length; r++) {
     var t = null != arguments[r] ? arguments[r] : {};
-    r % 2 ? ownKeys14(Object(t), true).forEach(function(r2) {
-      _defineProperty14(e, r2, t[r2]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys14(Object(t)).forEach(function(r2) {
+    r % 2 ? ownKeys15(Object(t), true).forEach(function(r2) {
+      _defineProperty15(e, r2, t[r2]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys15(Object(t)).forEach(function(r2) {
       Object.defineProperty(e, r2, Object.getOwnPropertyDescriptor(t, r2));
     });
   }
   return e;
 }
-function _defineProperty14(e, r, t) {
-  return (r = _toPropertyKey14(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: true, configurable: true, writable: true }) : e[r] = t, e;
+function _defineProperty15(e, r, t) {
+  return (r = _toPropertyKey15(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: true, configurable: true, writable: true }) : e[r] = t, e;
 }
-function _toPropertyKey14(t) {
-  var i = _toPrimitive14(t, "string");
+function _toPropertyKey15(t) {
+  var i = _toPrimitive15(t, "string");
   return "symbol" == typeof i ? i : i + "";
 }
-function _toPrimitive14(t, r) {
+function _toPrimitive15(t, r) {
   if ("object" != typeof t || !t) return t;
   var e = t[Symbol.toPrimitive];
   if (void 0 !== e) {
@@ -7356,14 +7918,32 @@ function _toPrimitive14(t, r) {
   }
   return ("string" === r ? String : Number)(t);
 }
-function _extends9() {
-  return _extends9 = Object.assign ? Object.assign.bind() : function(n) {
+function _extends10() {
+  return _extends10 = Object.assign ? Object.assign.bind() : function(n) {
     for (var e = 1; e < arguments.length; e++) {
       var t = arguments[e];
       for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]);
     }
     return n;
-  }, _extends9.apply(null, arguments);
+  }, _extends10.apply(null, arguments);
+}
+function _objectWithoutProperties6(e, t) {
+  if (null == e) return {};
+  var o, r, i = _objectWithoutPropertiesLoose6(e, t);
+  if (Object.getOwnPropertySymbols) {
+    var n = Object.getOwnPropertySymbols(e);
+    for (r = 0; r < n.length; r++) o = n[r], -1 === t.indexOf(o) && {}.propertyIsEnumerable.call(e, o) && (i[o] = e[o]);
+  }
+  return i;
+}
+function _objectWithoutPropertiesLoose6(r, e) {
+  if (null == r) return {};
+  var t = {};
+  for (var n in r) if ({}.hasOwnProperty.call(r, n)) {
+    if (-1 !== e.indexOf(n)) continue;
+    t[n] = r[n];
+  }
+  return t;
 }
 var getRectanglePath = (x2, y2, width, height, radius) => {
   var maxRadius = Math.min(Math.abs(width) / 2, Math.abs(height) / 2);
@@ -7418,9 +7998,9 @@ var defaultProps = {
 };
 var Rectangle = (rectangleProps) => {
   var props = resolveDefaultProps(rectangleProps, defaultProps);
-  var pathRef = (0, import_react17.useRef)(null);
-  var [totalLength, setTotalLength] = (0, import_react17.useState)(-1);
-  (0, import_react17.useEffect)(() => {
+  var pathRef = (0, import_react19.useRef)(null);
+  var [totalLength, setTotalLength] = (0, import_react19.useState)(-1);
+  (0, import_react19.useEffect)(() => {
     if (pathRef.current && pathRef.current.getTotalLength) {
       try {
         var pathTotalLength = pathRef.current.getTotalLength();
@@ -7446,11 +8026,11 @@ var Rectangle = (rectangleProps) => {
     isAnimationActive,
     isUpdateAnimationActive
   } = props;
-  var prevWidthRef = (0, import_react17.useRef)(width);
-  var prevHeightRef = (0, import_react17.useRef)(height);
-  var prevXRef = (0, import_react17.useRef)(x2);
-  var prevYRef = (0, import_react17.useRef)(y2);
-  var animationIdInput = (0, import_react17.useMemo)(() => ({
+  var prevWidthRef = (0, import_react19.useRef)(width);
+  var prevHeightRef = (0, import_react19.useRef)(height);
+  var prevXRef = (0, import_react19.useRef)(x2);
+  var prevYRef = (0, import_react19.useRef)(y2);
+  var animationIdInput = (0, import_react19.useMemo)(() => ({
     x: x2,
     y: y2,
     width,
@@ -7463,7 +8043,11 @@ var Rectangle = (rectangleProps) => {
   }
   var layerClass = clsx("recharts-rectangle", className);
   if (!isUpdateAnimationActive) {
-    return React11.createElement("path", _extends9({}, filterProps(props, true), {
+    var _svgPropertiesAndEven = svgPropertiesAndEvents(props), {
+      radius: _
+    } = _svgPropertiesAndEven, otherPathProps = _objectWithoutProperties6(_svgPropertiesAndEven, _excluded6);
+    return React12.createElement("path", _extends10({}, otherPathProps, {
+      radius: typeof radius === "number" ? radius : void 0,
       className: layerClass,
       d: getRectanglePath(x2, y2, width, height, radius)
     }));
@@ -7475,7 +8059,7 @@ var Rectangle = (rectangleProps) => {
   var from2 = "0px ".concat(totalLength === -1 ? 1 : totalLength, "px");
   var to2 = "".concat(totalLength, "px 0px");
   var transition = getTransitionVal(["strokeDasharray"], animationDuration, typeof animationEasing === "string" ? animationEasing : void 0);
-  return React11.createElement(JavascriptAnimate, {
+  return React12.createElement(JavascriptAnimate, {
     animationId,
     key: animationId,
     canBegin: totalLength > 0,
@@ -7509,11 +8093,15 @@ var Rectangle = (rectangleProps) => {
         strokeDasharray: from2
       };
     }
-    return React11.createElement("path", _extends9({}, filterProps(props, true), {
+    var _svgPropertiesAndEven2 = svgPropertiesAndEvents(props), {
+      radius: _2
+    } = _svgPropertiesAndEven2, otherPathProps2 = _objectWithoutProperties6(_svgPropertiesAndEven2, _excluded22);
+    return React12.createElement("path", _extends10({}, otherPathProps2, {
+      radius: typeof radius === "number" ? radius : void 0,
       className: layerClass,
       d: getRectanglePath(currX, currY, currWidth, currHeight, radius),
       ref: pathRef,
-      style: _objectSpread14(_objectSpread14({}, animationStyle), props.style)
+      style: _objectSpread15(_objectSpread15({}, animationStyle), props.style)
     }));
   });
 };
@@ -7540,15 +8128,15 @@ function getRadialCursorPoints(activeCoordinate) {
 }
 
 // node_modules/recharts/es6/shape/Sector.js
-var React12 = __toESM(require_react());
-function _extends10() {
-  return _extends10 = Object.assign ? Object.assign.bind() : function(n) {
+var React13 = __toESM(require_react());
+function _extends11() {
+  return _extends11 = Object.assign ? Object.assign.bind() : function(n) {
     for (var e = 1; e < arguments.length; e++) {
       var t = arguments[e];
       for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]);
     }
     return n;
-  }, _extends10.apply(null, arguments);
+  }, _extends11.apply(null, arguments);
 }
 var getDeltaAngle = (startAngle, endAngle) => {
   var sign2 = mathSign(endAngle - startAngle);
@@ -7750,7 +8338,7 @@ var Sector = (sectorProps) => {
       endAngle
     });
   }
-  return React12.createElement("path", _extends10({}, filterProps(props, true), {
+  return React13.createElement("path", _extends11({}, svgPropertiesAndEvents(props), {
     className: layerClass,
     d: path2
   }));
@@ -12784,8 +13372,27 @@ function isStacked(graphicalItem) {
   return graphicalItem.stackId != null && graphicalItem.dataKey != null;
 }
 
+// node_modules/recharts/es6/state/selectors/numberDomainEqualityCheck.js
+var numberDomainEqualityCheck = (a2, b) => {
+  if (a2 === b) {
+    return true;
+  }
+  if (a2 == null || b == null) {
+    return false;
+  }
+  return a2[0] === b[0] && a2[1] === b[1];
+};
+
+// node_modules/recharts/es6/state/selectors/arrayEqualityCheck.js
+function arrayEqualityCheck(a2, b) {
+  if (Array.isArray(a2) && Array.isArray(b) && a2.length === 0 && b.length === 0) {
+    return true;
+  }
+  return a2 === b;
+}
+
 // node_modules/recharts/es6/state/selectors/axisSelectors.js
-function ownKeys15(e, r) {
+function ownKeys16(e, r) {
   var t = Object.keys(e);
   if (Object.getOwnPropertySymbols) {
     var o = Object.getOwnPropertySymbols(e);
@@ -12795,25 +13402,25 @@ function ownKeys15(e, r) {
   }
   return t;
 }
-function _objectSpread15(e) {
+function _objectSpread16(e) {
   for (var r = 1; r < arguments.length; r++) {
     var t = null != arguments[r] ? arguments[r] : {};
-    r % 2 ? ownKeys15(Object(t), true).forEach(function(r2) {
-      _defineProperty15(e, r2, t[r2]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys15(Object(t)).forEach(function(r2) {
+    r % 2 ? ownKeys16(Object(t), true).forEach(function(r2) {
+      _defineProperty16(e, r2, t[r2]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys16(Object(t)).forEach(function(r2) {
       Object.defineProperty(e, r2, Object.getOwnPropertyDescriptor(t, r2));
     });
   }
   return e;
 }
-function _defineProperty15(e, r, t) {
-  return (r = _toPropertyKey15(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: true, configurable: true, writable: true }) : e[r] = t, e;
+function _defineProperty16(e, r, t) {
+  return (r = _toPropertyKey16(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: true, configurable: true, writable: true }) : e[r] = t, e;
 }
-function _toPropertyKey15(t) {
-  var i = _toPrimitive15(t, "string");
+function _toPropertyKey16(t) {
+  var i = _toPrimitive16(t, "string");
   return "symbol" == typeof i ? i : i + "";
 }
-function _toPrimitive15(t, r) {
+function _toPrimitive16(t, r) {
   if ("object" != typeof t || !t) return t;
   var e = t[Symbol.toPrimitive];
   if (void 0 !== e) {
@@ -13001,14 +13608,22 @@ var combineGraphicalItemsSettings = (graphicalItems, axisSettings, axisPredicate
   }
   return !item.hide;
 });
-var selectCartesianItemsSettings = createSelector([selectUnfilteredCartesianItems, selectBaseAxis, selectAxisPredicate], combineGraphicalItemsSettings);
+var selectCartesianItemsSettings = createSelector([selectUnfilteredCartesianItems, selectBaseAxis, selectAxisPredicate], combineGraphicalItemsSettings, {
+  memoizeOptions: {
+    resultEqualityCheck: arrayEqualityCheck
+  }
+});
 var selectStackedCartesianItemsSettings = createSelector([selectCartesianItemsSettings], (cartesianItems) => {
   return cartesianItems.filter((item) => item.type === "area" || item.type === "bar").filter(isStacked);
 });
 var filterGraphicalNotStackedItems = (cartesianItems) => cartesianItems.filter((item) => !("stackId" in item) || item.stackId === void 0);
 var selectCartesianItemsSettingsExceptStacked = createSelector([selectCartesianItemsSettings], filterGraphicalNotStackedItems);
 var combineGraphicalItemsData = (cartesianItems) => cartesianItems.map((item) => item.data).filter(Boolean).flat(1);
-var selectCartesianGraphicalItemsData = createSelector([selectCartesianItemsSettings], combineGraphicalItemsData);
+var selectCartesianGraphicalItemsData = createSelector([selectCartesianItemsSettings], combineGraphicalItemsData, {
+  memoizeOptions: {
+    resultEqualityCheck: arrayEqualityCheck
+  }
+});
 var combineDisplayedData = (graphicalItemsData, _ref2) => {
   var {
     chartData = [],
@@ -13047,8 +13662,31 @@ function isErrorBarRelevantForAxisType(axisType, errorBar) {
       return false;
   }
 }
+function makeNumber(val) {
+  if (isNumOrStr(val) || val instanceof Date) {
+    var n = Number(val);
+    if (isWellBehavedNumber(n)) {
+      return n;
+    }
+  }
+  return void 0;
+}
+function makeDomain(val) {
+  if (Array.isArray(val)) {
+    var attempt2 = [makeNumber(val[0]), makeNumber(val[1])];
+    if (isWellFormedNumberDomain(attempt2)) {
+      return attempt2;
+    }
+    return void 0;
+  }
+  var n = makeNumber(val);
+  if (n == null) {
+    return void 0;
+  }
+  return [n, n];
+}
 function onlyAllowNumbers(data) {
-  return data.filter((v) => isNumOrStr(v) || v instanceof Date).map(Number).filter((n) => isNan(n) === false);
+  return data.map(makeNumber).filter(isNotNil);
 }
 function getErrorDomainByDataKey(entry, appliedValue, relevantErrorBars) {
   if (!relevantErrorBars || typeof appliedValue !== "number" || isNan(appliedValue)) {
@@ -13095,11 +13733,14 @@ var combineStackGroups = (displayedData, items, stackOffsetType) => {
   }));
 };
 var selectStackGroups = createSelector([selectDisplayedStackedData, selectStackedCartesianItemsSettings, selectStackOffsetType], combineStackGroups);
-var combineDomainOfStackGroups = (stackGroups, _ref3, axisType) => {
+var combineDomainOfStackGroups = (stackGroups, _ref3, axisType, domainFromUserPreference) => {
   var {
     dataStartIndex,
     dataEndIndex
   } = _ref3;
+  if (domainFromUserPreference != null) {
+    return void 0;
+  }
   if (axisType === "zAxis") {
     return void 0;
   }
@@ -13109,69 +13750,7 @@ var combineDomainOfStackGroups = (stackGroups, _ref3, axisType) => {
   }
   return domainOfStackGroups;
 };
-var selectDomainOfStackGroups = createSelector([selectStackGroups, selectChartDataWithIndexes, pickAxisType], combineDomainOfStackGroups);
-var combineAppliedNumericalValuesIncludingErrorValues = (data, axisSettings, items, errorBars, axisType) => {
-  if (items.length > 0) {
-    return data.flatMap((entry) => {
-      return items.flatMap((item) => {
-        var _errorBars$item$id, _axisSettings$dataKey;
-        var relevantErrorBars = (_errorBars$item$id = errorBars[item.id]) === null || _errorBars$item$id === void 0 ? void 0 : _errorBars$item$id.filter((errorBar) => isErrorBarRelevantForAxisType(axisType, errorBar));
-        var valueByDataKey = getValueByDataKey(entry, (_axisSettings$dataKey = axisSettings.dataKey) !== null && _axisSettings$dataKey !== void 0 ? _axisSettings$dataKey : item.dataKey);
-        return {
-          value: valueByDataKey,
-          errorDomain: getErrorDomainByDataKey(entry, valueByDataKey, relevantErrorBars)
-        };
-      });
-    }).filter(Boolean);
-  }
-  if ((axisSettings === null || axisSettings === void 0 ? void 0 : axisSettings.dataKey) != null) {
-    return data.map((item) => ({
-      value: getValueByDataKey(item, axisSettings.dataKey),
-      errorDomain: []
-    }));
-  }
-  return data.map((entry) => ({
-    value: entry,
-    errorDomain: []
-  }));
-};
-var selectAllErrorBarSettings = (state) => state.errorBars;
-var combineRelevantErrorBarSettings = (cartesianItemsSettings, allErrorBarSettings, axisType) => {
-  return cartesianItemsSettings.flatMap((item) => {
-    return allErrorBarSettings[item.id];
-  }).filter(Boolean).filter((e) => {
-    return isErrorBarRelevantForAxisType(axisType, e);
-  });
-};
-var selectErrorBarsSettingsExceptStacked = createSelector([selectCartesianItemsSettingsExceptStacked, selectAllErrorBarSettings, pickAxisType], combineRelevantErrorBarSettings);
-var selectAllAppliedNumericalValuesIncludingErrorValues = createSelector([selectDisplayedData, selectBaseAxis, selectCartesianItemsSettingsExceptStacked, selectAllErrorBarSettings, pickAxisType], combineAppliedNumericalValuesIncludingErrorValues);
-function onlyAllowNumbersAndStringsAndDates(item) {
-  var {
-    value
-  } = item;
-  if (isNumOrStr(value) || value instanceof Date) {
-    return value;
-  }
-  return void 0;
-}
-var computeNumericalDomain = (dataWithErrorDomains) => {
-  var allDataSquished = dataWithErrorDomains.flatMap((d) => [d.value, d.errorDomain]).flat(1);
-  var onlyNumbers = onlyAllowNumbers(allDataSquished);
-  if (onlyNumbers.length === 0) {
-    return void 0;
-  }
-  return [Math.min(...onlyNumbers), Math.max(...onlyNumbers)];
-};
-var computeDomainOfTypeCategory = (allDataSquished, axisSettings, isCategorical) => {
-  var categoricalDomain = allDataSquished.map(onlyAllowNumbersAndStringsAndDates).filter((v) => v != null);
-  if (isCategorical && (axisSettings.dataKey == null || axisSettings.allowDuplicatedCategory && hasDuplicate(categoricalDomain))) {
-    return (0, import_range3.default)(0, allDataSquished.length);
-  }
-  if (axisSettings.allowDuplicatedCategory) {
-    return categoricalDomain;
-  }
-  return Array.from(new Set(categoricalDomain));
-};
+var selectAllowsDataOverflow = createSelector([selectBaseAxis], (axisSettings) => axisSettings.allowDataOverflow);
 var getDomainDefinition = (axisSettings) => {
   var _axisSettings$domain;
   if (axisSettings == null || !("domain" in axisSettings)) {
@@ -13191,6 +13770,21 @@ var getDomainDefinition = (axisSettings) => {
   }
   return (_axisSettings$domain = axisSettings === null || axisSettings === void 0 ? void 0 : axisSettings.domain) !== null && _axisSettings$domain !== void 0 ? _axisSettings$domain : defaultNumericDomain;
 };
+var selectDomainDefinition = createSelector([selectBaseAxis], getDomainDefinition);
+var selectDomainFromUserPreference = createSelector([selectDomainDefinition, selectAllowsDataOverflow], numericalDomainSpecifiedWithoutRequiringData);
+var selectDomainOfStackGroups = createSelector([selectStackGroups, selectChartDataWithIndexes, pickAxisType, selectDomainFromUserPreference], combineDomainOfStackGroups, {
+  memoizeOptions: {
+    resultEqualityCheck: numberDomainEqualityCheck
+  }
+});
+var selectAllErrorBarSettings = (state) => state.errorBars;
+var combineRelevantErrorBarSettings = (cartesianItemsSettings, allErrorBarSettings, axisType) => {
+  return cartesianItemsSettings.flatMap((item) => {
+    return allErrorBarSettings[item.id];
+  }).filter(Boolean).filter((e) => {
+    return isErrorBarRelevantForAxisType(axisType, e);
+  });
+};
 var mergeDomains = function mergeDomains2() {
   for (var _len = arguments.length, domains = new Array(_len), _key = 0; _key < _len; _key++) {
     domains[_key] = arguments[_key];
@@ -13203,6 +13797,71 @@ var mergeDomains = function mergeDomains2() {
   var min3 = Math.min(...allValues);
   var max3 = Math.max(...allValues);
   return [min3, max3];
+};
+var combineDomainOfAllAppliedNumericalValuesIncludingErrorValues = (data, axisSettings, items, errorBars, axisType) => {
+  var lowerEnd, upperEnd;
+  if (items.length > 0) {
+    data.forEach((entry) => {
+      items.forEach((item) => {
+        var _errorBars$item$id, _axisSettings$dataKey;
+        var relevantErrorBars = (_errorBars$item$id = errorBars[item.id]) === null || _errorBars$item$id === void 0 ? void 0 : _errorBars$item$id.filter((errorBar) => isErrorBarRelevantForAxisType(axisType, errorBar));
+        var valueByDataKey = getValueByDataKey(entry, (_axisSettings$dataKey = axisSettings.dataKey) !== null && _axisSettings$dataKey !== void 0 ? _axisSettings$dataKey : item.dataKey);
+        var errorDomain = getErrorDomainByDataKey(entry, valueByDataKey, relevantErrorBars);
+        if (errorDomain.length >= 2) {
+          var localLower = Math.min(...errorDomain);
+          var localUpper = Math.max(...errorDomain);
+          if (lowerEnd == null || localLower < lowerEnd) {
+            lowerEnd = localLower;
+          }
+          if (upperEnd == null || localUpper > upperEnd) {
+            upperEnd = localUpper;
+          }
+        }
+        var dataValueDomain = makeDomain(valueByDataKey);
+        if (dataValueDomain != null) {
+          lowerEnd = lowerEnd == null ? dataValueDomain[0] : Math.min(lowerEnd, dataValueDomain[0]);
+          upperEnd = upperEnd == null ? dataValueDomain[1] : Math.max(upperEnd, dataValueDomain[1]);
+        }
+      });
+    });
+  }
+  if ((axisSettings === null || axisSettings === void 0 ? void 0 : axisSettings.dataKey) != null) {
+    data.forEach((item) => {
+      var dataValueDomain = makeDomain(getValueByDataKey(item, axisSettings.dataKey));
+      if (dataValueDomain != null) {
+        lowerEnd = lowerEnd == null ? dataValueDomain[0] : Math.min(lowerEnd, dataValueDomain[0]);
+        upperEnd = upperEnd == null ? dataValueDomain[1] : Math.max(upperEnd, dataValueDomain[1]);
+      }
+    });
+  }
+  if (isWellBehavedNumber(lowerEnd) && isWellBehavedNumber(upperEnd)) {
+    return [lowerEnd, upperEnd];
+  }
+  return void 0;
+};
+var selectDomainOfAllAppliedNumericalValuesIncludingErrorValues = createSelector([selectDisplayedData, selectBaseAxis, selectCartesianItemsSettingsExceptStacked, selectAllErrorBarSettings, pickAxisType], combineDomainOfAllAppliedNumericalValuesIncludingErrorValues, {
+  memoizeOptions: {
+    resultEqualityCheck: numberDomainEqualityCheck
+  }
+});
+function onlyAllowNumbersAndStringsAndDates(item) {
+  var {
+    value
+  } = item;
+  if (isNumOrStr(value) || value instanceof Date) {
+    return value;
+  }
+  return void 0;
+}
+var computeDomainOfTypeCategory = (allDataSquished, axisSettings, isCategorical) => {
+  var categoricalDomain = allDataSquished.map(onlyAllowNumbersAndStringsAndDates).filter((v) => v != null);
+  if (isCategorical && (axisSettings.dataKey == null || axisSettings.allowDuplicatedCategory && hasDuplicate(categoricalDomain))) {
+    return (0, import_range3.default)(0, allDataSquished.length);
+  }
+  if (axisSettings.allowDuplicatedCategory) {
+    return categoricalDomain;
+  }
+  return Array.from(new Set(categoricalDomain));
 };
 var selectReferenceDots = (state) => state.referenceElements.dots;
 var filterReferenceElements = (elements, axisType, axisId) => {
@@ -13245,17 +13904,19 @@ var selectReferenceLinesDomain = createSelector(selectReferenceLinesByAxis, pick
 var selectReferenceElementsDomain = createSelector(selectReferenceDotsDomain, selectReferenceLinesDomain, selectReferenceAreasDomain, (dotsDomain, linesDomain, areasDomain) => {
   return mergeDomains(dotsDomain, areasDomain, linesDomain);
 });
-var selectDomainDefinition = createSelector([selectBaseAxis], getDomainDefinition);
-var combineNumericalDomain = (axisSettings, domainDefinition, domainOfStackGroups, allDataWithErrorDomains, referenceElementsDomain, layout, axisType) => {
-  var domainFromUserPreference = numericalDomainSpecifiedWithoutRequiringData(domainDefinition, axisSettings.allowDataOverflow);
+var combineNumericalDomain = (axisSettings, domainDefinition, domainFromUserPreference, domainOfStackGroups, dataAndErrorBarsDomain, referenceElementsDomain, layout, axisType) => {
   if (domainFromUserPreference != null) {
     return domainFromUserPreference;
   }
   var shouldIncludeDomainOfStackGroups = layout === "vertical" && axisType === "xAxis" || layout === "horizontal" && axisType === "yAxis";
-  var mergedDomains = shouldIncludeDomainOfStackGroups ? mergeDomains(domainOfStackGroups, referenceElementsDomain, computeNumericalDomain(allDataWithErrorDomains)) : mergeDomains(referenceElementsDomain, computeNumericalDomain(allDataWithErrorDomains));
+  var mergedDomains = shouldIncludeDomainOfStackGroups ? mergeDomains(domainOfStackGroups, referenceElementsDomain, dataAndErrorBarsDomain) : mergeDomains(referenceElementsDomain, dataAndErrorBarsDomain);
   return parseNumericalUserDomain(domainDefinition, mergedDomains, axisSettings.allowDataOverflow);
 };
-var selectNumericalDomain = createSelector([selectBaseAxis, selectDomainDefinition, selectDomainOfStackGroups, selectAllAppliedNumericalValuesIncludingErrorValues, selectReferenceElementsDomain, selectChartLayout, pickAxisType], combineNumericalDomain);
+var selectNumericalDomain = createSelector([selectBaseAxis, selectDomainDefinition, selectDomainFromUserPreference, selectDomainOfStackGroups, selectDomainOfAllAppliedNumericalValuesIncludingErrorValues, selectReferenceElementsDomain, selectChartLayout, pickAxisType], combineNumericalDomain, {
+  memoizeOptions: {
+    resultEqualityCheck: numberDomainEqualityCheck
+  }
+});
 var expandDomain = [0, 1];
 var combineAxisDomain = (axisSettings, layout, displayedData, allAppliedValues, stackOffsetType, axisType, numericalDomain) => {
   if ((axisSettings == null || displayedData == null || displayedData.length === 0) && numericalDomain === void 0) {
@@ -13577,14 +14238,18 @@ var selectAllYAxesOffsetSteps = createSelector(selectChartWidth, selectChartOffs
   });
   return steps;
 });
-var selectXAxisPosition = (state, axisId) => {
-  var offset = selectChartOffsetInternal(state);
+var selectXAxisOffsetSteps = (state, axisId) => {
   var axisSettings = selectXAxisSettings(state, axisId);
   if (axisSettings == null) {
     return void 0;
   }
-  var allSteps = selectAllXAxesOffsetSteps(state, axisSettings.orientation, axisSettings.mirror);
-  var stepOfThisAxis = allSteps[axisId];
+  return selectAllXAxesOffsetSteps(state, axisSettings.orientation, axisSettings.mirror);
+};
+var selectXAxisPosition = createSelector([selectChartOffsetInternal, selectXAxisSettings, selectXAxisOffsetSteps, (_, axisId) => axisId], (offset, axisSettings, allSteps, axisId) => {
+  if (axisSettings == null) {
+    return void 0;
+  }
+  var stepOfThisAxis = allSteps === null || allSteps === void 0 ? void 0 : allSteps[axisId];
   if (stepOfThisAxis == null) {
     return {
       x: offset.left,
@@ -13595,15 +14260,19 @@ var selectXAxisPosition = (state, axisId) => {
     x: offset.left,
     y: stepOfThisAxis
   };
-};
-var selectYAxisPosition = (state, axisId) => {
-  var offset = selectChartOffsetInternal(state);
+});
+var selectYAxisOffsetSteps = (state, axisId) => {
   var axisSettings = selectYAxisSettings(state, axisId);
   if (axisSettings == null) {
     return void 0;
   }
-  var allSteps = selectAllYAxesOffsetSteps(state, axisSettings.orientation, axisSettings.mirror);
-  var stepOfThisAxis = allSteps[axisId];
+  return selectAllYAxesOffsetSteps(state, axisSettings.orientation, axisSettings.mirror);
+};
+var selectYAxisPosition = createSelector([selectChartOffsetInternal, selectYAxisSettings, selectYAxisOffsetSteps, (_, axisId) => axisId], (offset, axisSettings, allSteps, axisId) => {
+  if (axisSettings == null) {
+    return void 0;
+  }
+  var stepOfThisAxis = allSteps === null || allSteps === void 0 ? void 0 : allSteps[axisId];
   if (stepOfThisAxis == null) {
     return {
       x: 0,
@@ -13614,7 +14283,7 @@ var selectYAxisPosition = (state, axisId) => {
     x: stepOfThisAxis,
     y: offset.top
   };
-};
+});
 var selectYAxisSize = createSelector(selectChartOffsetInternal, selectYAxisSettings, (offset, axisSettings) => {
   var width = typeof axisSettings.width === "number" ? axisSettings.width : DEFAULT_Y_AXIS_WIDTH;
   return {
@@ -13781,7 +14450,7 @@ var selectAxisWithScale = createSelector(selectBaseAxis, selectAxisScale, (axis,
   if (axis == null || scale == null) {
     return void 0;
   }
-  return _objectSpread15(_objectSpread15({}, axis), {}, {
+  return _objectSpread16(_objectSpread16({}, axis), {}, {
     scale
   });
 });
@@ -13790,7 +14459,7 @@ var selectZAxisWithScale = createSelector((state, _axisType, axisId) => selectZA
   if (axis == null || scale == null) {
     return void 0;
   }
-  return _objectSpread15(_objectSpread15({}, axis), {}, {
+  return _objectSpread16(_objectSpread16({}, axis), {}, {
     scale
   });
 });
@@ -13869,7 +14538,8 @@ var initialState3 = {
     index: null,
     dataKey: void 0,
     label: void 0,
-    coordinate: void 0
+    coordinate: void 0,
+    sourceViewBox: void 0
   },
   tooltipItemPayloads: [],
   settings: {
@@ -13884,14 +14554,20 @@ var tooltipSlice = createSlice({
   name: "tooltip",
   initialState: initialState3,
   reducers: {
-    addTooltipEntrySettings(state, action) {
-      state.tooltipItemPayloads.push(castDraft(action.payload));
+    addTooltipEntrySettings: {
+      reducer(state, action) {
+        state.tooltipItemPayloads.push(castDraft(action.payload));
+      },
+      prepare: prepareAutoBatched()
     },
-    removeTooltipEntrySettings(state, action) {
-      var index2 = current(state).tooltipItemPayloads.indexOf(castDraft(action.payload));
-      if (index2 > -1) {
-        state.tooltipItemPayloads.splice(index2, 1);
-      }
+    removeTooltipEntrySettings: {
+      reducer(state, action) {
+        var index2 = current(state).tooltipItemPayloads.indexOf(castDraft(action.payload));
+        if (index2 > -1) {
+          state.tooltipItemPayloads.splice(index2, 1);
+        }
+      },
+      prepare: prepareAutoBatched()
     },
     setTooltipSettingsState(state, action) {
       state.settings = action.payload;
@@ -13962,7 +14638,7 @@ var {
 var tooltipReducer = tooltipSlice.reducer;
 
 // node_modules/recharts/es6/state/selectors/combiners/combineTooltipInteractionState.js
-function ownKeys16(e, r) {
+function ownKeys17(e, r) {
   var t = Object.keys(e);
   if (Object.getOwnPropertySymbols) {
     var o = Object.getOwnPropertySymbols(e);
@@ -13972,25 +14648,25 @@ function ownKeys16(e, r) {
   }
   return t;
 }
-function _objectSpread16(e) {
+function _objectSpread17(e) {
   for (var r = 1; r < arguments.length; r++) {
     var t = null != arguments[r] ? arguments[r] : {};
-    r % 2 ? ownKeys16(Object(t), true).forEach(function(r2) {
-      _defineProperty16(e, r2, t[r2]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys16(Object(t)).forEach(function(r2) {
+    r % 2 ? ownKeys17(Object(t), true).forEach(function(r2) {
+      _defineProperty17(e, r2, t[r2]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys17(Object(t)).forEach(function(r2) {
       Object.defineProperty(e, r2, Object.getOwnPropertyDescriptor(t, r2));
     });
   }
   return e;
 }
-function _defineProperty16(e, r, t) {
-  return (r = _toPropertyKey16(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: true, configurable: true, writable: true }) : e[r] = t, e;
+function _defineProperty17(e, r, t) {
+  return (r = _toPropertyKey17(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: true, configurable: true, writable: true }) : e[r] = t, e;
 }
-function _toPropertyKey16(t) {
-  var i = _toPrimitive16(t, "string");
+function _toPropertyKey17(t) {
+  var i = _toPrimitive17(t, "string");
   return "symbol" == typeof i ? i : i + "";
 }
-function _toPrimitive16(t, r) {
+function _toPrimitive17(t, r) {
   if ("object" != typeof t || !t) return t;
   var e = t[Symbol.toPrimitive];
   if (void 0 !== e) {
@@ -14035,7 +14711,7 @@ var combineTooltipInteractionState = (tooltipState, tooltipEventType, trigger, d
   var activeFromProps = tooltipState.settings.active === true;
   if (hasBeenActivePreviously(appropriateMouseInteraction)) {
     if (activeFromProps) {
-      return _objectSpread16(_objectSpread16({}, appropriateMouseInteraction), {}, {
+      return _objectSpread17(_objectSpread17({}, appropriateMouseInteraction), {}, {
         active: true
       });
     }
@@ -14047,7 +14723,7 @@ var combineTooltipInteractionState = (tooltipState, tooltipEventType, trigger, d
       index: defaultIndex
     };
   }
-  return _objectSpread16(_objectSpread16({}, noInteraction), {}, {
+  return _objectSpread17(_objectSpread17({}, noInteraction), {}, {
     coordinate: appropriateMouseInteraction.coordinate
   });
 };
@@ -14130,7 +14806,7 @@ var selectTooltipPayloadSearcher = (state) => state.options.tooltipPayloadSearch
 var selectTooltipState = (state) => state.tooltip;
 
 // node_modules/recharts/es6/state/selectors/combiners/combineTooltipPayload.js
-function ownKeys17(e, r) {
+function ownKeys18(e, r) {
   var t = Object.keys(e);
   if (Object.getOwnPropertySymbols) {
     var o = Object.getOwnPropertySymbols(e);
@@ -14140,25 +14816,25 @@ function ownKeys17(e, r) {
   }
   return t;
 }
-function _objectSpread17(e) {
+function _objectSpread18(e) {
   for (var r = 1; r < arguments.length; r++) {
     var t = null != arguments[r] ? arguments[r] : {};
-    r % 2 ? ownKeys17(Object(t), true).forEach(function(r2) {
-      _defineProperty17(e, r2, t[r2]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys17(Object(t)).forEach(function(r2) {
+    r % 2 ? ownKeys18(Object(t), true).forEach(function(r2) {
+      _defineProperty18(e, r2, t[r2]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys18(Object(t)).forEach(function(r2) {
       Object.defineProperty(e, r2, Object.getOwnPropertyDescriptor(t, r2));
     });
   }
   return e;
 }
-function _defineProperty17(e, r, t) {
-  return (r = _toPropertyKey17(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: true, configurable: true, writable: true }) : e[r] = t, e;
+function _defineProperty18(e, r, t) {
+  return (r = _toPropertyKey18(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: true, configurable: true, writable: true }) : e[r] = t, e;
 }
-function _toPropertyKey17(t) {
-  var i = _toPrimitive17(t, "string");
+function _toPropertyKey18(t) {
+  var i = _toPrimitive18(t, "string");
   return "symbol" == typeof i ? i : i + "";
 }
-function _toPrimitive17(t, r) {
+function _toPrimitive18(t, r) {
   if ("object" != typeof t || !t) return t;
   var e = t[Symbol.toPrimitive];
   if (void 0 !== e) {
@@ -14224,7 +14900,7 @@ var combineTooltipPayload = (tooltipPayloadConfigurations, activeIndex, chartDat
     }
     if (Array.isArray(tooltipPayload)) {
       tooltipPayload.forEach((item) => {
-        var newSettings = _objectSpread17(_objectSpread17({}, settings), {}, {
+        var newSettings = _objectSpread18(_objectSpread18({}, settings), {}, {
           name: item.name,
           unit: item.unit,
           // color and fill are erased to keep 100% the identical behaviour to recharts 2.x - but there's nothing stopping us from returning them here. It's technically a breaking change.
@@ -14261,18 +14937,32 @@ var combineTooltipPayload = (tooltipPayloadConfigurations, activeIndex, chartDat
 var selectTooltipAxisRealScaleType = createSelector([selectTooltipAxis, selectChartLayout, selectHasBar, selectChartName, selectTooltipAxisType], combineRealScaleType);
 var selectAllUnfilteredGraphicalItems = createSelector([(state) => state.graphicalItems.cartesianItems, (state) => state.graphicalItems.polarItems], (cartesianItems, polarItems) => [...cartesianItems, ...polarItems]);
 var selectTooltipAxisPredicate = createSelector([selectTooltipAxisType, selectTooltipAxisId], itemAxisPredicate);
-var selectAllGraphicalItemsSettings = createSelector([selectAllUnfilteredGraphicalItems, selectTooltipAxis, selectTooltipAxisPredicate], combineGraphicalItemsSettings);
+var selectAllGraphicalItemsSettings = createSelector([selectAllUnfilteredGraphicalItems, selectTooltipAxis, selectTooltipAxisPredicate], combineGraphicalItemsSettings, {
+  memoizeOptions: {
+    resultEqualityCheck: arrayEqualityCheck
+  }
+});
 var selectAllStackedGraphicalItemsSettings = createSelector([selectAllGraphicalItemsSettings], (graphicalItems) => graphicalItems.filter(isStacked));
-var selectTooltipGraphicalItemsData = createSelector([selectAllGraphicalItemsSettings], combineGraphicalItemsData);
+var selectTooltipGraphicalItemsData = createSelector([selectAllGraphicalItemsSettings], combineGraphicalItemsData, {
+  memoizeOptions: {
+    resultEqualityCheck: arrayEqualityCheck
+  }
+});
 var selectTooltipDisplayedData = createSelector([selectTooltipGraphicalItemsData, selectChartDataWithIndexes], combineDisplayedData);
 var selectTooltipStackedData = createSelector([selectAllStackedGraphicalItemsSettings, selectChartDataWithIndexes, selectTooltipAxis], combineDisplayedStackedData);
 var selectAllTooltipAppliedValues = createSelector([selectTooltipDisplayedData, selectTooltipAxis, selectAllGraphicalItemsSettings], combineAppliedValues);
 var selectTooltipAxisDomainDefinition = createSelector([selectTooltipAxis], getDomainDefinition);
+var selectTooltipDataOverflow = createSelector([selectTooltipAxis], (axisSettings) => axisSettings.allowDataOverflow);
+var selectTooltipDomainFromUserPreferences = createSelector([selectTooltipAxisDomainDefinition, selectTooltipDataOverflow], numericalDomainSpecifiedWithoutRequiringData);
 var selectAllStackedGraphicalItems = createSelector([selectAllGraphicalItemsSettings], (graphicalItems) => graphicalItems.filter(isStacked));
 var selectTooltipStackGroups = createSelector([selectTooltipStackedData, selectAllStackedGraphicalItems, selectStackOffsetType], combineStackGroups);
-var selectTooltipDomainOfStackGroups = createSelector([selectTooltipStackGroups, selectChartDataWithIndexes, selectTooltipAxisType], combineDomainOfStackGroups);
+var selectTooltipDomainOfStackGroups = createSelector([selectTooltipStackGroups, selectChartDataWithIndexes, selectTooltipAxisType, selectTooltipDomainFromUserPreferences], combineDomainOfStackGroups);
 var selectTooltipItemsSettingsExceptStacked = createSelector([selectAllGraphicalItemsSettings], filterGraphicalNotStackedItems);
-var selectTooltipAllAppliedNumericalValuesIncludingErrorValues = createSelector([selectTooltipDisplayedData, selectTooltipAxis, selectTooltipItemsSettingsExceptStacked, selectAllErrorBarSettings, selectTooltipAxisType], combineAppliedNumericalValuesIncludingErrorValues);
+var selectDomainOfAllAppliedNumericalValuesIncludingErrorValues2 = createSelector([selectTooltipDisplayedData, selectTooltipAxis, selectTooltipItemsSettingsExceptStacked, selectAllErrorBarSettings, selectTooltipAxisType], combineDomainOfAllAppliedNumericalValuesIncludingErrorValues, {
+  memoizeOptions: {
+    resultEqualityCheck: numberDomainEqualityCheck
+  }
+});
 var selectReferenceDotsByTooltipAxis = createSelector([selectReferenceDots, selectTooltipAxisType, selectTooltipAxisId], filterReferenceElements);
 var selectTooltipReferenceDotsDomain = createSelector([selectReferenceDotsByTooltipAxis, selectTooltipAxisType], combineDotsDomain);
 var selectReferenceAreasByTooltipAxis = createSelector([selectReferenceAreas, selectTooltipAxisType, selectTooltipAxisId], filterReferenceElements);
@@ -14280,7 +14970,7 @@ var selectTooltipReferenceAreasDomain = createSelector([selectReferenceAreasByTo
 var selectReferenceLinesByTooltipAxis = createSelector([selectReferenceLines, selectTooltipAxisType, selectTooltipAxisId], filterReferenceElements);
 var selectTooltipReferenceLinesDomain = createSelector([selectReferenceLinesByTooltipAxis, selectTooltipAxisType], combineLinesDomain);
 var selectTooltipReferenceElementsDomain = createSelector([selectTooltipReferenceDotsDomain, selectTooltipReferenceLinesDomain, selectTooltipReferenceAreasDomain], mergeDomains);
-var selectTooltipNumericalDomain = createSelector([selectTooltipAxis, selectTooltipAxisDomainDefinition, selectTooltipDomainOfStackGroups, selectTooltipAllAppliedNumericalValuesIncludingErrorValues, selectTooltipReferenceElementsDomain, selectChartLayout, selectTooltipAxisType], combineNumericalDomain);
+var selectTooltipNumericalDomain = createSelector([selectTooltipAxis, selectTooltipAxisDomainDefinition, selectTooltipDomainFromUserPreferences, selectTooltipDomainOfStackGroups, selectDomainOfAllAppliedNumericalValuesIncludingErrorValues2, selectTooltipReferenceElementsDomain, selectChartLayout, selectTooltipAxisType], combineNumericalDomain);
 var selectTooltipAxisDomain = createSelector([selectTooltipAxis, selectChartLayout, selectTooltipDisplayedData, selectAllTooltipAppliedValues, selectStackOffsetType, selectTooltipAxisType, selectTooltipNumericalDomain], combineAxisDomain);
 var selectTooltipNiceTicks = createSelector([selectTooltipAxisDomain, selectTooltipAxis, selectTooltipAxisRealScaleType], combineNiceTicks);
 var selectTooltipAxisDomainIncludingNiceTicks = createSelector([selectTooltipAxis, selectTooltipAxisDomain, selectTooltipNiceTicks, selectTooltipAxisType], combineAxisDomainWithNiceTicks);
@@ -14355,7 +15045,7 @@ var selectActiveTooltipDataPoints = createSelector([selectActiveTooltipPayload],
 });
 
 // node_modules/recharts/es6/context/useTooltipAxis.js
-function ownKeys18(e, r) {
+function ownKeys19(e, r) {
   var t = Object.keys(e);
   if (Object.getOwnPropertySymbols) {
     var o = Object.getOwnPropertySymbols(e);
@@ -14365,25 +15055,25 @@ function ownKeys18(e, r) {
   }
   return t;
 }
-function _objectSpread18(e) {
+function _objectSpread19(e) {
   for (var r = 1; r < arguments.length; r++) {
     var t = null != arguments[r] ? arguments[r] : {};
-    r % 2 ? ownKeys18(Object(t), true).forEach(function(r2) {
-      _defineProperty18(e, r2, t[r2]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys18(Object(t)).forEach(function(r2) {
+    r % 2 ? ownKeys19(Object(t), true).forEach(function(r2) {
+      _defineProperty19(e, r2, t[r2]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys19(Object(t)).forEach(function(r2) {
       Object.defineProperty(e, r2, Object.getOwnPropertyDescriptor(t, r2));
     });
   }
   return e;
 }
-function _defineProperty18(e, r, t) {
-  return (r = _toPropertyKey18(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: true, configurable: true, writable: true }) : e[r] = t, e;
+function _defineProperty19(e, r, t) {
+  return (r = _toPropertyKey19(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: true, configurable: true, writable: true }) : e[r] = t, e;
 }
-function _toPropertyKey18(t) {
-  var i = _toPrimitive18(t, "string");
+function _toPropertyKey19(t) {
+  var i = _toPrimitive19(t, "string");
   return "symbol" == typeof i ? i : i + "";
 }
-function _toPrimitive18(t, r) {
+function _toPrimitive19(t, r) {
   if ("object" != typeof t || !t) return t;
   var e = t[Symbol.toPrimitive];
   if (void 0 !== e) {
@@ -14398,7 +15088,7 @@ var useTooltipAxisBandSize = () => {
   var tooltipAxis = useTooltipAxis();
   var tooltipTicks = useAppSelector(selectTooltipAxisTicks);
   var tooltipAxisScale = useAppSelector(selectTooltipAxisScale);
-  return getBandSizeOfAxis(_objectSpread18(_objectSpread18({}, tooltipAxis), {}, {
+  return getBandSizeOfAxis(_objectSpread19(_objectSpread19({}, tooltipAxis), {}, {
     scale: tooltipAxisScale
   }), tooltipTicks);
 };
@@ -14462,16 +15152,16 @@ var combineActiveProps = (chartEvent, layout, polarViewBox, tooltipAxisType, too
 };
 
 // node_modules/recharts/es6/component/Cursor.js
-function _extends11() {
-  return _extends11 = Object.assign ? Object.assign.bind() : function(n) {
+function _extends12() {
+  return _extends12 = Object.assign ? Object.assign.bind() : function(n) {
     for (var e = 1; e < arguments.length; e++) {
       var t = arguments[e];
       for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]);
     }
     return n;
-  }, _extends11.apply(null, arguments);
+  }, _extends12.apply(null, arguments);
 }
-function ownKeys19(e, r) {
+function ownKeys20(e, r) {
   var t = Object.keys(e);
   if (Object.getOwnPropertySymbols) {
     var o = Object.getOwnPropertySymbols(e);
@@ -14481,25 +15171,25 @@ function ownKeys19(e, r) {
   }
   return t;
 }
-function _objectSpread19(e) {
+function _objectSpread20(e) {
   for (var r = 1; r < arguments.length; r++) {
     var t = null != arguments[r] ? arguments[r] : {};
-    r % 2 ? ownKeys19(Object(t), true).forEach(function(r2) {
-      _defineProperty19(e, r2, t[r2]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys19(Object(t)).forEach(function(r2) {
+    r % 2 ? ownKeys20(Object(t), true).forEach(function(r2) {
+      _defineProperty20(e, r2, t[r2]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys20(Object(t)).forEach(function(r2) {
       Object.defineProperty(e, r2, Object.getOwnPropertyDescriptor(t, r2));
     });
   }
   return e;
 }
-function _defineProperty19(e, r, t) {
-  return (r = _toPropertyKey19(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: true, configurable: true, writable: true }) : e[r] = t, e;
+function _defineProperty20(e, r, t) {
+  return (r = _toPropertyKey20(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: true, configurable: true, writable: true }) : e[r] = t, e;
 }
-function _toPropertyKey19(t) {
-  var i = _toPrimitive19(t, "string");
+function _toPropertyKey20(t) {
+  var i = _toPrimitive20(t, "string");
   return "symbol" == typeof i ? i : i + "";
 }
-function _toPrimitive19(t, r) {
+function _toPrimitive20(t, r) {
   if ("object" != typeof t || !t) return t;
   var e = t[Symbol.toPrimitive];
   if (void 0 !== e) {
@@ -14558,22 +15248,25 @@ function CursorInternal(props) {
     cursorComp = Curve;
   }
   var extraClassName = typeof cursor === "object" && "className" in cursor ? cursor.className : void 0;
-  var cursorProps = _objectSpread19(_objectSpread19(_objectSpread19(_objectSpread19({
+  var cursorProps = _objectSpread20(_objectSpread20(_objectSpread20(_objectSpread20({
     stroke: "#ccc",
     pointerEvents: "none"
-  }, offset), restProps), filterProps(cursor, false)), {}, {
+  }, offset), restProps), svgPropertiesNoEventsFromUnknown(cursor)), {}, {
     payload: activePayload,
     payloadIndex: activeTooltipIndex,
     className: clsx("recharts-tooltip-cursor", extraClassName)
   });
-  return (0, import_react18.isValidElement)(cursor) ? (0, import_react18.cloneElement)(cursor, cursorProps) : (0, import_react18.createElement)(cursorComp, cursorProps);
+  if ((0, import_react20.isValidElement)(cursor)) {
+    return (0, import_react20.cloneElement)(cursor, cursorProps);
+  }
+  return (0, import_react20.createElement)(cursorComp, cursorProps);
 }
 function Cursor(props) {
   var tooltipAxisBandSize = useTooltipAxisBandSize();
   var offset = useOffsetInternal();
   var layout = useChartLayout();
   var chartName = useChartName();
-  return React13.createElement(CursorInternal, _extends11({}, props, {
+  return React14.createElement(CursorInternal, _extends12({}, props, {
     coordinate: props.coordinate,
     index: props.index,
     payload: props.payload,
@@ -14585,12 +15278,12 @@ function Cursor(props) {
 }
 
 // node_modules/recharts/es6/context/tooltipPortalContext.js
-var import_react19 = __toESM(require_react());
-var TooltipPortalContext = (0, import_react19.createContext)(null);
-var useTooltipPortal = () => (0, import_react19.useContext)(TooltipPortalContext);
+var import_react21 = __toESM(require_react());
+var TooltipPortalContext = (0, import_react21.createContext)(null);
+var useTooltipPortal = () => (0, import_react21.useContext)(TooltipPortalContext);
 
 // node_modules/recharts/es6/synchronisation/useChartSynchronisation.js
-var import_react20 = __toESM(require_react());
+var import_react22 = __toESM(require_react());
 
 // node_modules/eventemitter3/index.mjs
 var import_index = __toESM(require_eventemitter3(), 1);
@@ -14684,239 +15377,7 @@ var {
 var chartDataReducer = chartDataSlice.reducer;
 
 // node_modules/recharts/es6/synchronisation/useChartSynchronisation.js
-var _excluded6 = ["x", "y"];
-function ownKeys20(e, r) {
-  var t = Object.keys(e);
-  if (Object.getOwnPropertySymbols) {
-    var o = Object.getOwnPropertySymbols(e);
-    r && (o = o.filter(function(r2) {
-      return Object.getOwnPropertyDescriptor(e, r2).enumerable;
-    })), t.push.apply(t, o);
-  }
-  return t;
-}
-function _objectSpread20(e) {
-  for (var r = 1; r < arguments.length; r++) {
-    var t = null != arguments[r] ? arguments[r] : {};
-    r % 2 ? ownKeys20(Object(t), true).forEach(function(r2) {
-      _defineProperty20(e, r2, t[r2]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys20(Object(t)).forEach(function(r2) {
-      Object.defineProperty(e, r2, Object.getOwnPropertyDescriptor(t, r2));
-    });
-  }
-  return e;
-}
-function _defineProperty20(e, r, t) {
-  return (r = _toPropertyKey20(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: true, configurable: true, writable: true }) : e[r] = t, e;
-}
-function _toPropertyKey20(t) {
-  var i = _toPrimitive20(t, "string");
-  return "symbol" == typeof i ? i : i + "";
-}
-function _toPrimitive20(t, r) {
-  if ("object" != typeof t || !t) return t;
-  var e = t[Symbol.toPrimitive];
-  if (void 0 !== e) {
-    var i = e.call(t, r || "default");
-    if ("object" != typeof i) return i;
-    throw new TypeError("@@toPrimitive must return a primitive value.");
-  }
-  return ("string" === r ? String : Number)(t);
-}
-function _objectWithoutProperties6(e, t) {
-  if (null == e) return {};
-  var o, r, i = _objectWithoutPropertiesLoose6(e, t);
-  if (Object.getOwnPropertySymbols) {
-    var n = Object.getOwnPropertySymbols(e);
-    for (r = 0; r < n.length; r++) o = n[r], -1 === t.indexOf(o) && {}.propertyIsEnumerable.call(e, o) && (i[o] = e[o]);
-  }
-  return i;
-}
-function _objectWithoutPropertiesLoose6(r, e) {
-  if (null == r) return {};
-  var t = {};
-  for (var n in r) if ({}.hasOwnProperty.call(r, n)) {
-    if (-1 !== e.indexOf(n)) continue;
-    t[n] = r[n];
-  }
-  return t;
-}
-var noop3 = () => {
-};
-function useTooltipSyncEventsListener() {
-  var mySyncId = useAppSelector(selectSyncId);
-  var myEventEmitter = useAppSelector(selectEventEmitter);
-  var dispatch = useAppDispatch();
-  var syncMethod = useAppSelector(selectSyncMethod);
-  var tooltipTicks = useAppSelector(selectTooltipAxisTicks);
-  var layout = useChartLayout();
-  var viewBox = useViewBox();
-  var className = useAppSelector((state) => state.rootProps.className);
-  (0, import_react20.useEffect)(() => {
-    if (mySyncId == null) {
-      return noop3;
-    }
-    var listener = (incomingSyncId, action, emitter) => {
-      if (myEventEmitter === emitter) {
-        return;
-      }
-      if (mySyncId !== incomingSyncId) {
-        return;
-      }
-      if (syncMethod === "index") {
-        var _action$payload;
-        if (viewBox && action !== null && action !== void 0 && (_action$payload = action.payload) !== null && _action$payload !== void 0 && _action$payload.coordinate) {
-          var _action$payload$coord = action.payload.coordinate, {
-            x: _x,
-            y: _y
-          } = _action$payload$coord, otherCoordinateProps = _objectWithoutProperties6(_action$payload$coord, _excluded6);
-          var boundedCoordinate = _objectSpread20(_objectSpread20(_objectSpread20({}, otherCoordinateProps), typeof _x === "number" && {
-            x: Math.max(viewBox.x, Math.min(_x, viewBox.x + viewBox.width))
-          }), typeof _y === "number" && {
-            y: Math.max(viewBox.y, Math.min(_y, viewBox.y + viewBox.height))
-          });
-          var boundedAction = _objectSpread20(_objectSpread20({}, action), {}, {
-            payload: _objectSpread20(_objectSpread20({}, action.payload), {}, {
-              coordinate: boundedCoordinate
-            })
-          });
-          dispatch(boundedAction);
-        } else {
-          dispatch(action);
-        }
-        return;
-      }
-      if (tooltipTicks == null) {
-        return;
-      }
-      var activeTick;
-      if (typeof syncMethod === "function") {
-        var syncMethodParam = {
-          activeTooltipIndex: action.payload.index == null ? void 0 : Number(action.payload.index),
-          isTooltipActive: action.payload.active,
-          activeIndex: action.payload.index == null ? void 0 : Number(action.payload.index),
-          activeLabel: action.payload.label,
-          activeDataKey: action.payload.dataKey,
-          activeCoordinate: action.payload.coordinate
-        };
-        var activeTooltipIndex = syncMethod(tooltipTicks, syncMethodParam);
-        activeTick = tooltipTicks[activeTooltipIndex];
-      } else if (syncMethod === "value") {
-        activeTick = tooltipTicks.find((tick) => String(tick.value) === action.payload.label);
-      }
-      var {
-        coordinate
-      } = action.payload;
-      if (activeTick == null || action.payload.active === false || coordinate == null || viewBox == null) {
-        dispatch(setSyncInteraction({
-          active: false,
-          coordinate: void 0,
-          dataKey: void 0,
-          index: null,
-          label: void 0
-        }));
-        return;
-      }
-      var {
-        x: x2,
-        y: y2
-      } = coordinate;
-      var validateChartX = Math.min(x2, viewBox.x + viewBox.width);
-      var validateChartY = Math.min(y2, viewBox.y + viewBox.height);
-      var activeCoordinate = {
-        x: layout === "horizontal" ? activeTick.coordinate : validateChartX,
-        y: layout === "horizontal" ? validateChartY : activeTick.coordinate
-      };
-      var syncAction = setSyncInteraction({
-        active: action.payload.active,
-        coordinate: activeCoordinate,
-        dataKey: action.payload.dataKey,
-        index: String(activeTick.index),
-        label: action.payload.label
-      });
-      dispatch(syncAction);
-    };
-    eventCenter.on(TOOLTIP_SYNC_EVENT, listener);
-    return () => {
-      eventCenter.off(TOOLTIP_SYNC_EVENT, listener);
-    };
-  }, [className, dispatch, myEventEmitter, mySyncId, syncMethod, tooltipTicks, layout, viewBox]);
-}
-function useBrushSyncEventsListener() {
-  var mySyncId = useAppSelector(selectSyncId);
-  var myEventEmitter = useAppSelector(selectEventEmitter);
-  var dispatch = useAppDispatch();
-  (0, import_react20.useEffect)(() => {
-    if (mySyncId == null) {
-      return noop3;
-    }
-    var listener = (incomingSyncId, action, emitter) => {
-      if (myEventEmitter === emitter) {
-        return;
-      }
-      if (mySyncId === incomingSyncId) {
-        dispatch(setDataStartEndIndexes(action));
-      }
-    };
-    eventCenter.on(BRUSH_SYNC_EVENT, listener);
-    return () => {
-      eventCenter.off(BRUSH_SYNC_EVENT, listener);
-    };
-  }, [dispatch, myEventEmitter, mySyncId]);
-}
-function useSynchronisedEventsFromOtherCharts() {
-  var dispatch = useAppDispatch();
-  (0, import_react20.useEffect)(() => {
-    dispatch(createEventEmitter());
-  }, [dispatch]);
-  useTooltipSyncEventsListener();
-  useBrushSyncEventsListener();
-}
-function useTooltipChartSynchronisation(tooltipEventType, trigger, activeCoordinate, activeLabel, activeIndex, isTooltipActive) {
-  var activeDataKey = useAppSelector((state) => selectTooltipDataKey(state, tooltipEventType, trigger));
-  var eventEmitterSymbol = useAppSelector(selectEventEmitter);
-  var syncId = useAppSelector(selectSyncId);
-  var syncMethod = useAppSelector(selectSyncMethod);
-  var tooltipState = useAppSelector(selectSynchronisedTooltipState);
-  var isReceivingSynchronisation = tooltipState === null || tooltipState === void 0 ? void 0 : tooltipState.active;
-  (0, import_react20.useEffect)(() => {
-    if (isReceivingSynchronisation) {
-      return;
-    }
-    if (syncId == null) {
-      return;
-    }
-    if (eventEmitterSymbol == null) {
-      return;
-    }
-    var syncAction = setSyncInteraction({
-      active: isTooltipActive,
-      coordinate: activeCoordinate,
-      dataKey: activeDataKey,
-      index: activeIndex,
-      label: typeof activeLabel === "number" ? String(activeLabel) : activeLabel
-    });
-    eventCenter.emit(TOOLTIP_SYNC_EVENT, syncId, syncAction, eventEmitterSymbol);
-  }, [isReceivingSynchronisation, activeCoordinate, activeDataKey, activeIndex, activeLabel, eventEmitterSymbol, syncId, syncMethod, isTooltipActive]);
-}
-function useBrushChartSynchronisation() {
-  var syncId = useAppSelector(selectSyncId);
-  var eventEmitterSymbol = useAppSelector(selectEventEmitter);
-  var brushStartIndex = useAppSelector((state) => state.chartData.dataStartIndex);
-  var brushEndIndex = useAppSelector((state) => state.chartData.dataEndIndex);
-  (0, import_react20.useEffect)(() => {
-    if (syncId == null || brushStartIndex == null || brushEndIndex == null || eventEmitterSymbol == null) {
-      return;
-    }
-    var syncAction = {
-      startIndex: brushStartIndex,
-      endIndex: brushEndIndex
-    };
-    eventCenter.emit(BRUSH_SYNC_EVENT, syncId, syncAction, eventEmitterSymbol);
-  }, [brushEndIndex, brushStartIndex, eventEmitterSymbol, syncId]);
-}
-
-// node_modules/recharts/es6/component/Tooltip.js
+var _excluded7 = ["x", "y"];
 function ownKeys21(e, r) {
   var t = Object.keys(e);
   if (Object.getOwnPropertySymbols) {
@@ -14955,17 +15416,257 @@ function _toPrimitive21(t, r) {
   }
   return ("string" === r ? String : Number)(t);
 }
+function _objectWithoutProperties7(e, t) {
+  if (null == e) return {};
+  var o, r, i = _objectWithoutPropertiesLoose7(e, t);
+  if (Object.getOwnPropertySymbols) {
+    var n = Object.getOwnPropertySymbols(e);
+    for (r = 0; r < n.length; r++) o = n[r], -1 === t.indexOf(o) && {}.propertyIsEnumerable.call(e, o) && (i[o] = e[o]);
+  }
+  return i;
+}
+function _objectWithoutPropertiesLoose7(r, e) {
+  if (null == r) return {};
+  var t = {};
+  for (var n in r) if ({}.hasOwnProperty.call(r, n)) {
+    if (-1 !== e.indexOf(n)) continue;
+    t[n] = r[n];
+  }
+  return t;
+}
+var noop3 = () => {
+};
+function useTooltipSyncEventsListener() {
+  var mySyncId = useAppSelector(selectSyncId);
+  var myEventEmitter = useAppSelector(selectEventEmitter);
+  var dispatch = useAppDispatch();
+  var syncMethod = useAppSelector(selectSyncMethod);
+  var tooltipTicks = useAppSelector(selectTooltipAxisTicks);
+  var layout = useChartLayout();
+  var viewBox = useViewBox();
+  var className = useAppSelector((state) => state.rootProps.className);
+  (0, import_react22.useEffect)(() => {
+    if (mySyncId == null) {
+      return noop3;
+    }
+    var listener = (incomingSyncId, action, emitter) => {
+      if (myEventEmitter === emitter) {
+        return;
+      }
+      if (mySyncId !== incomingSyncId) {
+        return;
+      }
+      if (syncMethod === "index") {
+        var _action$payload;
+        if (viewBox && action !== null && action !== void 0 && (_action$payload = action.payload) !== null && _action$payload !== void 0 && _action$payload.coordinate && action.payload.sourceViewBox) {
+          var _action$payload$coord = action.payload.coordinate, {
+            x: _x,
+            y: _y
+          } = _action$payload$coord, otherCoordinateProps = _objectWithoutProperties7(_action$payload$coord, _excluded7);
+          var {
+            x: sourceX,
+            y: sourceY,
+            width: sourceWidth,
+            height: sourceHeight
+          } = action.payload.sourceViewBox;
+          var scaledCoordinate = _objectSpread21(_objectSpread21({}, otherCoordinateProps), {}, {
+            x: viewBox.x + (sourceWidth ? (_x - sourceX) / sourceWidth : 0) * viewBox.width,
+            y: viewBox.y + (sourceHeight ? (_y - sourceY) / sourceHeight : 0) * viewBox.height
+          });
+          dispatch(_objectSpread21(_objectSpread21({}, action), {}, {
+            payload: _objectSpread21(_objectSpread21({}, action.payload), {}, {
+              coordinate: scaledCoordinate
+            })
+          }));
+        } else {
+          dispatch(action);
+        }
+        return;
+      }
+      if (tooltipTicks == null) {
+        return;
+      }
+      var activeTick;
+      if (typeof syncMethod === "function") {
+        var syncMethodParam = {
+          activeTooltipIndex: action.payload.index == null ? void 0 : Number(action.payload.index),
+          isTooltipActive: action.payload.active,
+          activeIndex: action.payload.index == null ? void 0 : Number(action.payload.index),
+          activeLabel: action.payload.label,
+          activeDataKey: action.payload.dataKey,
+          activeCoordinate: action.payload.coordinate
+        };
+        var activeTooltipIndex = syncMethod(tooltipTicks, syncMethodParam);
+        activeTick = tooltipTicks[activeTooltipIndex];
+      } else if (syncMethod === "value") {
+        activeTick = tooltipTicks.find((tick) => String(tick.value) === action.payload.label);
+      }
+      var {
+        coordinate
+      } = action.payload;
+      if (activeTick == null || action.payload.active === false || coordinate == null || viewBox == null) {
+        dispatch(setSyncInteraction({
+          active: false,
+          coordinate: void 0,
+          dataKey: void 0,
+          index: null,
+          label: void 0,
+          sourceViewBox: void 0
+        }));
+        return;
+      }
+      var {
+        x: x2,
+        y: y2
+      } = coordinate;
+      var validateChartX = Math.min(x2, viewBox.x + viewBox.width);
+      var validateChartY = Math.min(y2, viewBox.y + viewBox.height);
+      var activeCoordinate = {
+        x: layout === "horizontal" ? activeTick.coordinate : validateChartX,
+        y: layout === "horizontal" ? validateChartY : activeTick.coordinate
+      };
+      var syncAction = setSyncInteraction({
+        active: action.payload.active,
+        coordinate: activeCoordinate,
+        dataKey: action.payload.dataKey,
+        index: String(activeTick.index),
+        label: action.payload.label,
+        sourceViewBox: action.payload.sourceViewBox
+      });
+      dispatch(syncAction);
+    };
+    eventCenter.on(TOOLTIP_SYNC_EVENT, listener);
+    return () => {
+      eventCenter.off(TOOLTIP_SYNC_EVENT, listener);
+    };
+  }, [className, dispatch, myEventEmitter, mySyncId, syncMethod, tooltipTicks, layout, viewBox]);
+}
+function useBrushSyncEventsListener() {
+  var mySyncId = useAppSelector(selectSyncId);
+  var myEventEmitter = useAppSelector(selectEventEmitter);
+  var dispatch = useAppDispatch();
+  (0, import_react22.useEffect)(() => {
+    if (mySyncId == null) {
+      return noop3;
+    }
+    var listener = (incomingSyncId, action, emitter) => {
+      if (myEventEmitter === emitter) {
+        return;
+      }
+      if (mySyncId === incomingSyncId) {
+        dispatch(setDataStartEndIndexes(action));
+      }
+    };
+    eventCenter.on(BRUSH_SYNC_EVENT, listener);
+    return () => {
+      eventCenter.off(BRUSH_SYNC_EVENT, listener);
+    };
+  }, [dispatch, myEventEmitter, mySyncId]);
+}
+function useSynchronisedEventsFromOtherCharts() {
+  var dispatch = useAppDispatch();
+  (0, import_react22.useEffect)(() => {
+    dispatch(createEventEmitter());
+  }, [dispatch]);
+  useTooltipSyncEventsListener();
+  useBrushSyncEventsListener();
+}
+function useTooltipChartSynchronisation(tooltipEventType, trigger, activeCoordinate, activeLabel, activeIndex, isTooltipActive) {
+  var activeDataKey = useAppSelector((state) => selectTooltipDataKey(state, tooltipEventType, trigger));
+  var eventEmitterSymbol = useAppSelector(selectEventEmitter);
+  var syncId = useAppSelector(selectSyncId);
+  var syncMethod = useAppSelector(selectSyncMethod);
+  var tooltipState = useAppSelector(selectSynchronisedTooltipState);
+  var isReceivingSynchronisation = tooltipState === null || tooltipState === void 0 ? void 0 : tooltipState.active;
+  var viewBox = useViewBox();
+  (0, import_react22.useEffect)(() => {
+    if (isReceivingSynchronisation) {
+      return;
+    }
+    if (syncId == null) {
+      return;
+    }
+    if (eventEmitterSymbol == null) {
+      return;
+    }
+    var syncAction = setSyncInteraction({
+      active: isTooltipActive,
+      coordinate: activeCoordinate,
+      dataKey: activeDataKey,
+      index: activeIndex,
+      label: typeof activeLabel === "number" ? String(activeLabel) : activeLabel,
+      sourceViewBox: viewBox
+    });
+    eventCenter.emit(TOOLTIP_SYNC_EVENT, syncId, syncAction, eventEmitterSymbol);
+  }, [isReceivingSynchronisation, activeCoordinate, activeDataKey, activeIndex, activeLabel, eventEmitterSymbol, syncId, syncMethod, isTooltipActive, viewBox]);
+}
+function useBrushChartSynchronisation() {
+  var syncId = useAppSelector(selectSyncId);
+  var eventEmitterSymbol = useAppSelector(selectEventEmitter);
+  var brushStartIndex = useAppSelector((state) => state.chartData.dataStartIndex);
+  var brushEndIndex = useAppSelector((state) => state.chartData.dataEndIndex);
+  (0, import_react22.useEffect)(() => {
+    if (syncId == null || brushStartIndex == null || brushEndIndex == null || eventEmitterSymbol == null) {
+      return;
+    }
+    var syncAction = {
+      startIndex: brushStartIndex,
+      endIndex: brushEndIndex
+    };
+    eventCenter.emit(BRUSH_SYNC_EVENT, syncId, syncAction, eventEmitterSymbol);
+  }, [brushEndIndex, brushStartIndex, eventEmitterSymbol, syncId]);
+}
+
+// node_modules/recharts/es6/component/Tooltip.js
+function ownKeys22(e, r) {
+  var t = Object.keys(e);
+  if (Object.getOwnPropertySymbols) {
+    var o = Object.getOwnPropertySymbols(e);
+    r && (o = o.filter(function(r2) {
+      return Object.getOwnPropertyDescriptor(e, r2).enumerable;
+    })), t.push.apply(t, o);
+  }
+  return t;
+}
+function _objectSpread22(e) {
+  for (var r = 1; r < arguments.length; r++) {
+    var t = null != arguments[r] ? arguments[r] : {};
+    r % 2 ? ownKeys22(Object(t), true).forEach(function(r2) {
+      _defineProperty22(e, r2, t[r2]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys22(Object(t)).forEach(function(r2) {
+      Object.defineProperty(e, r2, Object.getOwnPropertyDescriptor(t, r2));
+    });
+  }
+  return e;
+}
+function _defineProperty22(e, r, t) {
+  return (r = _toPropertyKey22(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: true, configurable: true, writable: true }) : e[r] = t, e;
+}
+function _toPropertyKey22(t) {
+  var i = _toPrimitive22(t, "string");
+  return "symbol" == typeof i ? i : i + "";
+}
+function _toPrimitive22(t, r) {
+  if ("object" != typeof t || !t) return t;
+  var e = t[Symbol.toPrimitive];
+  if (void 0 !== e) {
+    var i = e.call(t, r || "default");
+    if ("object" != typeof i) return i;
+    throw new TypeError("@@toPrimitive must return a primitive value.");
+  }
+  return ("string" === r ? String : Number)(t);
+}
 function defaultUniqBy2(entry) {
   return entry.dataKey;
 }
 function renderContent(content, props) {
-  if (React14.isValidElement(content)) {
-    return React14.cloneElement(content, props);
+  if (React15.isValidElement(content)) {
+    return React15.cloneElement(content, props);
   }
   if (typeof content === "function") {
-    return React14.createElement(content, props);
+    return React15.createElement(content, props);
   }
-  return React14.createElement(DefaultTooltipContent, props);
+  return React15.createElement(DefaultTooltipContent, props);
 }
 var emptyPayload = [];
 var defaultTooltipProps = {
@@ -15018,7 +15719,7 @@ function Tooltip(outsideProps) {
   } = props;
   var dispatch = useAppDispatch();
   var defaultIndexAsString = typeof defaultIndex === "number" ? String(defaultIndex) : defaultIndex;
-  (0, import_react21.useEffect)(() => {
+  (0, import_react23.useEffect)(() => {
     dispatch(setTooltipSettingsState({
       shared,
       trigger,
@@ -15055,7 +15756,7 @@ function Tooltip(outsideProps) {
     finalPayload = getUniqPayload(payload.filter((entry) => entry.value != null && (entry.hide !== true || props.includeHidden)), payloadUniqBy, defaultUniqBy2);
   }
   var hasPayload = finalPayload.length > 0;
-  var tooltipElement = React14.createElement(TooltipBoundingBox, {
+  var tooltipElement = React15.createElement(TooltipBoundingBox, {
     allowEscapeViewBox,
     animationDuration,
     animationEasing,
@@ -15072,7 +15773,7 @@ function Tooltip(outsideProps) {
     lastBoundingBox,
     innerRef: updateBoundingBox,
     hasPortalFromProps: Boolean(portalFromProps)
-  }, renderContent(content, _objectSpread21(_objectSpread21({}, props), {}, {
+  }, renderContent(content, _objectSpread22(_objectSpread22({}, props), {}, {
     // @ts-expect-error renderContent method expects the payload to be mutable, TODO make it immutable
     payload: finalPayload,
     label: finalLabel,
@@ -15080,7 +15781,7 @@ function Tooltip(outsideProps) {
     coordinate,
     accessibilityLayer
   })));
-  return React14.createElement(React14.Fragment, null, (0, import_react_dom2.createPortal)(tooltipElement, tooltipPortal), finalIsActive && React14.createElement(Cursor, {
+  return React15.createElement(React15.Fragment, null, (0, import_react_dom2.createPortal)(tooltipElement, tooltipPortal), finalIsActive && React15.createElement(Cursor, {
     cursor,
     tooltipEventType,
     coordinate,
@@ -15089,204 +15790,13 @@ function Tooltip(outsideProps) {
   }));
 }
 
-// node_modules/recharts/es6/component/ResponsiveContainer.js
-var React15 = __toESM(require_react());
-var import_react22 = __toESM(require_react());
-var import_throttle2 = __toESM(require_throttle2());
-
-// node_modules/recharts/es6/util/LogUtils.js
-var isDev = true;
-var warn = function warn2(condition, format2) {
-  for (var _len = arguments.length, args = new Array(_len > 2 ? _len - 2 : 0), _key = 2; _key < _len; _key++) {
-    args[_key - 2] = arguments[_key];
-  }
-  if (isDev && typeof console !== "undefined" && console.warn) {
-    if (format2 === void 0) {
-      console.warn("LogUtils requires an error message argument");
-    }
-    if (!condition) {
-      if (format2 === void 0) {
-        console.warn("Minified exception occurred; use the non-minified dev environment for the full error message and additional helpful warnings.");
-      } else {
-        var argIndex = 0;
-        console.warn(format2.replace(/%s/g, () => args[argIndex++]));
-      }
-    }
-  }
-};
-
-// node_modules/recharts/es6/component/ResponsiveContainer.js
-function ownKeys22(e, r) {
-  var t = Object.keys(e);
-  if (Object.getOwnPropertySymbols) {
-    var o = Object.getOwnPropertySymbols(e);
-    r && (o = o.filter(function(r2) {
-      return Object.getOwnPropertyDescriptor(e, r2).enumerable;
-    })), t.push.apply(t, o);
-  }
-  return t;
-}
-function _objectSpread22(e) {
-  for (var r = 1; r < arguments.length; r++) {
-    var t = null != arguments[r] ? arguments[r] : {};
-    r % 2 ? ownKeys22(Object(t), true).forEach(function(r2) {
-      _defineProperty22(e, r2, t[r2]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys22(Object(t)).forEach(function(r2) {
-      Object.defineProperty(e, r2, Object.getOwnPropertyDescriptor(t, r2));
-    });
-  }
-  return e;
-}
-function _defineProperty22(e, r, t) {
-  return (r = _toPropertyKey22(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: true, configurable: true, writable: true }) : e[r] = t, e;
-}
-function _toPropertyKey22(t) {
-  var i = _toPrimitive22(t, "string");
-  return "symbol" == typeof i ? i : i + "";
-}
-function _toPrimitive22(t, r) {
-  if ("object" != typeof t || !t) return t;
-  var e = t[Symbol.toPrimitive];
-  if (void 0 !== e) {
-    var i = e.call(t, r || "default");
-    if ("object" != typeof i) return i;
-    throw new TypeError("@@toPrimitive must return a primitive value.");
-  }
-  return ("string" === r ? String : Number)(t);
-}
-var ResponsiveContainer = (0, import_react22.forwardRef)((_ref2, ref) => {
-  var {
-    aspect,
-    initialDimension = {
-      width: -1,
-      height: -1
-    },
-    width = "100%",
-    height = "100%",
-    /*
-     * default min-width to 0 if not specified - 'auto' causes issues with flexbox
-     * https://github.com/recharts/recharts/issues/172
-     */
-    minWidth = 0,
-    minHeight,
-    maxHeight,
-    children,
-    debounce: debounce2 = 0,
-    id,
-    className,
-    onResize,
-    style = {}
-  } = _ref2;
-  var containerRef = (0, import_react22.useRef)(null);
-  var onResizeRef = (0, import_react22.useRef)();
-  onResizeRef.current = onResize;
-  (0, import_react22.useImperativeHandle)(ref, () => containerRef.current);
-  var [sizes, setSizes] = (0, import_react22.useState)({
-    containerWidth: initialDimension.width,
-    containerHeight: initialDimension.height
-  });
-  var setContainerSize = (0, import_react22.useCallback)((newWidth, newHeight) => {
-    setSizes((prevState) => {
-      var roundedWidth = Math.round(newWidth);
-      var roundedHeight = Math.round(newHeight);
-      if (prevState.containerWidth === roundedWidth && prevState.containerHeight === roundedHeight) {
-        return prevState;
-      }
-      return {
-        containerWidth: roundedWidth,
-        containerHeight: roundedHeight
-      };
-    });
-  }, []);
-  (0, import_react22.useEffect)(() => {
-    var callback = (entries) => {
-      var _onResizeRef$current;
-      var {
-        width: containerWidth2,
-        height: containerHeight2
-      } = entries[0].contentRect;
-      setContainerSize(containerWidth2, containerHeight2);
-      (_onResizeRef$current = onResizeRef.current) === null || _onResizeRef$current === void 0 || _onResizeRef$current.call(onResizeRef, containerWidth2, containerHeight2);
-    };
-    if (debounce2 > 0) {
-      callback = (0, import_throttle2.default)(callback, debounce2, {
-        trailing: true,
-        leading: false
-      });
-    }
-    var observer = new ResizeObserver(callback);
-    var {
-      width: containerWidth,
-      height: containerHeight
-    } = containerRef.current.getBoundingClientRect();
-    setContainerSize(containerWidth, containerHeight);
-    observer.observe(containerRef.current);
-    return () => {
-      observer.disconnect();
-    };
-  }, [setContainerSize, debounce2]);
-  var chartContent = (0, import_react22.useMemo)(() => {
-    var {
-      containerWidth,
-      containerHeight
-    } = sizes;
-    if (containerWidth < 0 || containerHeight < 0) {
-      return null;
-    }
-    warn(isPercent(width) || isPercent(height), "The width(%s) and height(%s) are both fixed numbers,\n       maybe you don't need to use a ResponsiveContainer.", width, height);
-    warn(!aspect || aspect > 0, "The aspect(%s) must be greater than zero.", aspect);
-    var calculatedWidth = isPercent(width) ? containerWidth : width;
-    var calculatedHeight = isPercent(height) ? containerHeight : height;
-    if (aspect && aspect > 0) {
-      if (calculatedWidth) {
-        calculatedHeight = calculatedWidth / aspect;
-      } else if (calculatedHeight) {
-        calculatedWidth = calculatedHeight * aspect;
-      }
-      if (maxHeight && calculatedHeight > maxHeight) {
-        calculatedHeight = maxHeight;
-      }
-    }
-    warn(calculatedWidth > 0 || calculatedHeight > 0, "The width(%s) and height(%s) of chart should be greater than 0,\n       please check the style of container, or the props width(%s) and height(%s),\n       or add a minWidth(%s) or minHeight(%s) or use aspect(%s) to control the\n       height and width.", calculatedWidth, calculatedHeight, width, height, minWidth, minHeight, aspect);
-    return React15.Children.map(children, (child) => {
-      return (0, import_react22.cloneElement)(child, {
-        width: calculatedWidth,
-        height: calculatedHeight,
-        // calculate the actual size and override it.
-        style: _objectSpread22({
-          width: calculatedWidth,
-          height: calculatedHeight
-        }, child.props.style)
-      });
-    });
-  }, [aspect, children, height, maxHeight, minHeight, minWidth, sizes, width]);
-  return React15.createElement("div", {
-    id: id ? "".concat(id) : void 0,
-    className: clsx("recharts-responsive-container", className),
-    style: _objectSpread22(_objectSpread22({}, style), {}, {
-      width,
-      height,
-      minWidth,
-      minHeight,
-      maxHeight
-    }),
-    ref: containerRef
-  }, React15.createElement("div", {
-    style: {
-      width: 0,
-      height: 0,
-      overflow: "visible"
-    }
-  }, chartContent));
-});
-
 // node_modules/recharts/es6/component/Cell.js
 var Cell = (_props) => null;
 Cell.displayName = "Cell";
 
 // node_modules/recharts/es6/component/Text.js
 var React16 = __toESM(require_react());
-var import_react23 = __toESM(require_react());
+var import_react24 = __toESM(require_react());
 
 // node_modules/recharts/es6/util/LRUCache.js
 function _defineProperty23(e, r, t) {
@@ -15578,27 +16088,27 @@ function reduceCSSCalc(expression) {
 }
 
 // node_modules/recharts/es6/component/Text.js
-var _excluded7 = ["x", "y", "lineHeight", "capHeight", "scaleToFit", "textAnchor", "verticalAnchor", "fill"];
-var _excluded22 = ["dx", "dy", "angle", "className", "breakAll"];
-function _extends12() {
-  return _extends12 = Object.assign ? Object.assign.bind() : function(n) {
+var _excluded8 = ["x", "y", "lineHeight", "capHeight", "scaleToFit", "textAnchor", "verticalAnchor", "fill"];
+var _excluded23 = ["dx", "dy", "angle", "className", "breakAll"];
+function _extends13() {
+  return _extends13 = Object.assign ? Object.assign.bind() : function(n) {
     for (var e = 1; e < arguments.length; e++) {
       var t = arguments[e];
       for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]);
     }
     return n;
-  }, _extends12.apply(null, arguments);
+  }, _extends13.apply(null, arguments);
 }
-function _objectWithoutProperties7(e, t) {
+function _objectWithoutProperties8(e, t) {
   if (null == e) return {};
-  var o, r, i = _objectWithoutPropertiesLoose7(e, t);
+  var o, r, i = _objectWithoutPropertiesLoose8(e, t);
   if (Object.getOwnPropertySymbols) {
     var n = Object.getOwnPropertySymbols(e);
     for (r = 0; r < n.length; r++) o = n[r], -1 === t.indexOf(o) && {}.propertyIsEnumerable.call(e, o) && (i[o] = e[o]);
   }
   return i;
 }
-function _objectWithoutPropertiesLoose7(r, e) {
+function _objectWithoutPropertiesLoose8(r, e) {
   if (null == r) return {};
   var t = {};
   for (var n in r) if ({}.hasOwnProperty.call(r, n)) {
@@ -15752,7 +16262,7 @@ var getWordsByLines = (_ref4) => {
   return getWordsWithoutCalculate(children);
 };
 var DEFAULT_FILL = "#808080";
-var Text = (0, import_react23.forwardRef)((_ref5, ref) => {
+var Text = (0, import_react24.forwardRef)((_ref5, ref) => {
   var {
     x: propsX = 0,
     y: propsY = 0,
@@ -15764,8 +16274,8 @@ var Text = (0, import_react23.forwardRef)((_ref5, ref) => {
     // Maintain compat with existing charts / default SVG behavior
     verticalAnchor = "end",
     fill: fill2 = DEFAULT_FILL
-  } = _ref5, props = _objectWithoutProperties7(_ref5, _excluded7);
-  var wordsByLines = (0, import_react23.useMemo)(() => {
+  } = _ref5, props = _objectWithoutProperties8(_ref5, _excluded8);
+  var wordsByLines = (0, import_react24.useMemo)(() => {
     return getWordsByLines({
       breakAll: props.breakAll,
       children: props.children,
@@ -15781,7 +16291,7 @@ var Text = (0, import_react23.forwardRef)((_ref5, ref) => {
     angle,
     className,
     breakAll
-  } = props, textProps = _objectWithoutProperties7(props, _excluded22);
+  } = props, textProps = _objectWithoutProperties8(props, _excluded23);
   if (!isNumOrStr(propsX) || !isNumOrStr(propsY) || wordsByLines.length === 0) {
     return null;
   }
@@ -15813,7 +16323,7 @@ var Text = (0, import_react23.forwardRef)((_ref5, ref) => {
   if (transforms.length) {
     textProps.transform = transforms.join(" ");
   }
-  return React16.createElement("text", _extends12({}, filterProps(textProps, true), {
+  return React16.createElement("text", _extends13({}, svgPropertiesAndEvents(textProps), {
     ref,
     x: x2,
     y: y2,
@@ -15837,18 +16347,18 @@ Text.displayName = "Text";
 
 // node_modules/recharts/es6/component/Label.js
 var React17 = __toESM(require_react());
-var import_react24 = __toESM(require_react());
-var _excluded8 = ["labelRef"];
-function _objectWithoutProperties8(e, t) {
+var import_react25 = __toESM(require_react());
+var _excluded9 = ["labelRef"];
+function _objectWithoutProperties9(e, t) {
   if (null == e) return {};
-  var o, r, i = _objectWithoutPropertiesLoose8(e, t);
+  var o, r, i = _objectWithoutPropertiesLoose9(e, t);
   if (Object.getOwnPropertySymbols) {
     var n = Object.getOwnPropertySymbols(e);
     for (r = 0; r < n.length; r++) o = n[r], -1 === t.indexOf(o) && {}.propertyIsEnumerable.call(e, o) && (i[o] = e[o]);
   }
   return i;
 }
-function _objectWithoutPropertiesLoose8(r, e) {
+function _objectWithoutPropertiesLoose9(r, e) {
   if (null == r) return {};
   var t = {};
   for (var n in r) if ({}.hasOwnProperty.call(r, n)) {
@@ -15895,16 +16405,16 @@ function _toPrimitive25(t, r) {
   }
   return ("string" === r ? String : Number)(t);
 }
-function _extends13() {
-  return _extends13 = Object.assign ? Object.assign.bind() : function(n) {
+function _extends14() {
+  return _extends14 = Object.assign ? Object.assign.bind() : function(n) {
     for (var e = 1; e < arguments.length; e++) {
       var t = arguments[e];
       for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]);
     }
     return n;
-  }, _extends13.apply(null, arguments);
+  }, _extends14.apply(null, arguments);
 }
-var CartesianLabelContext = (0, import_react24.createContext)(null);
+var CartesianLabelContext = (0, import_react25.createContext)(null);
 var CartesianLabelContextProvider = (_ref2) => {
   var {
     x: x2,
@@ -15913,7 +16423,7 @@ var CartesianLabelContextProvider = (_ref2) => {
     height,
     children
   } = _ref2;
-  var viewBox = (0, import_react24.useMemo)(() => ({
+  var viewBox = (0, import_react25.useMemo)(() => ({
     x: x2,
     y: y2,
     width,
@@ -15924,11 +16434,11 @@ var CartesianLabelContextProvider = (_ref2) => {
   }, children);
 };
 var useCartesianLabelContext = () => {
-  var labelChildContext = (0, import_react24.useContext)(CartesianLabelContext);
+  var labelChildContext = (0, import_react25.useContext)(CartesianLabelContext);
   var chartContext = useViewBox();
   return labelChildContext || chartContext;
 };
-var PolarLabelContext = (0, import_react24.createContext)(null);
+var PolarLabelContext = (0, import_react25.createContext)(null);
 var PolarLabelContextProvider = (_ref2) => {
   var {
     cx,
@@ -15940,7 +16450,7 @@ var PolarLabelContextProvider = (_ref2) => {
     clockWise,
     children
   } = _ref2;
-  var viewBox = (0, import_react24.useMemo)(() => ({
+  var viewBox = (0, import_react25.useMemo)(() => ({
     cx,
     cy,
     innerRadius,
@@ -15954,7 +16464,7 @@ var PolarLabelContextProvider = (_ref2) => {
   }, children);
 };
 var usePolarLabelContext = () => {
-  var labelChildContext = (0, import_react24.useContext)(PolarLabelContext);
+  var labelChildContext = (0, import_react25.useContext)(PolarLabelContext);
   var chartContext = useAppSelector(selectPolarViewBox);
   return labelChildContext || chartContext;
 };
@@ -16016,7 +16526,7 @@ var renderRadialLabel = (labelProps, position2, label, attrs, viewBox) => {
   var endPoint = polarToCartesian(cx, cy, radius, labelAngle + (direction ? 1 : -1) * 359);
   var path2 = "M".concat(startPoint.x, ",").concat(startPoint.y, "\n    A").concat(radius, ",").concat(radius, ",0,1,").concat(direction ? 0 : 1, ",\n    ").concat(endPoint.x, ",").concat(endPoint.y);
   var id = isNullish(labelProps.id) ? uniqueId("recharts-radial-line-") : labelProps.id;
-  return React17.createElement("text", _extends13({}, attrs, {
+  return React17.createElement("text", _extends14({}, attrs, {
     dominantBaseline: "central",
     className: clsx("recharts-radial-bar-label", className)
   }), React17.createElement("defs", null, React17.createElement("path", {
@@ -16259,34 +16769,34 @@ function Label(outerProps) {
   var cartesianViewBox = useCartesianLabelContext();
   var resolvedViewBox = position2 === "center" ? cartesianViewBox : polarViewBox !== null && polarViewBox !== void 0 ? polarViewBox : cartesianViewBox;
   var viewBox = viewBoxFromProps || resolvedViewBox;
-  if (!viewBox || isNullish(value) && isNullish(children) && !(0, import_react24.isValidElement)(content) && typeof content !== "function") {
+  if (!viewBox || isNullish(value) && isNullish(children) && !(0, import_react25.isValidElement)(content) && typeof content !== "function") {
     return null;
   }
   var propsWithViewBox = _objectSpread24(_objectSpread24({}, props), {}, {
     viewBox
   });
-  if ((0, import_react24.isValidElement)(content)) {
+  if ((0, import_react25.isValidElement)(content)) {
     var {
       labelRef: _
-    } = propsWithViewBox, propsWithoutLabelRef = _objectWithoutProperties8(propsWithViewBox, _excluded8);
-    return (0, import_react24.cloneElement)(content, propsWithoutLabelRef);
+    } = propsWithViewBox, propsWithoutLabelRef = _objectWithoutProperties9(propsWithViewBox, _excluded9);
+    return (0, import_react25.cloneElement)(content, propsWithoutLabelRef);
   }
   var label;
   if (typeof content === "function") {
-    label = (0, import_react24.createElement)(content, propsWithViewBox);
-    if ((0, import_react24.isValidElement)(label)) {
+    label = (0, import_react25.createElement)(content, propsWithViewBox);
+    if ((0, import_react25.isValidElement)(label)) {
       return label;
     }
   } else {
     label = getLabel(props);
   }
   var isPolarLabel = isPolar(viewBox);
-  var attrs = filterProps(props, true);
+  var attrs = svgPropertiesAndEvents(props);
   if (isPolarLabel && (position2 === "insideStart" || position2 === "insideEnd" || position2 === "end")) {
     return renderRadialLabel(props, position2, label, attrs, viewBox);
   }
   var positionAttrs = isPolarLabel ? getAttrsOfPolarLabel(viewBox, props.offset, props.position) : getAttrsOfCartesianLabel(props, viewBox);
-  return React17.createElement(Text, _extends13({
+  return React17.createElement(Text, _extends14({
     ref: labelRef,
     className: clsx("recharts-label", className)
   }, attrs, positionAttrs, {
@@ -16303,35 +16813,35 @@ var parseLabel = (label, viewBox, labelRef) => {
     labelRef
   };
   if (label === true) {
-    return React17.createElement(Label, _extends13({
+    return React17.createElement(Label, _extends14({
       key: "label-implicit"
     }, commonProps));
   }
   if (isNumOrStr(label)) {
-    return React17.createElement(Label, _extends13({
+    return React17.createElement(Label, _extends14({
       key: "label-implicit",
       value: label
     }, commonProps));
   }
-  if ((0, import_react24.isValidElement)(label)) {
+  if ((0, import_react25.isValidElement)(label)) {
     if (label.type === Label) {
-      return (0, import_react24.cloneElement)(label, _objectSpread24({
+      return (0, import_react25.cloneElement)(label, _objectSpread24({
         key: "label-implicit"
       }, commonProps));
     }
-    return React17.createElement(Label, _extends13({
+    return React17.createElement(Label, _extends14({
       key: "label-implicit",
       content: label
     }, commonProps));
   }
   if (isLabelContentAFunction(label)) {
-    return React17.createElement(Label, _extends13({
+    return React17.createElement(Label, _extends14({
       key: "label-implicit",
       content: label
     }, commonProps));
   }
   if (label && typeof label === "object") {
-    return React17.createElement(Label, _extends13({}, label, {
+    return React17.createElement(Label, _extends14({}, label, {
       key: "label-implicit"
     }, commonProps));
   }
@@ -16339,10 +16849,11 @@ var parseLabel = (label, viewBox, labelRef) => {
 };
 function CartesianLabelFromLabelProp(_ref3) {
   var {
-    label
+    label,
+    labelRef
   } = _ref3;
   var viewBox = useCartesianLabelContext();
-  return parseLabel(label, viewBox) || null;
+  return parseLabel(label, viewBox, labelRef) || null;
 }
 function PolarLabelFromLabelProp(_ref4) {
   var {
@@ -16354,29 +16865,29 @@ function PolarLabelFromLabelProp(_ref4) {
 
 // node_modules/recharts/es6/component/LabelList.js
 var React18 = __toESM(require_react());
-var import_react25 = __toESM(require_react());
+var import_react26 = __toESM(require_react());
 var import_last2 = __toESM(require_last3());
-var _excluded9 = ["valueAccessor"];
-var _excluded23 = ["dataKey", "clockWise", "id", "textBreakAll"];
-function _extends14() {
-  return _extends14 = Object.assign ? Object.assign.bind() : function(n) {
+var _excluded10 = ["valueAccessor"];
+var _excluded24 = ["dataKey", "clockWise", "id", "textBreakAll"];
+function _extends15() {
+  return _extends15 = Object.assign ? Object.assign.bind() : function(n) {
     for (var e = 1; e < arguments.length; e++) {
       var t = arguments[e];
       for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]);
     }
     return n;
-  }, _extends14.apply(null, arguments);
+  }, _extends15.apply(null, arguments);
 }
-function _objectWithoutProperties9(e, t) {
+function _objectWithoutProperties10(e, t) {
   if (null == e) return {};
-  var o, r, i = _objectWithoutPropertiesLoose9(e, t);
+  var o, r, i = _objectWithoutPropertiesLoose10(e, t);
   if (Object.getOwnPropertySymbols) {
     var n = Object.getOwnPropertySymbols(e);
     for (r = 0; r < n.length; r++) o = n[r], -1 === t.indexOf(o) && {}.propertyIsEnumerable.call(e, o) && (i[o] = e[o]);
   }
   return i;
 }
-function _objectWithoutPropertiesLoose9(r, e) {
+function _objectWithoutPropertiesLoose10(r, e) {
   if (null == r) return {};
   var t = {};
   for (var n in r) if ({}.hasOwnProperty.call(r, n)) {
@@ -16386,26 +16897,26 @@ function _objectWithoutPropertiesLoose9(r, e) {
   return t;
 }
 var defaultAccessor = (entry) => Array.isArray(entry.value) ? (0, import_last2.default)(entry.value) : entry.value;
-var CartesianLabelListContext = (0, import_react25.createContext)(void 0);
+var CartesianLabelListContext = (0, import_react26.createContext)(void 0);
 var CartesianLabelListContextProvider = CartesianLabelListContext.Provider;
-var PolarLabelListContext = (0, import_react25.createContext)(void 0);
+var PolarLabelListContext = (0, import_react26.createContext)(void 0);
 var PolarLabelListContextProvider = PolarLabelListContext.Provider;
 function useCartesianLabelListContext() {
-  return (0, import_react25.useContext)(CartesianLabelListContext);
+  return (0, import_react26.useContext)(CartesianLabelListContext);
 }
 function usePolarLabelListContext() {
-  return (0, import_react25.useContext)(PolarLabelListContext);
+  return (0, import_react26.useContext)(PolarLabelListContext);
 }
 function LabelList(_ref2) {
   var {
     valueAccessor = defaultAccessor
-  } = _ref2, restProps = _objectWithoutProperties9(_ref2, _excluded9);
+  } = _ref2, restProps = _objectWithoutProperties10(_ref2, _excluded10);
   var {
     dataKey,
     clockWise,
     id,
     textBreakAll
-  } = restProps, others = _objectWithoutProperties9(restProps, _excluded23);
+  } = restProps, others = _objectWithoutProperties10(restProps, _excluded24);
   var cartesianData = useCartesianLabelListContext();
   var polarData = usePolarLabelListContext();
   var data = cartesianData || polarData;
@@ -16420,7 +16931,10 @@ function LabelList(_ref2) {
     var idProps = isNullish(id) ? {} : {
       id: "".concat(id, "-").concat(index2)
     };
-    return React18.createElement(Label, _extends14({}, filterProps(entry, true), others, idProps, {
+    return React18.createElement(Label, _extends15({
+      key: "label-".concat(index2)
+      // eslint-disable-line react/no-array-index-key
+    }, svgPropertiesAndEvents(entry), others, idProps, {
       /*
        * Prefer to use the explicit fill from LabelList props.
        * Only in an absence of that, fall back to the fill of the entry.
@@ -16432,7 +16946,6 @@ function LabelList(_ref2) {
       value,
       textBreakAll,
       viewBox: entry.viewBox,
-      key: "label-".concat(index2),
       index: index2
     }));
   }));
@@ -16457,7 +16970,7 @@ function LabelListFromLabelProp(_ref2) {
     });
   }
   if (typeof label === "object") {
-    return React18.createElement(LabelList, _extends14({
+    return React18.createElement(LabelList, _extends15({
       key: "labelList-implicit"
     }, label, {
       type: String(label.type)
@@ -16468,18 +16981,18 @@ function LabelListFromLabelProp(_ref2) {
 
 // node_modules/recharts/es6/component/Customized.js
 var React19 = __toESM(require_react());
-var import_react26 = __toESM(require_react());
-var _excluded10 = ["component"];
-function _objectWithoutProperties10(e, t) {
+var import_react27 = __toESM(require_react());
+var _excluded11 = ["component"];
+function _objectWithoutProperties11(e, t) {
   if (null == e) return {};
-  var o, r, i = _objectWithoutPropertiesLoose10(e, t);
+  var o, r, i = _objectWithoutPropertiesLoose11(e, t);
   if (Object.getOwnPropertySymbols) {
     var n = Object.getOwnPropertySymbols(e);
     for (r = 0; r < n.length; r++) o = n[r], -1 === t.indexOf(o) && {}.propertyIsEnumerable.call(e, o) && (i[o] = e[o]);
   }
   return i;
 }
-function _objectWithoutPropertiesLoose10(r, e) {
+function _objectWithoutPropertiesLoose11(r, e) {
   if (null == r) return {};
   var t = {};
   for (var n in r) if ({}.hasOwnProperty.call(r, n)) {
@@ -16491,12 +17004,12 @@ function _objectWithoutPropertiesLoose10(r, e) {
 function Customized(_ref2) {
   var {
     component
-  } = _ref2, props = _objectWithoutProperties10(_ref2, _excluded10);
+  } = _ref2, props = _objectWithoutProperties11(_ref2, _excluded11);
   var child;
-  if ((0, import_react26.isValidElement)(component)) {
-    child = (0, import_react26.cloneElement)(component, props);
+  if ((0, import_react27.isValidElement)(component)) {
+    child = (0, import_react27.cloneElement)(component, props);
   } else if (typeof component === "function") {
-    child = (0, import_react26.createElement)(component, props);
+    child = (0, import_react27.createElement)(component, props);
   } else {
     warn(false, "Customized's props `component` must be React.element or Function, but got %s.", typeof component);
   }
@@ -16508,26 +17021,26 @@ Customized.displayName = "Customized";
 
 // node_modules/recharts/es6/shape/Polygon.js
 var React20 = __toESM(require_react());
-var _excluded11 = ["points", "className", "baseLinePoints", "connectNulls"];
-function _extends15() {
-  return _extends15 = Object.assign ? Object.assign.bind() : function(n) {
+var _excluded12 = ["points", "className", "baseLinePoints", "connectNulls"];
+function _extends16() {
+  return _extends16 = Object.assign ? Object.assign.bind() : function(n) {
     for (var e = 1; e < arguments.length; e++) {
       var t = arguments[e];
       for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]);
     }
     return n;
-  }, _extends15.apply(null, arguments);
+  }, _extends16.apply(null, arguments);
 }
-function _objectWithoutProperties11(e, t) {
+function _objectWithoutProperties12(e, t) {
   if (null == e) return {};
-  var o, r, i = _objectWithoutPropertiesLoose11(e, t);
+  var o, r, i = _objectWithoutPropertiesLoose12(e, t);
   if (Object.getOwnPropertySymbols) {
     var n = Object.getOwnPropertySymbols(e);
     for (r = 0; r < n.length; r++) o = n[r], -1 === t.indexOf(o) && {}.propertyIsEnumerable.call(e, o) && (i[o] = e[o]);
   }
   return i;
 }
-function _objectWithoutPropertiesLoose11(r, e) {
+function _objectWithoutPropertiesLoose12(r, e) {
   if (null == r) return {};
   var t = {};
   for (var n in r) if ({}.hasOwnProperty.call(r, n)) {
@@ -16581,7 +17094,7 @@ var Polygon = (props) => {
     className,
     baseLinePoints,
     connectNulls
-  } = props, others = _objectWithoutProperties11(props, _excluded11);
+  } = props, others = _objectWithoutProperties12(props, _excluded12);
   if (!points || !points.length) {
     return null;
   }
@@ -16591,20 +17104,20 @@ var Polygon = (props) => {
     var rangePath = getRanglePath(points, baseLinePoints, connectNulls);
     return React20.createElement("g", {
       className: layerClass
-    }, React20.createElement("path", _extends15({}, filterProps(others, true), {
+    }, React20.createElement("path", _extends16({}, svgPropertiesAndEvents(others), {
       fill: rangePath.slice(-1) === "Z" ? others.fill : "none",
       stroke: "none",
       d: rangePath
-    })), hasStroke ? React20.createElement("path", _extends15({}, filterProps(others, true), {
+    })), hasStroke ? React20.createElement("path", _extends16({}, svgPropertiesAndEvents(others), {
       fill: "none",
       d: getSinglePolygonPath(points, connectNulls)
-    })) : null, hasStroke ? React20.createElement("path", _extends15({}, filterProps(others, true), {
+    })) : null, hasStroke ? React20.createElement("path", _extends16({}, svgPropertiesAndEvents(others), {
       fill: "none",
       d: getSinglePolygonPath(baseLinePoints, connectNulls)
     })) : null);
   }
   var singlePath = getSinglePolygonPath(points, connectNulls);
-  return React20.createElement("path", _extends15({}, filterProps(others, true), {
+  return React20.createElement("path", _extends16({}, svgPropertiesAndEvents(others), {
     fill: singlePath.slice(-1) === "Z" ? others.fill : "none",
     className: layerClass,
     d: singlePath
@@ -16613,14 +17126,14 @@ var Polygon = (props) => {
 
 // node_modules/recharts/es6/shape/Dot.js
 var React21 = __toESM(require_react());
-function _extends16() {
-  return _extends16 = Object.assign ? Object.assign.bind() : function(n) {
+function _extends17() {
+  return _extends17 = Object.assign ? Object.assign.bind() : function(n) {
     for (var e = 1; e < arguments.length; e++) {
       var t = arguments[e];
       for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]);
     }
     return n;
-  }, _extends16.apply(null, arguments);
+  }, _extends17.apply(null, arguments);
 }
 var Dot = (props) => {
   var {
@@ -16631,7 +17144,7 @@ var Dot = (props) => {
   } = props;
   var layerClass = clsx("recharts-dot", className);
   if (cx === +cx && cy === +cy && r === +r) {
-    return React21.createElement("circle", _extends16({}, svgPropertiesNoEvents(props), adaptEventHandlers(props), {
+    return React21.createElement("circle", _extends17({}, svgPropertiesNoEvents(props), adaptEventHandlers(props), {
       className: layerClass,
       cx,
       cy,
@@ -16677,7 +17190,8 @@ var selectAllPolarAppliedNumericalValues = createSelector([selectPolarDisplayedD
   }));
 });
 var unsupportedInPolarChart = () => void 0;
-var selectPolarNumericalDomain = createSelector([selectBaseAxis, selectDomainDefinition, unsupportedInPolarChart, selectAllPolarAppliedNumericalValues, unsupportedInPolarChart, selectChartLayout, pickAxisType], combineNumericalDomain);
+var selectDomainOfAllPolarAppliedNumericalValues = createSelector([selectPolarDisplayedData, selectBaseAxis, selectPolarItemsSettings, selectAllErrorBarSettings, pickAxisType], combineDomainOfAllAppliedNumericalValuesIncludingErrorValues);
+var selectPolarNumericalDomain = createSelector([selectBaseAxis, selectDomainDefinition, selectDomainFromUserPreference, unsupportedInPolarChart, selectDomainOfAllPolarAppliedNumericalValues, unsupportedInPolarChart, selectChartLayout, pickAxisType], combineNumericalDomain);
 var selectPolarAxisDomain = createSelector([selectBaseAxis, selectChartLayout, selectPolarDisplayedData, selectPolarAppliedValues, selectStackOffsetType, pickAxisType, selectPolarNumericalDomain], combineAxisDomain);
 var selectPolarNiceTicks = createSelector([selectPolarAxisDomain, selectBaseAxis, selectRealScaleType], combineNiceTicks);
 var selectPolarAxisDomainIncludingNiceTicks = createSelector([selectBaseAxis, selectPolarAxisDomain, selectPolarNiceTicks, pickAxisType], combineAxisDomainWithNiceTicks);
@@ -16731,17 +17245,17 @@ var selectPolarGridRadii = createSelector([selectRadiusAxisTicks], (ticks2) => {
 });
 
 // node_modules/recharts/es6/polar/PolarGrid.js
-var _excluded12 = ["gridType", "radialLines", "angleAxisId", "radiusAxisId", "cx", "cy", "innerRadius", "outerRadius"];
-function _objectWithoutProperties12(e, t) {
+var _excluded13 = ["gridType", "radialLines", "angleAxisId", "radiusAxisId", "cx", "cy", "innerRadius", "outerRadius"];
+function _objectWithoutProperties13(e, t) {
   if (null == e) return {};
-  var o, r, i = _objectWithoutPropertiesLoose12(e, t);
+  var o, r, i = _objectWithoutPropertiesLoose13(e, t);
   if (Object.getOwnPropertySymbols) {
     var n = Object.getOwnPropertySymbols(e);
     for (r = 0; r < n.length; r++) o = n[r], -1 === t.indexOf(o) && {}.propertyIsEnumerable.call(e, o) && (i[o] = e[o]);
   }
   return i;
 }
-function _objectWithoutPropertiesLoose12(r, e) {
+function _objectWithoutPropertiesLoose13(r, e) {
   if (null == r) return {};
   var t = {};
   for (var n in r) if ({}.hasOwnProperty.call(r, n)) {
@@ -16750,14 +17264,14 @@ function _objectWithoutPropertiesLoose12(r, e) {
   }
   return t;
 }
-function _extends17() {
-  return _extends17 = Object.assign ? Object.assign.bind() : function(n) {
+function _extends18() {
+  return _extends18 = Object.assign ? Object.assign.bind() : function(n) {
     for (var e = 1; e < arguments.length; e++) {
       var t = arguments[e];
       for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]);
     }
     return n;
-  }, _extends17.apply(null, arguments);
+  }, _extends18.apply(null, arguments);
 }
 function ownKeys25(e, r) {
   var t = Object.keys(e);
@@ -16830,8 +17344,9 @@ var PolarAngles = (props) => {
   }, polarAngles.map((entry) => {
     var start = polarToCartesian(cx, cy, innerRadius, entry);
     var end = polarToCartesian(cx, cy, outerRadius, entry);
-    return React22.createElement("line", _extends17({}, polarAnglesProps, {
-      key: "line-".concat(entry),
+    return React22.createElement("line", _extends18({
+      key: "line-".concat(entry)
+    }, polarAnglesProps, {
       x1: start.x,
       y1: start.y,
       x2: end.x,
@@ -16851,7 +17366,7 @@ var ConcentricCircle = (props) => {
   }, svgPropertiesNoEvents(props));
   return (
     // @ts-expect-error wrong SVG element type
-    React22.createElement("circle", _extends17({}, concentricCircleProps, {
+    React22.createElement("circle", _extends18({}, concentricCircleProps, {
       className: clsx("recharts-polar-grid-concentric-circle", props.className),
       cx,
       cy,
@@ -16867,7 +17382,7 @@ var ConcentricPolygon = (props) => {
     stroke: "#ccc",
     fill: "none"
   }, svgPropertiesNoEvents(props));
-  return React22.createElement("path", _extends17({}, concentricPolygonProps, {
+  return React22.createElement("path", _extends18({}, concentricPolygonProps, {
     className: clsx("recharts-polar-grid-concentric-polygon", props.className),
     d: getPolygonPath(radius, props.cx, props.cy, props.polarAngles)
   }));
@@ -16884,21 +17399,21 @@ var ConcentricGridPath = (props) => {
   var renderBackground = props.fill && props.fill !== "none";
   return React22.createElement("g", {
     className: "recharts-polar-grid-concentric"
-  }, renderBackground && gridType === "circle" && React22.createElement(ConcentricCircle, _extends17({}, props, {
+  }, renderBackground && gridType === "circle" && React22.createElement(ConcentricCircle, _extends18({}, props, {
     radius: maxPolarRadius
-  })), renderBackground && gridType !== "circle" && React22.createElement(ConcentricPolygon, _extends17({}, props, {
+  })), renderBackground && gridType !== "circle" && React22.createElement(ConcentricPolygon, _extends18({}, props, {
     radius: maxPolarRadius
   })), polarRadius.map((entry, i) => {
     var key = i;
     if (gridType === "circle") {
-      return React22.createElement(ConcentricCircle, _extends17({
+      return React22.createElement(ConcentricCircle, _extends18({
         key
       }, props, {
         fill: "none",
         radius: entry
       }));
     }
-    return React22.createElement(ConcentricPolygon, _extends17({
+    return React22.createElement(ConcentricPolygon, _extends18({
       key
     }, props, {
       fill: "none",
@@ -16917,7 +17432,7 @@ var PolarGrid = (_ref2) => {
     cy: cyFromOutside,
     innerRadius: innerRadiusFromOutside,
     outerRadius: outerRadiusFromOutside
-  } = _ref2, inputs = _objectWithoutProperties12(_ref2, _excluded12);
+  } = _ref2, inputs = _objectWithoutProperties13(_ref2, _excluded13);
   var polarViewBox = useAppSelector(selectPolarViewBox);
   var props = _objectSpread25({
     cx: (_ref22 = (_polarViewBox$cx = polarViewBox === null || polarViewBox === void 0 ? void 0 : polarViewBox.cx) !== null && _polarViewBox$cx !== void 0 ? _polarViewBox$cx : cxFromOutside) !== null && _ref22 !== void 0 ? _ref22 : 0,
@@ -16939,13 +17454,13 @@ var PolarGrid = (_ref2) => {
   }
   return React22.createElement("g", {
     className: "recharts-polar-grid"
-  }, React22.createElement(ConcentricGridPath, _extends17({
+  }, React22.createElement(ConcentricGridPath, _extends18({
     gridType,
     radialLines
   }, props, {
     polarAngles,
     polarRadius
-  })), React22.createElement(PolarAngles, _extends17({
+  })), React22.createElement(PolarAngles, _extends18({
     gridType,
     radialLines
   }, props, {
@@ -16957,7 +17472,7 @@ PolarGrid.displayName = "PolarGrid";
 
 // node_modules/recharts/es6/polar/PolarRadiusAxis.js
 var React23 = __toESM(require_react());
-var import_react27 = __toESM(require_react());
+var import_react28 = __toESM(require_react());
 var import_maxBy2 = __toESM(require_maxBy3());
 var import_minBy2 = __toESM(require_minBy3());
 
@@ -16993,16 +17508,16 @@ var {
 var polarAxisReducer = polarAxisSlice.reducer;
 
 // node_modules/recharts/es6/polar/PolarRadiusAxis.js
-var _excluded13 = ["cx", "cy", "angle", "axisLine"];
-var _excluded24 = ["angle", "tickFormatter", "stroke", "tick"];
-function _extends18() {
-  return _extends18 = Object.assign ? Object.assign.bind() : function(n) {
+var _excluded14 = ["cx", "cy", "angle", "axisLine"];
+var _excluded25 = ["angle", "tickFormatter", "stroke", "tick"];
+function _extends19() {
+  return _extends19 = Object.assign ? Object.assign.bind() : function(n) {
     for (var e = 1; e < arguments.length; e++) {
       var t = arguments[e];
       for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]);
     }
     return n;
-  }, _extends18.apply(null, arguments);
+  }, _extends19.apply(null, arguments);
 }
 function ownKeys26(e, r) {
   var t = Object.keys(e);
@@ -17042,16 +17557,16 @@ function _toPrimitive27(t, r) {
   }
   return ("string" === r ? String : Number)(t);
 }
-function _objectWithoutProperties13(e, t) {
+function _objectWithoutProperties14(e, t) {
   if (null == e) return {};
-  var o, r, i = _objectWithoutPropertiesLoose13(e, t);
+  var o, r, i = _objectWithoutPropertiesLoose14(e, t);
   if (Object.getOwnPropertySymbols) {
     var n = Object.getOwnPropertySymbols(e);
     for (r = 0; r < n.length; r++) o = n[r], -1 === t.indexOf(o) && {}.propertyIsEnumerable.call(e, o) && (i[o] = e[o]);
   }
   return i;
 }
-function _objectWithoutPropertiesLoose13(r, e) {
+function _objectWithoutPropertiesLoose14(r, e) {
   if (null == r) return {};
   var t = {};
   for (var n in r) if ({}.hasOwnProperty.call(r, n)) {
@@ -17063,7 +17578,7 @@ function _objectWithoutPropertiesLoose13(r, e) {
 var AXIS_TYPE = "radiusAxis";
 function SetRadiusAxisSettings(settings) {
   var dispatch = useAppDispatch();
-  (0, import_react27.useEffect)(() => {
+  (0, import_react28.useEffect)(() => {
     dispatch(addRadiusAxis(settings));
     return () => {
       dispatch(removeRadiusAxis(settings));
@@ -17111,19 +17626,19 @@ var renderAxisLine = (props, ticks2) => {
     cy,
     angle,
     axisLine
-  } = props, others = _objectWithoutProperties13(props, _excluded13);
+  } = props, others = _objectWithoutProperties14(props, _excluded14);
   var extent2 = ticks2.reduce((result, entry) => [Math.min(result[0], entry.coordinate), Math.max(result[1], entry.coordinate)], [Infinity, -Infinity]);
   var point0 = polarToCartesian(cx, cy, extent2[0], angle);
   var point1 = polarToCartesian(cx, cy, extent2[1], angle);
   var axisLineProps = _objectSpread26(_objectSpread26(_objectSpread26({}, svgPropertiesNoEvents(others)), {}, {
     fill: "none"
-  }, filterProps(axisLine, false)), {}, {
+  }, svgPropertiesNoEvents(axisLine)), {}, {
     x1: point0.x,
     y1: point0.y,
     x2: point1.x,
     y2: point1.y
   });
-  return React23.createElement("line", _extends18({
+  return React23.createElement("line", _extends19({
     className: "recharts-polar-radius-axis-line"
   }, axisLineProps));
 };
@@ -17134,7 +17649,7 @@ var renderTickItem = (option, tickProps, value) => {
   } else if (typeof option === "function") {
     tickItem = option(tickProps);
   } else {
-    tickItem = React23.createElement(Text, _extends18({}, tickProps, {
+    tickItem = React23.createElement(Text, _extends19({}, tickProps, {
       className: "recharts-polar-radius-axis-tick-value"
     }), value);
   }
@@ -17146,10 +17661,10 @@ var renderTicks = (props, ticks2) => {
     tickFormatter,
     stroke,
     tick
-  } = props, others = _objectWithoutProperties13(props, _excluded24);
+  } = props, others = _objectWithoutProperties14(props, _excluded25);
   var textAnchor = getTickTextAnchor(props.orientation);
   var axisProps = svgPropertiesNoEvents(others);
-  var customTickProps = filterProps(tick, false);
+  var customTickProps = svgPropertiesNoEventsFromUnknown(tick);
   var items = ticks2.map((entry, i) => {
     var coord = getTickValueCoord(entry, props.angle, props.cx, props.cy);
     var tickProps = _objectSpread26(_objectSpread26(_objectSpread26(_objectSpread26({
@@ -17163,7 +17678,7 @@ var renderTicks = (props, ticks2) => {
     }, coord), {}, {
       payload: entry
     });
-    return React23.createElement(Layer, _extends18({
+    return React23.createElement(Layer, _extends19({
       className: clsx("recharts-polar-radius-axis-tick", getTickClassName(tick)),
       key: "tick-".concat(entry.coordinate)
     }, adaptEventsOfChild(props, entry, i)), renderTickItem(tick, tickProps, tickFormatter ? tickFormatter(entry.value, i) : entry.value));
@@ -17197,7 +17712,7 @@ var PolarRadiusAxisWrapper = (defaultsAndInputs) => {
     label: props.label
   }), props.children));
 };
-var PolarRadiusAxis = class extends import_react27.PureComponent {
+var PolarRadiusAxis = class extends import_react28.PureComponent {
   render() {
     return React23.createElement(React23.Fragment, null, React23.createElement(SetRadiusAxisSettings, {
       domain: this.props.domain,
@@ -17224,16 +17739,16 @@ _defineProperty27(PolarRadiusAxis, "defaultProps", defaultPolarRadiusAxisProps);
 
 // node_modules/recharts/es6/polar/PolarAngleAxis.js
 var React24 = __toESM(require_react());
-var import_react28 = __toESM(require_react());
-var _excluded14 = ["children"];
-function _extends19() {
-  return _extends19 = Object.assign ? Object.assign.bind() : function(n) {
+var import_react29 = __toESM(require_react());
+var _excluded15 = ["children"];
+function _extends20() {
+  return _extends20 = Object.assign ? Object.assign.bind() : function(n) {
     for (var e = 1; e < arguments.length; e++) {
       var t = arguments[e];
       for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]);
     }
     return n;
-  }, _extends19.apply(null, arguments);
+  }, _extends20.apply(null, arguments);
 }
 function ownKeys27(e, r) {
   var t = Object.keys(e);
@@ -17273,16 +17788,16 @@ function _toPrimitive28(t, r) {
   }
   return ("string" === r ? String : Number)(t);
 }
-function _objectWithoutProperties14(e, t) {
+function _objectWithoutProperties15(e, t) {
   if (null == e) return {};
-  var o, r, i = _objectWithoutPropertiesLoose14(e, t);
+  var o, r, i = _objectWithoutPropertiesLoose15(e, t);
   if (Object.getOwnPropertySymbols) {
     var n = Object.getOwnPropertySymbols(e);
     for (r = 0; r < n.length; r++) o = n[r], -1 === t.indexOf(o) && {}.propertyIsEnumerable.call(e, o) && (i[o] = e[o]);
   }
   return i;
 }
-function _objectWithoutPropertiesLoose14(r, e) {
+function _objectWithoutPropertiesLoose15(r, e) {
   if (null == r) return {};
   var t = {};
   for (var n in r) if ({}.hasOwnProperty.call(r, n)) {
@@ -17296,15 +17811,15 @@ var COS_45 = Math.cos(degreeToRadian(45));
 var AXIS_TYPE2 = "angleAxis";
 function SetAngleAxisSettings(props) {
   var dispatch = useAppDispatch();
-  var settings = (0, import_react28.useMemo)(() => {
+  var settings = (0, import_react29.useMemo)(() => {
     var {
       children
-    } = props, rest2 = _objectWithoutProperties14(props, _excluded14);
+    } = props, rest2 = _objectWithoutProperties15(props, _excluded15);
     return rest2;
   }, [props]);
   var synchronizedSettings = useAppSelector((state) => selectAngleAxis(state, settings.id));
   var settingsAreSynchronized = settings === synchronizedSettings;
-  (0, import_react28.useEffect)(() => {
+  (0, import_react29.useEffect)(() => {
     dispatch(addAngleAxis(settings));
     return () => {
       dispatch(removeAngleAxis(settings));
@@ -17365,9 +17880,9 @@ var AxisLine = (props) => {
   }
   var axisLineProps = _objectSpread27(_objectSpread27({}, svgPropertiesNoEvents(props)), {}, {
     fill: "none"
-  }, filterProps(axisLine, false));
+  }, svgPropertiesNoEvents(axisLine));
   if (axisLineType === "circle") {
-    return React24.createElement(Dot, _extends19({
+    return React24.createElement(Dot, _extends20({
       className: "recharts-polar-angle-axis-line"
     }, axisLineProps, {
       cx,
@@ -17376,7 +17891,7 @@ var AxisLine = (props) => {
     }));
   }
   var points = ticks2.map((entry) => polarToCartesian(cx, cy, radius, entry.coordinate));
-  return React24.createElement(Polygon, _extends19({
+  return React24.createElement(Polygon, _extends20({
     className: "recharts-polar-angle-axis-line"
   }, axisLineProps, {
     points
@@ -17397,7 +17912,7 @@ var TickItemText = (_ref2) => {
   if (typeof tick === "function") {
     return tick(tickProps);
   }
-  return React24.createElement(Text, _extends19({}, tickProps, {
+  return React24.createElement(Text, _extends20({}, tickProps, {
     className: "recharts-polar-angle-axis-tick-value"
   }), value);
 };
@@ -17410,18 +17925,21 @@ var Ticks = (props) => {
     ticks: ticks2
   } = props;
   var axisProps = svgPropertiesNoEvents(props);
-  var customTickProps = filterProps(tick, false);
+  var customTickProps = svgPropertiesNoEventsFromUnknown(tick);
   var tickLineProps = _objectSpread27(_objectSpread27({}, axisProps), {}, {
     fill: "none"
-  }, filterProps(tickLine, false));
+  }, svgPropertiesNoEvents(tickLine));
   var items = ticks2.map((entry, i) => {
     var lineCoord = getTickLineCoord(entry, props);
     var textAnchor = getTickTextAnchor2(entry, props.orientation);
     var verticalAnchor = getTickTextVerticalAnchor(entry);
     var tickProps = _objectSpread27(_objectSpread27(_objectSpread27({}, axisProps), {}, {
+      // @ts-expect-error customTickProps is contributing unknown props
       textAnchor,
       verticalAnchor,
+      // @ts-expect-error customTickProps is contributing unknown props
       stroke: "none",
+      // @ts-expect-error customTickProps is contributing unknown props
       fill: stroke
     }, customTickProps), {}, {
       index: i,
@@ -17429,10 +17947,10 @@ var Ticks = (props) => {
       x: lineCoord.x2,
       y: lineCoord.y2
     });
-    return React24.createElement(Layer, _extends19({
+    return React24.createElement(Layer, _extends20({
       className: clsx("recharts-polar-angle-axis-tick", getTickClassName(tick)),
       key: "tick-".concat(entry.coordinate)
-    }, adaptEventsOfChild(props, entry, i)), tickLine && React24.createElement("line", _extends19({
+    }, adaptEventsOfChild(props, entry, i)), tickLine && React24.createElement("line", _extends20({
       className: "recharts-polar-angle-axis-tick-line"
     }, tickLineProps, lineCoord)), React24.createElement(TickItemText, {
       tick,
@@ -17462,13 +17980,13 @@ var PolarAngleAxisWrapper = (defaultsAndInputs) => {
   });
   return React24.createElement(Layer, {
     className: clsx("recharts-polar-angle-axis", AXIS_TYPE2, props.className)
-  }, React24.createElement(AxisLine, _extends19({}, props, {
+  }, React24.createElement(AxisLine, _extends20({}, props, {
     ticks: ticks2
-  })), React24.createElement(Ticks, _extends19({}, props, {
+  })), React24.createElement(Ticks, _extends20({}, props, {
     ticks: ticks2
   })));
 };
-var PolarAngleAxis = class extends import_react28.PureComponent {
+var PolarAngleAxis = class extends import_react29.PureComponent {
   render() {
     if (this.props.radius <= 0) return null;
     return React24.createElement(SetAngleAxisSettings, {
@@ -17496,7 +18014,7 @@ _defineProperty28(PolarAngleAxis, "defaultProps", defaultPolarAngleAxisProps);
 
 // node_modules/recharts/es6/polar/Pie.js
 var React29 = __toESM(require_react());
-var import_react35 = __toESM(require_react());
+var import_react37 = __toESM(require_react());
 var import_get4 = __toESM(require_get2());
 
 // node_modules/recharts/es6/state/selectors/pieSelectors.js
@@ -17603,14 +18121,69 @@ var selectPieSectors = createSelector([selectDisplayedData2, selectSynchronisedP
   });
 });
 
+// node_modules/recharts/es6/util/ReactUtils.js
+var import_get3 = __toESM(require_get2());
+var import_react30 = __toESM(require_react());
+var import_react_is = __toESM(require_react_is());
+var getDisplayName = (Comp) => {
+  if (typeof Comp === "string") {
+    return Comp;
+  }
+  if (!Comp) {
+    return "";
+  }
+  return Comp.displayName || Comp.name || "Component";
+};
+var lastChildren = null;
+var lastResult = null;
+var toArray = (children) => {
+  if (children === lastChildren && Array.isArray(lastResult)) {
+    return lastResult;
+  }
+  var result = [];
+  import_react30.Children.forEach(children, (child) => {
+    if (isNullish(child)) return;
+    if ((0, import_react_is.isFragment)(child)) {
+      result = result.concat(toArray(child.props.children));
+    } else {
+      result.push(child);
+    }
+  });
+  lastResult = result;
+  lastChildren = children;
+  return result;
+};
+function findAllByType(children, type) {
+  var result = [];
+  var types = [];
+  if (Array.isArray(type)) {
+    types = type.map((t) => getDisplayName(t));
+  } else {
+    types = [getDisplayName(type)];
+  }
+  toArray(children).forEach((child) => {
+    var childType = (0, import_get3.default)(child, "type.displayName") || (0, import_get3.default)(child, "type.name");
+    if (types.indexOf(childType) !== -1) {
+      result.push(child);
+    }
+  });
+  return result;
+}
+var isClipDot = (dot) => {
+  if (dot && typeof dot === "object" && "clipDot" in dot) {
+    return Boolean(dot.clipDot);
+  }
+  return true;
+};
+
 // node_modules/recharts/es6/util/ActiveShapeUtils.js
 var React26 = __toESM(require_react());
-var import_react30 = __toESM(require_react());
-var import_isPlainObject8 = __toESM(require_isPlainObject2());
+var import_react32 = __toESM(require_react());
+var import_isPlainObject10 = __toESM(require_isPlainObject2());
 
 // node_modules/recharts/es6/shape/Trapezoid.js
 var React25 = __toESM(require_react());
-var import_react29 = __toESM(require_react());
+var import_react31 = __toESM(require_react());
 function ownKeys29(e, r) {
   var t = Object.keys(e);
   if (Object.getOwnPropertySymbols) {
@@ -17649,14 +18222,14 @@ function _toPrimitive30(t, r) {
   }
   return ("string" === r ? String : Number)(t);
 }
-function _extends20() {
-  return _extends20 = Object.assign ? Object.assign.bind() : function(n) {
+function _extends21() {
+  return _extends21 = Object.assign ? Object.assign.bind() : function(n) {
     for (var e = 1; e < arguments.length; e++) {
       var t = arguments[e];
       for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]);
     }
     return n;
-  }, _extends20.apply(null, arguments);
+  }, _extends21.apply(null, arguments);
 }
 var getTrapezoidPath = (x2, y2, upperWidth, lowerWidth, height) => {
   var widthGap = upperWidth - lowerWidth;
@@ -17695,15 +18268,15 @@ var Trapezoid = (outsideProps) => {
     animationBegin,
     isUpdateAnimationActive
   } = trapezoidProps;
-  var pathRef = (0, import_react29.useRef)();
-  var [totalLength, setTotalLength] = (0, import_react29.useState)(-1);
-  var prevUpperWidthRef = (0, import_react29.useRef)(upperWidth);
-  var prevLowerWidthRef = (0, import_react29.useRef)(lowerWidth);
-  var prevHeightRef = (0, import_react29.useRef)(height);
-  var prevXRef = (0, import_react29.useRef)(x2);
-  var prevYRef = (0, import_react29.useRef)(y2);
+  var pathRef = (0, import_react31.useRef)(null);
+  var [totalLength, setTotalLength] = (0, import_react31.useState)(-1);
+  var prevUpperWidthRef = (0, import_react31.useRef)(upperWidth);
+  var prevLowerWidthRef = (0, import_react31.useRef)(lowerWidth);
+  var prevHeightRef = (0, import_react31.useRef)(height);
+  var prevXRef = (0, import_react31.useRef)(x2);
+  var prevYRef = (0, import_react31.useRef)(y2);
   var animationId = useAnimationId(outsideProps, "trapezoid-");
-  (0, import_react29.useEffect)(() => {
+  (0, import_react31.useEffect)(() => {
     if (pathRef.current && pathRef.current.getTotalLength) {
       try {
         var pathTotalLength = pathRef.current.getTotalLength();
@@ -17719,7 +18292,7 @@ var Trapezoid = (outsideProps) => {
   }
   var layerClass = clsx("recharts-trapezoid", className);
   if (!isUpdateAnimationActive) {
-    return React25.createElement("g", null, React25.createElement("path", _extends20({}, filterProps(trapezoidProps, true), {
+    return React25.createElement("g", null, React25.createElement("path", _extends21({}, svgPropertiesAndEvents(trapezoidProps), {
       className: layerClass,
       d: getTrapezoidPath(x2, y2, upperWidth, lowerWidth, height)
     })));
@@ -17759,7 +18332,7 @@ var Trapezoid = (outsideProps) => {
     } : {
       strokeDasharray: from2
     };
-    return React25.createElement("path", _extends20({}, filterProps(trapezoidProps, true), {
+    return React25.createElement("path", _extends21({}, svgPropertiesAndEvents(trapezoidProps), {
       className: layerClass,
       d: getTrapezoidPath(currX, currY, currUpperWidth, currLowerWidth, currHeight),
       ref: pathRef,
@@ -17769,17 +18342,17 @@ var Trapezoid = (outsideProps) => {
 };
 
 // node_modules/recharts/es6/util/ActiveShapeUtils.js
-var _excluded15 = ["option", "shapeType", "propTransformer", "activeClassName", "isActive"];
-function _objectWithoutProperties15(e, t) {
+var _excluded16 = ["option", "shapeType", "propTransformer", "activeClassName", "isActive"];
+function _objectWithoutProperties16(e, t) {
   if (null == e) return {};
-  var o, r, i = _objectWithoutPropertiesLoose15(e, t);
+  var o, r, i = _objectWithoutPropertiesLoose16(e, t);
   if (Object.getOwnPropertySymbols) {
     var n = Object.getOwnPropertySymbols(e);
     for (r = 0; r < n.length; r++) o = n[r], -1 === t.indexOf(o) && {}.propertyIsEnumerable.call(e, o) && (i[o] = e[o]);
   }
   return i;
 }
-function _objectWithoutPropertiesLoose15(r, e) {
+function _objectWithoutPropertiesLoose16(r, e) {
   if (null == r) return {};
   var t = {};
   for (var n in r) if ({}.hasOwnProperty.call(r, n)) {
@@ -17854,7 +18427,7 @@ function ShapeSelector(_ref2) {
   }
 }
 function getPropsFromShapeOption(option) {
-  if ((0, import_react30.isValidElement)(option)) {
+  if ((0, import_react32.isValidElement)(option)) {
     return option.props;
   }
   return option;
@@ -17866,13 +18439,13 @@ function Shape(_ref2) {
     propTransformer = defaultPropTransformer,
     activeClassName = "recharts-active-shape",
     isActive
-  } = _ref2, props = _objectWithoutProperties15(_ref2, _excluded15);
+  } = _ref2, props = _objectWithoutProperties16(_ref2, _excluded16);
   var shape;
-  if ((0, import_react30.isValidElement)(option)) {
-    shape = (0, import_react30.cloneElement)(option, _objectSpread30(_objectSpread30({}, props), getPropsFromShapeOption(option)));
+  if ((0, import_react32.isValidElement)(option)) {
+    shape = (0, import_react32.cloneElement)(option, _objectSpread30(_objectSpread30({}, props), getPropsFromShapeOption(option)));
   } else if (typeof option === "function") {
     shape = option(props);
-  } else if ((0, import_isPlainObject8.default)(option) && typeof option !== "boolean") {
+  } else if ((0, import_isPlainObject10.default)(option) && typeof option !== "boolean") {
     var nextProps = propTransformer(option, props);
     shape = React26.createElement(ShapeSelector, {
       shapeType,
@@ -17925,7 +18498,7 @@ var useMouseClickItemDispatch = (onMouseClickFromProps, dataKey) => {
 };
 
 // node_modules/recharts/es6/state/SetTooltipEntrySettings.js
-var import_react31 = __toESM(require_react());
+var import_react33 = __toESM(require_react());
 function SetTooltipEntrySettings(_ref2) {
   var {
     fn,
@@ -17933,7 +18506,7 @@ function SetTooltipEntrySettings(_ref2) {
   } = _ref2;
   var dispatch = useAppDispatch();
   var isPanorama = useIsPanorama();
-  (0, import_react31.useEffect)(() => {
+  (0, import_react33.useLayoutEffect)(() => {
     if (isPanorama) {
       return void 0;
     }
@@ -17947,7 +18520,7 @@ function SetTooltipEntrySettings(_ref2) {
 }
 
 // node_modules/recharts/es6/state/SetLegendPayload.js
-var import_react32 = __toESM(require_react());
+var import_react34 = __toESM(require_react());
 var noop4 = () => {
 };
 function SetLegendPayload(_ref2) {
@@ -17956,7 +18529,7 @@ function SetLegendPayload(_ref2) {
   } = _ref2;
   var dispatch = useAppDispatch();
   var isPanorama = useIsPanorama();
-  (0, import_react32.useEffect)(() => {
+  (0, import_react34.useLayoutEffect)(() => {
     if (isPanorama) {
       return noop4;
     }
@@ -17973,7 +18546,7 @@ function SetPolarLegendPayload(_ref2) {
   } = _ref2;
   var dispatch = useAppDispatch();
   var layout = useAppSelector(selectChartLayout);
-  (0, import_react32.useEffect)(() => {
+  (0, import_react34.useLayoutEffect)(() => {
     if (layout !== "centric" && layout !== "radial") {
       return noop4;
     }
@@ -17987,7 +18560,7 @@ function SetPolarLegendPayload(_ref2) {
 
 // node_modules/recharts/es6/context/RegisterGraphicalItemId.js
 var React28 = __toESM(require_react());
-var import_react33 = __toESM(require_react());
+var import_react35 = __toESM(require_react());
 
 // node_modules/recharts/es6/util/useId.js
 var React27 = __toESM(require_react());
@@ -18008,7 +18581,7 @@ function useUniqueId(prefix2, customId) {
 }
 
 // node_modules/recharts/es6/context/RegisterGraphicalItemId.js
-var GraphicalItemIdContext = (0, import_react33.createContext)(void 0);
+var GraphicalItemIdContext = (0, import_react35.createContext)(void 0);
 var RegisterGraphicalItemId = (_ref2) => {
   var {
     id,
@@ -18021,11 +18594,11 @@ var RegisterGraphicalItemId = (_ref2) => {
   }, children(resolvedId));
 };
 function useGraphicalItemId() {
-  return (0, import_react33.useContext)(GraphicalItemIdContext);
+  return (0, import_react35.useContext)(GraphicalItemIdContext);
 }
 
 // node_modules/recharts/es6/state/SetGraphicalItem.js
-var import_react34 = __toESM(require_react());
+var import_react36 = __toESM(require_react());
 
 // node_modules/recharts/es6/state/graphicalItemsSlice.js
 var initialState6 = {
@@ -18036,33 +18609,48 @@ var graphicalItemsSlice = createSlice({
   name: "graphicalItems",
   initialState: initialState6,
   reducers: {
-    addCartesianGraphicalItem(state, action) {
-      state.cartesianItems.push(castDraft(action.payload));
+    addCartesianGraphicalItem: {
+      reducer(state, action) {
+        state.cartesianItems.push(castDraft(action.payload));
+      },
+      prepare: prepareAutoBatched()
     },
-    replaceCartesianGraphicalItem(state, action) {
-      var {
-        prev,
-        next
-      } = action.payload;
-      var index2 = current(state).cartesianItems.indexOf(castDraft(prev));
-      if (index2 > -1) {
-        state.cartesianItems[index2] = castDraft(next);
-      }
+    replaceCartesianGraphicalItem: {
+      reducer(state, action) {
+        var {
+          prev,
+          next
+        } = action.payload;
+        var index2 = current(state).cartesianItems.indexOf(castDraft(prev));
+        if (index2 > -1) {
+          state.cartesianItems[index2] = castDraft(next);
+        }
+      },
+      prepare: prepareAutoBatched()
     },
-    removeCartesianGraphicalItem(state, action) {
-      var index2 = current(state).cartesianItems.indexOf(castDraft(action.payload));
-      if (index2 > -1) {
-        state.cartesianItems.splice(index2, 1);
-      }
+    removeCartesianGraphicalItem: {
+      reducer(state, action) {
+        var index2 = current(state).cartesianItems.indexOf(castDraft(action.payload));
+        if (index2 > -1) {
+          state.cartesianItems.splice(index2, 1);
+        }
+      },
+      prepare: prepareAutoBatched()
     },
-    addPolarGraphicalItem(state, action) {
-      state.polarItems.push(castDraft(action.payload));
+    addPolarGraphicalItem: {
+      reducer(state, action) {
+        state.polarItems.push(castDraft(action.payload));
+      },
+      prepare: prepareAutoBatched()
     },
-    removePolarGraphicalItem(state, action) {
-      var index2 = current(state).polarItems.indexOf(castDraft(action.payload));
-      if (index2 > -1) {
-        state.polarItems.splice(index2, 1);
-      }
+    removePolarGraphicalItem: {
+      reducer(state, action) {
+        var index2 = current(state).polarItems.indexOf(castDraft(action.payload));
+        if (index2 > -1) {
+          state.polarItems.splice(index2, 1);
+        }
+      },
+      prepare: prepareAutoBatched()
     }
   }
 });
@@ -18078,8 +18666,8 @@ var graphicalItemsReducer = graphicalItemsSlice.reducer;
 // node_modules/recharts/es6/state/SetGraphicalItem.js
 function SetCartesianGraphicalItem(props) {
   var dispatch = useAppDispatch();
-  var prevPropsRef = (0, import_react34.useRef)(null);
-  (0, import_react34.useEffect)(() => {
+  var prevPropsRef = (0, import_react36.useRef)(null);
+  (0, import_react36.useLayoutEffect)(() => {
     if (prevPropsRef.current === null) {
       dispatch(addCartesianGraphicalItem(props));
     } else if (prevPropsRef.current !== props) {
@@ -18090,7 +18678,7 @@ function SetCartesianGraphicalItem(props) {
     }
     prevPropsRef.current = props;
   }, [dispatch, props]);
-  (0, import_react34.useEffect)(() => {
+  (0, import_react36.useLayoutEffect)(() => {
     return () => {
       if (prevPropsRef.current) {
         dispatch(removeCartesianGraphicalItem(prevPropsRef.current));
@@ -18102,7 +18690,7 @@ function SetCartesianGraphicalItem(props) {
 }
 function SetPolarGraphicalItem(props) {
   var dispatch = useAppDispatch();
-  (0, import_react34.useEffect)(() => {
+  (0, import_react36.useLayoutEffect)(() => {
     dispatch(addPolarGraphicalItem(props));
     return () => {
       dispatch(removePolarGraphicalItem(props));
@@ -18112,19 +18700,19 @@ function SetPolarGraphicalItem(props) {
 }
 
 // node_modules/recharts/es6/polar/Pie.js
-var _excluded16 = ["onMouseEnter", "onClick", "onMouseLeave"];
-var _excluded25 = ["id"];
+var _excluded17 = ["onMouseEnter", "onClick", "onMouseLeave"];
+var _excluded26 = ["id"];
 var _excluded32 = ["id"];
-function _objectWithoutProperties16(e, t) {
+function _objectWithoutProperties17(e, t) {
   if (null == e) return {};
-  var o, r, i = _objectWithoutPropertiesLoose16(e, t);
+  var o, r, i = _objectWithoutPropertiesLoose17(e, t);
   if (Object.getOwnPropertySymbols) {
     var n = Object.getOwnPropertySymbols(e);
     for (r = 0; r < n.length; r++) o = n[r], -1 === t.indexOf(o) && {}.propertyIsEnumerable.call(e, o) && (i[o] = e[o]);
   }
   return i;
 }
-function _objectWithoutPropertiesLoose16(r, e) {
+function _objectWithoutPropertiesLoose17(r, e) {
   if (null == r) return {};
   var t = {};
   for (var n in r) if ({}.hasOwnProperty.call(r, n)) {
@@ -18171,17 +18759,17 @@ function _toPrimitive32(t, r) {
   }
   return ("string" === r ? String : Number)(t);
 }
-function _extends21() {
-  return _extends21 = Object.assign ? Object.assign.bind() : function(n) {
+function _extends22() {
+  return _extends22 = Object.assign ? Object.assign.bind() : function(n) {
     for (var e = 1; e < arguments.length; e++) {
       var t = arguments[e];
       for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]);
     }
     return n;
-  }, _extends21.apply(null, arguments);
+  }, _extends22.apply(null, arguments);
 }
 function SetPiePayloadLegend(props) {
-  var cells = (0, import_react35.useMemo)(() => findAllByType(props.children, Cell), [props.children]);
+  var cells = (0, import_react37.useMemo)(() => findAllByType(props.children, Cell), [props.children]);
   var legendPayload = useAppSelector((state) => selectPieLegend(state, props.id, cells));
   if (legendPayload == null) {
     return null;
@@ -18275,7 +18863,7 @@ var renderLabelLineItem = (option, props) => {
     return option(props);
   }
   var className = clsx("recharts-pie-label-line", typeof option !== "boolean" ? option.className : "");
-  return React29.createElement(Curve, _extends21({}, props, {
+  return React29.createElement(Curve, _extends22({}, props, {
     type: "linear",
     className
   }));
@@ -18292,7 +18880,7 @@ var renderLabelItem = (option, props, value) => {
     }
   }
   var className = clsx("recharts-pie-label-text", getClassNamePropertyIfExists(option));
-  return React29.createElement(Text, _extends21({}, props, {
+  return React29.createElement(Text, _extends22({}, props, {
     alignmentBaseline: "middle",
     className
   }), label);
@@ -18312,20 +18900,23 @@ function PieLabels(_ref2) {
     return null;
   }
   var pieProps = svgPropertiesNoEvents(props);
-  var customLabelProps = filterProps(label, false);
-  var customLabelLineProps = filterProps(labelLine, false);
+  var customLabelProps = svgPropertiesNoEventsFromUnknown(label);
+  var customLabelLineProps = svgPropertiesNoEventsFromUnknown(labelLine);
   var offsetRadius = typeof label === "object" && "offsetRadius" in label && typeof label.offsetRadius === "number" && label.offsetRadius || 20;
   var labels = sectors.map((entry, i) => {
     var midAngle = (entry.startAngle + entry.endAngle) / 2;
     var endPoint = polarToCartesian(entry.cx, entry.cy, entry.outerRadius + offsetRadius, midAngle);
     var labelProps = _objectSpread31(_objectSpread31(_objectSpread31(_objectSpread31({}, pieProps), entry), {}, {
+      // @ts-expect-error customLabelProps is contributing unknown props
       stroke: "none"
     }, customLabelProps), {}, {
       index: i,
       textAnchor: getTextAnchor(endPoint.x, entry.cx)
     }, endPoint);
     var lineProps = _objectSpread31(_objectSpread31(_objectSpread31(_objectSpread31({}, pieProps), entry), {}, {
+      // @ts-expect-error customLabelLineProps is contributing unknown props
       fill: "none",
+      // @ts-expect-error customLabelLineProps is contributing unknown props
       stroke: entry.fill
     }, customLabelLineProps), {}, {
       index: i,
@@ -18354,7 +18945,7 @@ function PieLabelList(_ref2) {
   } = props;
   if (typeof label === "object" && label != null && "position" in label) {
     return React29.createElement(LabelListFromLabelProp, {
-      label: props.label
+      label
     });
   }
   return React29.createElement(PieLabels, {
@@ -18375,7 +18966,7 @@ function PieSectors(props) {
     onMouseEnter: onMouseEnterFromProps,
     onClick: onItemClickFromProps,
     onMouseLeave: onMouseLeaveFromProps
-  } = allOtherPieProps, restOfAllOtherProps = _objectWithoutProperties16(allOtherPieProps, _excluded16);
+  } = allOtherPieProps, restOfAllOtherProps = _objectWithoutProperties17(allOtherPieProps, _excluded17);
   var onMouseEnterFromContext = useMouseEnterItemDispatch(onMouseEnterFromProps, allOtherPieProps.dataKey);
   var onMouseLeaveFromContext = useMouseLeaveItemDispatch(onMouseLeaveFromProps);
   var onClickFromContext = useMouseClickItemDispatch(onItemClickFromProps, allOtherPieProps.dataKey);
@@ -18393,20 +18984,24 @@ function PieSectors(props) {
       [DATA_ITEM_INDEX_ATTRIBUTE_NAME]: i,
       [DATA_ITEM_DATAKEY_ATTRIBUTE_NAME]: allOtherPieProps.dataKey
     });
-    return React29.createElement(Layer, _extends21({
-      tabIndex: -1,
-      className: "recharts-pie-sector"
-    }, adaptEventsOfChild(restOfAllOtherProps, entry, i), {
-      // @ts-expect-error the types need a bit of attention
-      onMouseEnter: onMouseEnterFromContext(entry, i),
-      onMouseLeave: onMouseLeaveFromContext(entry, i),
-      onClick: onClickFromContext(entry, i),
-      key: "sector-".concat(entry === null || entry === void 0 ? void 0 : entry.startAngle, "-").concat(entry === null || entry === void 0 ? void 0 : entry.endAngle, "-").concat(entry.midAngle, "-").concat(i)
-    }), React29.createElement(Shape, _extends21({
-      option: sectorOptions,
-      isActive: isSectorActive,
-      shapeType: "sector"
-    }, sectorProps)));
+    return React29.createElement(
+      Layer,
+      _extends22({
+        key: "sector-".concat(entry === null || entry === void 0 ? void 0 : entry.startAngle, "-").concat(entry === null || entry === void 0 ? void 0 : entry.endAngle, "-").concat(entry.midAngle, "-").concat(i),
+        tabIndex: -1,
+        className: "recharts-pie-sector"
+      }, adaptEventsOfChild(restOfAllOtherProps, entry, i), {
+        // @ts-expect-error the types need a bit of attention
+        onMouseEnter: onMouseEnterFromContext(entry, i),
+        onMouseLeave: onMouseLeaveFromContext(entry, i),
+        onClick: onClickFromContext(entry, i)
+      }),
+      React29.createElement(Shape, _extends22({
+        option: sectorOptions,
+        isActive: isSectorActive,
+        shapeType: "sector"
+      }, sectorProps))
+    );
   }));
 }
 function computePieSectors(_ref3) {
@@ -18455,9 +19050,7 @@ function computePieSectors(_ref3) {
       var midAngle = (tempStartAngle + tempEndAngle) / 2;
       var middleRadius = (coordinate.innerRadius + coordinate.outerRadius) / 2;
       var tooltipPayload = [{
-        // @ts-expect-error getValueByDataKey does not validate the output type
         name,
-        // @ts-expect-error getValueByDataKey does not validate the output type
         value: val,
         payload: entryWithCellInfo,
         dataKey,
@@ -18473,7 +19066,7 @@ function computePieSectors(_ref3) {
         middleRadius,
         tooltipPosition
       }, entryWithCellInfo), coordinate), {}, {
-        value: getValueByDataKey(entry, dataKey),
+        value: val,
         startAngle: tempStartAngle,
         endAngle: tempEndAngle,
         payload: entryWithCellInfo,
@@ -18490,7 +19083,7 @@ function PieLabelListProvider(_ref4) {
     sectors,
     children
   } = _ref4;
-  var labelListEntries = (0, import_react35.useMemo)(() => {
+  var labelListEntries = (0, import_react37.useMemo)(() => {
     if (!showLabels || !sectors) {
       return [];
     }
@@ -18533,14 +19126,14 @@ function SectorsWithAnimation(_ref5) {
   } = props;
   var animationId = useAnimationId(props, "recharts-pie-");
   var prevSectors = previousSectorsRef.current;
-  var [isAnimating, setIsAnimating] = (0, import_react35.useState)(false);
-  var handleAnimationEnd = (0, import_react35.useCallback)(() => {
+  var [isAnimating, setIsAnimating] = (0, import_react37.useState)(false);
+  var handleAnimationEnd = (0, import_react37.useCallback)(() => {
     if (typeof onAnimationEnd === "function") {
       onAnimationEnd();
     }
     setIsAnimating(false);
   }, [onAnimationEnd]);
-  var handleAnimationStart = (0, import_react35.useCallback)(() => {
+  var handleAnimationStart = (0, import_react37.useCallback)(() => {
     if (typeof onAnimationStart === "function") {
       onAnimationStart();
     }
@@ -18625,15 +19218,15 @@ var defaultPieProps = {
 function PieImpl(props) {
   var {
     id
-  } = props, propsWithoutId = _objectWithoutProperties16(props, _excluded25);
+  } = props, propsWithoutId = _objectWithoutProperties17(props, _excluded26);
   var {
     hide,
     className,
     rootTabIndex
   } = props;
-  var cells = (0, import_react35.useMemo)(() => findAllByType(props.children, Cell), [props.children]);
+  var cells = (0, import_react37.useMemo)(() => findAllByType(props.children, Cell), [props.children]);
   var sectors = useAppSelector((state) => selectPieSectors(state, id, cells));
-  var previousSectorsRef = (0, import_react35.useRef)(null);
+  var previousSectorsRef = (0, import_react37.useRef)(null);
   var layerClass = clsx("recharts-pie", className);
   if (hide || sectors == null) {
     previousSectorsRef.current = null;
@@ -18658,9 +19251,10 @@ function PieImpl(props) {
   })));
 }
 function Pie(outsideProps) {
-  var _resolveDefaultProps = resolveDefaultProps(outsideProps, defaultPieProps), {
+  var props = resolveDefaultProps(outsideProps, defaultPieProps);
+  var {
     id: externalId
-  } = _resolveDefaultProps, propsWithoutId = _objectWithoutProperties16(_resolveDefaultProps, _excluded32);
+  } = props, propsWithoutId = _objectWithoutProperties17(props, _excluded32);
   var presentationProps = svgPropertiesNoEvents(propsWithoutId);
   return React29.createElement(RegisterGraphicalItemId, {
     id: externalId,
@@ -18687,10 +19281,11 @@ function Pie(outsideProps) {
     innerRadius: propsWithoutId.innerRadius,
     outerRadius: propsWithoutId.outerRadius,
     cornerRadius: propsWithoutId.cornerRadius,
-    presentationProps
-  }), React29.createElement(SetPiePayloadLegend, _extends21({}, propsWithoutId, {
+    presentationProps,
+    maxRadius: props.maxRadius
+  }), React29.createElement(SetPiePayloadLegend, _extends22({}, propsWithoutId, {
     id
-  })), React29.createElement(PieImpl, _extends21({}, propsWithoutId, {
+  })), React29.createElement(PieImpl, _extends22({}, propsWithoutId, {
     id
   }))));
 }
@@ -18698,12 +19293,12 @@ Pie.displayName = "Pie";
 
 // node_modules/recharts/es6/polar/Radar.js
 var React31 = __toESM(require_react());
-var import_react37 = __toESM(require_react());
+var import_react39 = __toESM(require_react());
 var import_last3 = __toESM(require_last3());
 
 // node_modules/recharts/es6/component/ActivePoints.js
 var React30 = __toESM(require_react());
-var import_react36 = __toESM(require_react());
+var import_react38 = __toESM(require_react());
 
 // node_modules/recharts/es6/state/cartesianAxisSlice.js
 function ownKeys32(e, r) {
@@ -18754,32 +19349,57 @@ var cartesianAxisSlice = createSlice({
   name: "cartesianAxis",
   initialState: initialState7,
   reducers: {
-    addXAxis(state, action) {
-      state.xAxis[action.payload.id] = castDraft(action.payload);
+    addXAxis: {
+      reducer(state, action) {
+        state.xAxis[action.payload.id] = castDraft(action.payload);
+      },
+      prepare: prepareAutoBatched()
     },
-    removeXAxis(state, action) {
-      delete state.xAxis[action.payload.id];
+    removeXAxis: {
+      reducer(state, action) {
+        delete state.xAxis[action.payload.id];
+      },
+      prepare: prepareAutoBatched()
     },
-    addYAxis(state, action) {
-      state.yAxis[action.payload.id] = castDraft(action.payload);
+    addYAxis: {
+      reducer(state, action) {
+        state.yAxis[action.payload.id] = castDraft(action.payload);
+      },
+      prepare: prepareAutoBatched()
     },
-    removeYAxis(state, action) {
-      delete state.yAxis[action.payload.id];
+    removeYAxis: {
+      reducer(state, action) {
+        delete state.yAxis[action.payload.id];
+      },
+      prepare: prepareAutoBatched()
     },
-    addZAxis(state, action) {
-      state.zAxis[action.payload.id] = castDraft(action.payload);
+    addZAxis: {
+      reducer(state, action) {
+        state.zAxis[action.payload.id] = castDraft(action.payload);
+      },
+      prepare: prepareAutoBatched()
     },
-    removeZAxis(state, action) {
-      delete state.zAxis[action.payload.id];
+    removeZAxis: {
+      reducer(state, action) {
+        delete state.zAxis[action.payload.id];
+      },
+      prepare: prepareAutoBatched()
     },
     updateYAxisWidth(state, action) {
       var {
         id,
         width
       } = action.payload;
-      if (state.yAxis[id]) {
+      var axis = state.yAxis[id];
+      if (axis) {
+        var history = axis.widthHistory || [];
+        if (history.length === 3 && history[0] === history[2] && width === history[1] && width !== axis.width && Math.abs(width - history[0]) <= 1) {
+          return;
+        }
+        var newHistory = [...history, width].slice(-3);
         state.yAxis[id] = _objectSpread32(_objectSpread32({}, state.yAxis[id]), {}, {
-          width
+          width,
+          widthHistory: newHistory
         });
       }
     }
@@ -18907,18 +19527,24 @@ var renderActivePoint = (_ref2) => {
   var dotProps = _objectSpread33(_objectSpread33({
     index: childIndex,
     dataKey,
+    // @ts-expect-error activeDot is contributing unknown props
     cx: point6.x,
+    // @ts-expect-error activeDot is contributing unknown props
     cy: point6.y,
+    // @ts-expect-error activeDot is contributing unknown props
     r: 4,
+    // @ts-expect-error activeDot is contributing unknown props
     fill: mainColor !== null && mainColor !== void 0 ? mainColor : "none",
+    // @ts-expect-error activeDot is contributing unknown props
     strokeWidth: 2,
+    // @ts-expect-error activeDot is contributing unknown props
     stroke: "#fff",
     payload: point6.payload,
     value: point6.value
-  }, filterProps(activeDot, false)), adaptEventHandlers(activeDot));
+  }, svgPropertiesNoEventsFromUnknown(activeDot)), adaptEventHandlers(activeDot));
   var dot;
-  if ((0, import_react36.isValidElement)(activeDot)) {
-    dot = (0, import_react36.cloneElement)(activeDot, dotProps);
+  if ((0, import_react38.isValidElement)(activeDot)) {
+    dot = (0, import_react38.cloneElement)(activeDot, dotProps);
   } else if (typeof activeDot === "function") {
     dot = activeDot(dotProps);
   } else {
@@ -19071,17 +19697,17 @@ var selectRadarPoints = createSelector([selectRadiusAxisForRadar, selectAngleAxi
 });
 
 // node_modules/recharts/es6/polar/Radar.js
-var _excluded17 = ["id"];
-function _objectWithoutProperties17(e, t) {
+var _excluded18 = ["id"];
+function _objectWithoutProperties18(e, t) {
   if (null == e) return {};
-  var o, r, i = _objectWithoutPropertiesLoose17(e, t);
+  var o, r, i = _objectWithoutPropertiesLoose18(e, t);
   if (Object.getOwnPropertySymbols) {
     var n = Object.getOwnPropertySymbols(e);
     for (r = 0; r < n.length; r++) o = n[r], -1 === t.indexOf(o) && {}.propertyIsEnumerable.call(e, o) && (i[o] = e[o]);
   }
   return i;
 }
-function _objectWithoutPropertiesLoose17(r, e) {
+function _objectWithoutPropertiesLoose18(r, e) {
   if (null == r) return {};
   var t = {};
   for (var n in r) if ({}.hasOwnProperty.call(r, n)) {
@@ -19128,14 +19754,14 @@ function _toPrimitive36(t, r) {
   }
   return ("string" === r ? String : Number)(t);
 }
-function _extends22() {
-  return _extends22 = Object.assign ? Object.assign.bind() : function(n) {
+function _extends23() {
+  return _extends23 = Object.assign ? Object.assign.bind() : function(n) {
     for (var e = 1; e < arguments.length; e++) {
       var t = arguments[e];
       for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]);
     }
     return n;
-  }, _extends22.apply(null, arguments);
+  }, _extends23.apply(null, arguments);
 }
 function getLegendItemColor(stroke, fill2) {
   return stroke && stroke !== "none" ? stroke : fill2;
@@ -19200,7 +19826,7 @@ function renderDotItem(option, props) {
   } else if (typeof option === "function") {
     dotItem = option(props);
   } else {
-    dotItem = React31.createElement(Dot, _extends22({}, props, {
+    dotItem = React31.createElement(Dot, _extends23({}, props, {
       className: clsx("recharts-radar-dot", typeof option !== "boolean" ? option.className : "")
     }));
   }
@@ -19276,14 +19902,15 @@ function Dots(_ref2) {
   }
   var {
     id
-  } = props, propsWithoutId = _objectWithoutProperties17(props, _excluded17);
+  } = props, propsWithoutId = _objectWithoutProperties18(props, _excluded18);
   var baseProps = svgPropertiesNoEvents(propsWithoutId);
-  var customDotProps = filterProps(dot, true);
+  var customDotProps = svgPropertiesAndEventsFromUnknown(dot);
   var dots = points.map((entry, i) => {
     var dotProps = _objectSpread35(_objectSpread35(_objectSpread35({
       key: "dot-".concat(i),
       r: 3
     }, baseProps), customDotProps), {}, {
+      // @ts-expect-error we're passing in a dataKey that Dot did not ask for
       dataKey,
       cx: entry.x,
       cy: entry.y,
@@ -19361,11 +19988,11 @@ function StaticPolygon(_ref4) {
       points
     }));
   } else {
-    radar = React31.createElement(Polygon, _extends22({}, filterProps(props, true), {
+    radar = React31.createElement(Polygon, _extends23({}, svgPropertiesAndEvents(props), {
       onMouseEnter: handleMouseEnter,
       onMouseLeave: handleMouseLeave,
       points,
-      baseLinePoints: isRange ? baseLinePoints : null,
+      baseLinePoints: isRange ? baseLinePoints : void 0,
       connectNulls
     }));
   }
@@ -19410,15 +20037,15 @@ function PolygonWithAnimation(_ref5) {
   var prevPointsDiffFactor = prevPoints && prevPoints.length / points.length;
   var prevBaseLinePointsDiffFactor = prevBaseLinePoints && prevBaseLinePoints.length / baseLinePoints.length;
   var animationId = useAnimationId(props, "recharts-radar-");
-  var [isAnimating, setIsAnimating] = (0, import_react37.useState)(false);
+  var [isAnimating, setIsAnimating] = (0, import_react39.useState)(false);
   var showLabels = !isAnimating;
-  var handleAnimationEnd = (0, import_react37.useCallback)(() => {
+  var handleAnimationEnd = (0, import_react39.useCallback)(() => {
     if (typeof onAnimationEnd === "function") {
       onAnimationEnd();
     }
     setIsAnimating(false);
   }, [onAnimationEnd]);
-  var handleAnimationStart = (0, import_react37.useCallback)(() => {
+  var handleAnimationStart = (0, import_react39.useCallback)(() => {
     if (typeof onAnimationStart === "function") {
       onAnimationStart();
     }
@@ -19453,8 +20080,8 @@ function PolygonWithAnimation(_ref5) {
   }), props.children);
 }
 function RenderPolygon(props) {
-  var previousPointsRef = (0, import_react37.useRef)(void 0);
-  var previousBaseLinePointsRef = (0, import_react37.useRef)(void 0);
+  var previousPointsRef = (0, import_react39.useRef)(void 0);
+  var previousBaseLinePointsRef = (0, import_react39.useRef)(void 0);
   return React31.createElement(PolygonWithAnimation, {
     props,
     previousPointsRef,
@@ -19473,7 +20100,7 @@ var defaultRadarProps = {
   animationDuration: 1500,
   animationEasing: "ease"
 };
-var RadarWithState = class extends import_react37.PureComponent {
+var RadarWithState = class extends import_react39.PureComponent {
   render() {
     var {
       hide,
@@ -19497,13 +20124,13 @@ var RadarWithState = class extends import_react37.PureComponent {
 function RadarImpl(props) {
   var isPanorama = useIsPanorama();
   var radarPoints = useAppSelector((state) => selectRadarPoints(state, props.radiusAxisId, props.angleAxisId, isPanorama, props.id));
-  return React31.createElement(RadarWithState, _extends22({}, props, {
+  return React31.createElement(RadarWithState, _extends23({}, props, {
     points: radarPoints === null || radarPoints === void 0 ? void 0 : radarPoints.points,
     baseLinePoints: radarPoints === null || radarPoints === void 0 ? void 0 : radarPoints.baseLinePoints,
     isRange: radarPoints === null || radarPoints === void 0 ? void 0 : radarPoints.isRange
   }));
 }
-var Radar = class extends import_react37.PureComponent {
+var Radar = class extends import_react39.PureComponent {
   render() {
     return React31.createElement(RegisterGraphicalItemId, {
       id: this.props.id,
@@ -19521,7 +20148,7 @@ var Radar = class extends import_react37.PureComponent {
     }), React31.createElement(SetTooltipEntrySettings, {
       fn: getTooltipEntrySettings2,
       args: this.props
-    }), React31.createElement(RadarImpl, _extends22({}, this.props, {
+    }), React31.createElement(RadarImpl, _extends23({}, this.props, {
       id
     }))));
   }
@@ -19531,18 +20158,18 @@ _defineProperty36(Radar, "defaultProps", defaultRadarProps);
 
 // node_modules/recharts/es6/polar/RadialBar.js
 var React37 = __toESM(require_react());
-var import_react40 = __toESM(require_react());
+var import_react42 = __toESM(require_react());
 
 // node_modules/recharts/es6/util/RadialBarUtils.js
 var React32 = __toESM(require_react());
-function _extends23() {
-  return _extends23 = Object.assign ? Object.assign.bind() : function(n) {
+function _extends24() {
+  return _extends24 = Object.assign ? Object.assign.bind() : function(n) {
     for (var e = 1; e < arguments.length; e++) {
       var t = arguments[e];
       for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]);
     }
     return n;
-  }, _extends23.apply(null, arguments);
+  }, _extends24.apply(null, arguments);
 }
 function ownKeys36(e, r) {
   var t = Object.keys(e);
@@ -19599,7 +20226,7 @@ function typeGuardSectorProps(option, props) {
   });
 }
 function RadialBarSector(props) {
-  return React32.createElement(Shape, _extends23({
+  return React32.createElement(Shape, _extends24({
     shapeType: "sector",
     propTransformer: typeGuardSectorProps
   }, props));
@@ -19607,7 +20234,7 @@ function RadialBarSector(props) {
 
 // node_modules/recharts/es6/cartesian/Bar.js
 var React36 = __toESM(require_react());
-var import_react39 = __toESM(require_react());
+var import_react41 = __toESM(require_react());
 
 // node_modules/recharts/es6/util/BarUtils.js
 var React33 = __toESM(require_react());
@@ -19628,15 +20255,15 @@ function invariant2(condition, message) {
 }
 
 // node_modules/recharts/es6/util/BarUtils.js
-var _excluded18 = ["x", "y"];
-function _extends24() {
-  return _extends24 = Object.assign ? Object.assign.bind() : function(n) {
+var _excluded19 = ["x", "y"];
+function _extends25() {
+  return _extends25 = Object.assign ? Object.assign.bind() : function(n) {
     for (var e = 1; e < arguments.length; e++) {
       var t = arguments[e];
       for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]);
     }
     return n;
-  }, _extends24.apply(null, arguments);
+  }, _extends25.apply(null, arguments);
 }
 function ownKeys37(e, r) {
   var t = Object.keys(e);
@@ -19676,16 +20303,16 @@ function _toPrimitive38(t, r) {
   }
   return ("string" === r ? String : Number)(t);
 }
-function _objectWithoutProperties18(e, t) {
+function _objectWithoutProperties19(e, t) {
   if (null == e) return {};
-  var o, r, i = _objectWithoutPropertiesLoose18(e, t);
+  var o, r, i = _objectWithoutPropertiesLoose19(e, t);
   if (Object.getOwnPropertySymbols) {
     var n = Object.getOwnPropertySymbols(e);
     for (r = 0; r < n.length; r++) o = n[r], -1 === t.indexOf(o) && {}.propertyIsEnumerable.call(e, o) && (i[o] = e[o]);
   }
   return i;
 }
-function _objectWithoutPropertiesLoose18(r, e) {
+function _objectWithoutPropertiesLoose19(r, e) {
   if (null == r) return {};
   var t = {};
   for (var n in r) if ({}.hasOwnProperty.call(r, n)) {
@@ -19698,7 +20325,7 @@ function typeguardBarRectangleProps(_ref2, props) {
   var {
     x: xProp,
     y: yProp
-  } = _ref2, option = _objectWithoutProperties18(_ref2, _excluded18);
+  } = _ref2, option = _objectWithoutProperties19(_ref2, _excluded19);
   var xValue = "".concat(xProp);
   var x2 = parseInt(xValue, 10);
   var yValue = "".concat(yProp);
@@ -19719,7 +20346,7 @@ function typeguardBarRectangleProps(_ref2, props) {
   });
 }
 function BarRectangle(props) {
-  return React33.createElement(Shape, _extends24({
+  return React33.createElement(Shape, _extends25({
     shapeType: "rectangle",
     propTransformer: typeguardBarRectangleProps,
     activeClassName: "recharts-active-bar"
@@ -19740,7 +20367,7 @@ var minPointSizeCallback = function minPointSizeCallback2(minPointSize) {
 
 // node_modules/recharts/es6/context/ErrorBarContext.js
 var React34 = __toESM(require_react());
-var import_react38 = __toESM(require_react());
+var import_react40 = __toESM(require_react());
 
 // node_modules/recharts/es6/state/errorBarSlice.js
 var initialState8 = {};
@@ -19787,17 +20414,17 @@ var {
 var errorBarReducer = errorBarSlice.reducer;
 
 // node_modules/recharts/es6/context/ErrorBarContext.js
-var _excluded19 = ["children"];
-function _objectWithoutProperties19(e, t) {
+var _excluded20 = ["children"];
+function _objectWithoutProperties20(e, t) {
   if (null == e) return {};
-  var o, r, i = _objectWithoutPropertiesLoose19(e, t);
+  var o, r, i = _objectWithoutPropertiesLoose20(e, t);
   if (Object.getOwnPropertySymbols) {
     var n = Object.getOwnPropertySymbols(e);
     for (r = 0; r < n.length; r++) o = n[r], -1 === t.indexOf(o) && {}.propertyIsEnumerable.call(e, o) && (i[o] = e[o]);
   }
   return i;
 }
-function _objectWithoutPropertiesLoose19(r, e) {
+function _objectWithoutPropertiesLoose20(r, e) {
   if (null == r) return {};
   var t = {};
   for (var n in r) if ({}.hasOwnProperty.call(r, n)) {
@@ -19817,21 +20444,21 @@ var initialContextState = {
   }),
   errorBarOffset: 0
 };
-var ErrorBarContext = (0, import_react38.createContext)(initialContextState);
+var ErrorBarContext = (0, import_react40.createContext)(initialContextState);
 function SetErrorBarContext(props) {
   var {
     children
-  } = props, rest2 = _objectWithoutProperties19(props, _excluded19);
+  } = props, rest2 = _objectWithoutProperties20(props, _excluded20);
   return React34.createElement(ErrorBarContext.Provider, {
     value: rest2
   }, children);
 }
-var useErrorBarContext = () => (0, import_react38.useContext)(ErrorBarContext);
+var useErrorBarContext = () => (0, import_react40.useContext)(ErrorBarContext);
 function ReportErrorBarSettings(props) {
   var dispatch = useAppDispatch();
   var graphicalItemId = useGraphicalItemId();
-  var prevPropsRef = (0, import_react38.useRef)(null);
-  (0, import_react38.useEffect)(() => {
+  var prevPropsRef = (0, import_react40.useRef)(null);
+  (0, import_react40.useEffect)(() => {
     if (graphicalItemId == null) {
       return;
     }
@@ -19849,7 +20476,7 @@ function ReportErrorBarSettings(props) {
     }
     prevPropsRef.current = props;
   }, [dispatch, graphicalItemId, props]);
-  (0, import_react38.useEffect)(() => {
+  (0, import_react40.useEffect)(() => {
     return () => {
       if (prevPropsRef.current != null) {
         dispatch(removeErrorBar({
@@ -19910,18 +20537,18 @@ function GraphicalItemClipPath(_ref2) {
 }
 
 // node_modules/recharts/es6/cartesian/Bar.js
-var _excluded20 = ["onMouseEnter", "onMouseLeave", "onClick"];
-var _excluded26 = ["value", "background", "tooltipPosition"];
+var _excluded21 = ["onMouseEnter", "onMouseLeave", "onClick"];
+var _excluded27 = ["value", "background", "tooltipPosition"];
 var _excluded33 = ["id"];
 var _excluded42 = ["onMouseEnter", "onClick", "onMouseLeave"];
-function _extends25() {
-  return _extends25 = Object.assign ? Object.assign.bind() : function(n) {
+function _extends26() {
+  return _extends26 = Object.assign ? Object.assign.bind() : function(n) {
     for (var e = 1; e < arguments.length; e++) {
       var t = arguments[e];
       for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]);
     }
     return n;
-  }, _extends25.apply(null, arguments);
+  }, _extends26.apply(null, arguments);
 }
 function ownKeys38(e, r) {
   var t = Object.keys(e);
@@ -19961,16 +20588,16 @@ function _toPrimitive39(t, r) {
   }
   return ("string" === r ? String : Number)(t);
 }
-function _objectWithoutProperties20(e, t) {
+function _objectWithoutProperties21(e, t) {
   if (null == e) return {};
-  var o, r, i = _objectWithoutPropertiesLoose20(e, t);
+  var o, r, i = _objectWithoutPropertiesLoose21(e, t);
   if (Object.getOwnPropertySymbols) {
     var n = Object.getOwnPropertySymbols(e);
     for (r = 0; r < n.length; r++) o = n[r], -1 === t.indexOf(o) && {}.propertyIsEnumerable.call(e, o) && (i[o] = e[o]);
   }
   return i;
 }
-function _objectWithoutPropertiesLoose20(r, e) {
+function _objectWithoutPropertiesLoose21(r, e) {
   if (null == r) return {};
   var t = {};
   for (var n in r) if ({}.hasOwnProperty.call(r, n)) {
@@ -20035,20 +20662,20 @@ function BarBackground(props) {
     onMouseEnter: onMouseEnterFromProps,
     onMouseLeave: onMouseLeaveFromProps,
     onClick: onItemClickFromProps
-  } = allOtherBarProps, restOfAllOtherProps = _objectWithoutProperties20(allOtherBarProps, _excluded20);
+  } = allOtherBarProps, restOfAllOtherProps = _objectWithoutProperties21(allOtherBarProps, _excluded21);
   var onMouseEnterFromContext = useMouseEnterItemDispatch(onMouseEnterFromProps, dataKey);
   var onMouseLeaveFromContext = useMouseLeaveItemDispatch(onMouseLeaveFromProps);
   var onClickFromContext = useMouseClickItemDispatch(onItemClickFromProps, dataKey);
   if (!backgroundFromProps || data == null) {
     return null;
   }
-  var backgroundProps = filterProps(backgroundFromProps, false);
+  var backgroundProps = svgPropertiesNoEventsFromUnknown(backgroundFromProps);
   return React36.createElement(React36.Fragment, null, data.map((entry, i) => {
     var {
       value,
       background: backgroundFromDataEntry,
       tooltipPosition
-    } = entry, rest2 = _objectWithoutProperties20(entry, _excluded26);
+    } = entry, rest2 = _objectWithoutProperties21(entry, _excluded27);
     if (!backgroundFromDataEntry) {
       return null;
     }
@@ -20059,7 +20686,7 @@ function BarBackground(props) {
       option: backgroundFromProps,
       isActive: String(i) === activeIndex
     }, rest2), {}, {
-      // @ts-expect-error BarRectangle props do not accept `fill` property.
+      // @ts-expect-error backgroundProps is contributing unknown props
       fill: "#eee"
     }, backgroundFromDataEntry), backgroundProps), adaptEventsOfChild(restOfAllOtherProps, entry, i)), {}, {
       onMouseEnter,
@@ -20069,7 +20696,7 @@ function BarBackground(props) {
       index: i,
       className: "recharts-bar-background-rectangle"
     });
-    return React36.createElement(BarRectangle, _extends25({
+    return React36.createElement(BarRectangle, _extends26({
       key: "background-bar-".concat(i)
     }, barRectangleProps));
   }));
@@ -20112,7 +20739,9 @@ function BarRectangleWithActiveState(props) {
   var activeDataKey = useAppSelector(selectActiveTooltipDataKey);
   var isActive = activeBar && String(index2) === activeIndex && (activeDataKey == null || dataKey === activeDataKey);
   var option = isActive ? activeBar : shape;
-  return React36.createElement(BarRectangle, _extends25({}, baseProps, entry, {
+  return React36.createElement(BarRectangle, _extends26({}, baseProps, {
+    name: String(baseProps.name)
+  }, entry, {
     isActive,
     option,
     index: index2,
@@ -20127,7 +20756,9 @@ function BarRectangleNeverActive(props) {
     index: index2,
     dataKey
   } = props;
-  return React36.createElement(BarRectangle, _extends25({}, baseProps, entry, {
+  return React36.createElement(BarRectangle, _extends26({}, baseProps, {
+    name: String(baseProps.name)
+  }, entry, {
     isActive: false,
     option: shape,
     index: index2,
@@ -20141,7 +20772,7 @@ function BarRectangles(_ref2) {
   } = _ref2;
   var _svgPropertiesNoEvent = svgPropertiesNoEvents(props), {
     id
-  } = _svgPropertiesNoEvent, baseProps = _objectWithoutProperties20(_svgPropertiesNoEvent, _excluded33);
+  } = _svgPropertiesNoEvent, baseProps = _objectWithoutProperties21(_svgPropertiesNoEvent, _excluded33);
   var {
     shape,
     dataKey,
@@ -20151,7 +20782,7 @@ function BarRectangles(_ref2) {
     onMouseEnter: onMouseEnterFromProps,
     onClick: onItemClickFromProps,
     onMouseLeave: onMouseLeaveFromProps
-  } = props, restOfAllOtherProps = _objectWithoutProperties20(props, _excluded42);
+  } = props, restOfAllOtherProps = _objectWithoutProperties21(props, _excluded42);
   var onMouseEnterFromContext = useMouseEnterItemDispatch(onMouseEnterFromProps, dataKey);
   var onMouseLeaveFromContext = useMouseLeaveItemDispatch(onMouseLeaveFromProps);
   var onClickFromContext = useMouseClickItemDispatch(onItemClickFromProps, dataKey);
@@ -20159,39 +20790,43 @@ function BarRectangles(_ref2) {
     return null;
   }
   return React36.createElement(React36.Fragment, null, data.map((entry, i) => {
-    return React36.createElement(Layer, _extends25({
-      className: "recharts-bar-rectangle"
-    }, adaptEventsOfChild(restOfAllOtherProps, entry, i), {
-      // @ts-expect-error BarRectangleItem type definition says it's missing properties, but I can see them present in debugger!
-      onMouseEnter: onMouseEnterFromContext(entry, i),
-      onMouseLeave: onMouseLeaveFromContext(entry, i),
-      onClick: onClickFromContext(entry, i),
-      key: "rectangle-".concat(entry === null || entry === void 0 ? void 0 : entry.x, "-").concat(entry === null || entry === void 0 ? void 0 : entry.y, "-").concat(entry === null || entry === void 0 ? void 0 : entry.value, "-").concat(i)
-    }), activeBar ? React36.createElement(BarRectangleWithActiveState, {
-      shape,
-      activeBar,
-      baseProps,
-      entry,
-      index: i,
-      dataKey
-    }) : (
-      /*
-       * If the `activeBar` prop is falsy, then let's call the variant without hooks.
-       * Using the `selectActiveTooltipIndex` selector is usually fast
-       * but in charts with large-ish amount of data even the few nanoseconds add up to a noticeable jank.
-       * If the activeBar is false then we don't need to know which index is active - because we won't use it anyway.
-       * So let's just skip the hooks altogether. That way, React can skip rendering the component,
-       * and can skip the tree reconciliation for its children too.
-       * Because we can't call hooks conditionally, we need to have a separate component for that.
-       */
-      React36.createElement(BarRectangleNeverActive, {
+    return React36.createElement(
+      Layer,
+      _extends26({
+        key: "rectangle-".concat(entry === null || entry === void 0 ? void 0 : entry.x, "-").concat(entry === null || entry === void 0 ? void 0 : entry.y, "-").concat(entry === null || entry === void 0 ? void 0 : entry.value, "-").concat(i),
+        className: "recharts-bar-rectangle"
+      }, adaptEventsOfChild(restOfAllOtherProps, entry, i), {
+        // @ts-expect-error BarRectangleItem type definition says it's missing properties, but I can see them present in debugger!
+        onMouseEnter: onMouseEnterFromContext(entry, i),
+        onMouseLeave: onMouseLeaveFromContext(entry, i),
+        onClick: onClickFromContext(entry, i)
+      }),
+      activeBar ? React36.createElement(BarRectangleWithActiveState, {
         shape,
+        activeBar,
         baseProps,
         entry,
         index: i,
         dataKey
-      })
-    ));
+      }) : (
+        /*
+         * If the `activeBar` prop is falsy, then let's call the variant without hooks.
+         * Using the `selectActiveTooltipIndex` selector is usually fast
+         * but in charts with large-ish amount of data even the few nanoseconds add up to a noticeable jank.
+         * If the activeBar is false then we don't need to know which index is active - because we won't use it anyway.
+         * So let's just skip the hooks altogether. That way, React can skip rendering the component,
+         * and can skip the tree reconciliation for its children too.
+         * Because we can't call hooks conditionally, we need to have a separate component for that.
+         */
+        React36.createElement(BarRectangleNeverActive, {
+          shape,
+          baseProps,
+          entry,
+          index: i,
+          dataKey
+        })
+      )
+    );
   }));
 }
 function RectanglesWithAnimation(_ref3) {
@@ -20211,15 +20846,15 @@ function RectanglesWithAnimation(_ref3) {
   } = props;
   var prevData = previousRectanglesRef.current;
   var animationId = useAnimationId(props, "recharts-bar-");
-  var [isAnimating, setIsAnimating] = (0, import_react39.useState)(false);
+  var [isAnimating, setIsAnimating] = (0, import_react41.useState)(false);
   var showLabels = !isAnimating;
-  var handleAnimationEnd = (0, import_react39.useCallback)(() => {
+  var handleAnimationEnd = (0, import_react41.useCallback)(() => {
     if (typeof onAnimationEnd === "function") {
       onAnimationEnd();
     }
     setIsAnimating(false);
   }, [onAnimationEnd]);
-  var handleAnimationStart = (0, import_react39.useCallback)(() => {
+  var handleAnimationStart = (0, import_react41.useCallback)(() => {
     if (typeof onAnimationStart === "function") {
       onAnimationStart();
     }
@@ -20275,7 +20910,7 @@ function RectanglesWithAnimation(_ref3) {
   }), props.children);
 }
 function RenderRectangles(props) {
-  var previousRectanglesRef = (0, import_react39.useRef)(null);
+  var previousRectanglesRef = (0, import_react41.useRef)(null);
   return React36.createElement(RectanglesWithAnimation, {
     previousRectanglesRef,
     props
@@ -20292,7 +20927,7 @@ var errorBarDataPointFormatter = (dataPoint, dataKey) => {
     errorVal: getValueByDataKey(dataPoint, dataKey)
   };
 };
-var BarWithState = class extends import_react39.PureComponent {
+var BarWithState = class extends import_react41.PureComponent {
   render() {
     var {
       hide,
@@ -20376,7 +21011,7 @@ function BarImpl(props) {
     data: rects,
     dataPointFormatter: errorBarDataPointFormatter,
     errorBarOffset
-  }, React36.createElement(BarWithState, _extends25({}, props, {
+  }, React36.createElement(BarWithState, _extends26({}, props, {
     layout,
     needClip,
     data: rects,
@@ -20497,7 +21132,7 @@ function computeBarRectangles(_ref4) {
     return barRectangleItem;
   }).filter(Boolean);
 }
-function Bar(outsideProps) {
+function BarFn(outsideProps) {
   var props = resolveDefaultProps(outsideProps, defaultBarProps);
   var isPanorama = useIsPanorama();
   return React36.createElement(RegisterGraphicalItemId, {
@@ -20522,10 +21157,11 @@ function Bar(outsideProps) {
     minPointSize: props.minPointSize,
     maxBarSize: props.maxBarSize,
     isPanorama
-  }), React36.createElement(BarImpl, _extends25({}, props, {
+  }), React36.createElement(BarImpl, _extends26({}, props, {
     id
   }))));
 }
+var Bar = React36.memo(BarFn);
 Bar.displayName = "Bar";
 
 // node_modules/recharts/es6/state/selectors/barSelectors.js
@@ -21021,17 +21657,17 @@ var selectRadialBarLegendPayload = createSelector([selectChartDataAndAlwaysIgnor
 });
 
 // node_modules/recharts/es6/polar/RadialBar.js
-var _excluded21 = ["shape", "activeShape", "cornerRadius", "id"];
-var _excluded27 = ["onMouseEnter", "onClick", "onMouseLeave"];
+var _excluded28 = ["shape", "activeShape", "cornerRadius", "id"];
+var _excluded29 = ["onMouseEnter", "onClick", "onMouseLeave"];
 var _excluded34 = ["value", "background"];
-function _extends26() {
-  return _extends26 = Object.assign ? Object.assign.bind() : function(n) {
+function _extends27() {
+  return _extends27 = Object.assign ? Object.assign.bind() : function(n) {
     for (var e = 1; e < arguments.length; e++) {
       var t = arguments[e];
       for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]);
     }
     return n;
-  }, _extends26.apply(null, arguments);
+  }, _extends27.apply(null, arguments);
 }
 function ownKeys41(e, r) {
   var t = Object.keys(e);
@@ -21071,16 +21707,16 @@ function _toPrimitive42(t, r) {
   }
   return ("string" === r ? String : Number)(t);
 }
-function _objectWithoutProperties21(e, t) {
+function _objectWithoutProperties22(e, t) {
   if (null == e) return {};
-  var o, r, i = _objectWithoutPropertiesLoose21(e, t);
+  var o, r, i = _objectWithoutPropertiesLoose22(e, t);
   if (Object.getOwnPropertySymbols) {
     var n = Object.getOwnPropertySymbols(e);
     for (r = 0; r < n.length; r++) o = n[r], -1 === t.indexOf(o) && {}.propertyIsEnumerable.call(e, o) && (i[o] = e[o]);
   }
   return i;
 }
-function _objectWithoutPropertiesLoose21(r, e) {
+function _objectWithoutPropertiesLoose22(r, e) {
   if (null == r) return {};
   var t = {};
   for (var n in r) if ({}.hasOwnProperty.call(r, n)) {
@@ -21127,14 +21763,14 @@ function RadialBarSectors(_ref2) {
     activeShape,
     cornerRadius,
     id
-  } = allOtherRadialBarProps, others = _objectWithoutProperties21(allOtherRadialBarProps, _excluded21);
+  } = allOtherRadialBarProps, others = _objectWithoutProperties22(allOtherRadialBarProps, _excluded28);
   var baseProps = svgPropertiesNoEvents(others);
   var activeIndex = useAppSelector(selectActiveTooltipIndex);
   var {
     onMouseEnter: onMouseEnterFromProps,
     onClick: onItemClickFromProps,
     onMouseLeave: onMouseLeaveFromProps
-  } = allOtherRadialBarProps, restOfAllOtherProps = _objectWithoutProperties21(allOtherRadialBarProps, _excluded27);
+  } = allOtherRadialBarProps, restOfAllOtherProps = _objectWithoutProperties22(allOtherRadialBarProps, _excluded29);
   var onMouseEnterFromContext = useMouseEnterItemDispatch(onMouseEnterFromProps, allOtherRadialBarProps.dataKey);
   var onMouseLeaveFromContext = useMouseLeaveItemDispatch(onMouseLeaveFromProps);
   var onClickFromContext = useMouseClickItemDispatch(onItemClickFromProps, allOtherRadialBarProps.dataKey);
@@ -21155,14 +21791,16 @@ function RadialBarSectors(_ref2) {
       onMouseEnter,
       onMouseLeave,
       onClick,
-      key: "sector-".concat(i),
       className: "recharts-radial-bar-sector ".concat(entry.className),
       forceCornerRadius: others.forceCornerRadius,
       cornerIsExternal: others.cornerIsExternal,
       isActive,
       option: isActive ? activeShape : shape
     });
-    return React37.createElement(RadialBarSector, radialBarSectorProps);
+    return React37.createElement(RadialBarSector, _extends27({
+      key: "sector-".concat(entry.cx, "-").concat(entry.cy, "-").concat(entry.innerRadius, "-").concat(entry.outerRadius, "-").concat(entry.startAngle, "-").concat(entry.endAngle, "-").concat(i)
+      // eslint-disable-line react/no-array-index-key
+    }, radialBarSectorProps));
   }), React37.createElement(LabelListFromLabelProp, {
     label: allOtherRadialBarProps.label
   }), allOtherRadialBarProps.children);
@@ -21183,14 +21821,14 @@ function SectorsWithAnimation2(_ref3) {
   } = props;
   var animationId = useAnimationId(props, "recharts-radialbar-");
   var prevData = previousSectorsRef.current;
-  var [isAnimating, setIsAnimating] = (0, import_react40.useState)(false);
-  var handleAnimationEnd = (0, import_react40.useCallback)(() => {
+  var [isAnimating, setIsAnimating] = (0, import_react42.useState)(false);
+  var handleAnimationEnd = (0, import_react42.useCallback)(() => {
     if (typeof onAnimationEnd === "function") {
       onAnimationEnd();
     }
     setIsAnimating(false);
   }, [onAnimationEnd]);
-  var handleAnimationStart = (0, import_react40.useCallback)(() => {
+  var handleAnimationStart = (0, import_react42.useCallback)(() => {
     if (typeof onAnimationStart === "function") {
       onAnimationStart();
     }
@@ -21236,7 +21874,7 @@ function SectorsWithAnimation2(_ref3) {
   });
 }
 function RenderSectors(props) {
-  var previousSectorsRef = (0, import_react40.useRef)(null);
+  var previousSectorsRef = (0, import_react42.useRef)(null);
   return React37.createElement(SectorsWithAnimation2, {
     props,
     previousSectorsRef
@@ -21278,7 +21916,7 @@ function getTooltipEntrySettings4(props) {
     }
   };
 }
-var RadialBarWithState = class extends import_react40.PureComponent {
+var RadialBarWithState = class extends import_react42.PureComponent {
   renderBackground(sectors) {
     if (sectors == null) {
       return null;
@@ -21286,27 +21924,30 @@ var RadialBarWithState = class extends import_react40.PureComponent {
     var {
       cornerRadius
     } = this.props;
-    var backgroundProps = filterProps(this.props.background, false);
+    var backgroundProps = svgPropertiesNoEventsFromUnknown(this.props.background);
     return sectors.map((entry, i) => {
       var {
         value,
         background
-      } = entry, rest2 = _objectWithoutProperties21(entry, _excluded34);
+      } = entry, rest2 = _objectWithoutProperties22(entry, _excluded34);
       if (!background) {
         return null;
       }
       var props = _objectSpread41(_objectSpread41(_objectSpread41(_objectSpread41(_objectSpread41({
         cornerRadius: parseCornerRadius(cornerRadius)
       }, rest2), {}, {
+        // @ts-expect-error backgroundProps is contributing unknown props
         fill: "#eee"
       }, background), backgroundProps), adaptEventsOfChild(this.props, entry, i)), {}, {
         index: i,
-        key: "sector-".concat(i),
         className: clsx("recharts-radial-bar-background-sector", backgroundProps === null || backgroundProps === void 0 ? void 0 : backgroundProps.className),
         option: background,
         isActive: false
       });
-      return React37.createElement(RadialBarSector, props);
+      return React37.createElement(RadialBarSector, _extends27({
+        key: "background-".concat(rest2.cx, "-").concat(rest2.cy, "-").concat(rest2.innerRadius, "-").concat(rest2.outerRadius, "-").concat(rest2.startAngle, "-").concat(rest2.endAngle, "-").concat(i)
+        // eslint-disable-line react/no-array-index-key
+      }, props));
     });
   }
   render() {
@@ -21351,7 +21992,7 @@ function RadialBarImpl(props) {
     args: _objectSpread41(_objectSpread41({}, props), {}, {
       data
     })
-  }), React37.createElement(RadialBarWithState, _extends26({}, props, {
+  }), React37.createElement(RadialBarWithState, _extends27({}, props, {
     data
   })));
 }
@@ -21458,7 +22099,7 @@ function computeRadialBarDataItems(_ref4) {
     }, cells && cells[index2] && cells[index2].props);
   });
 }
-var RadialBar = class extends import_react40.PureComponent {
+var RadialBar = class extends import_react42.PureComponent {
   render() {
     return React37.createElement(RegisterGraphicalItemId, {
       id: this.props.id,
@@ -21477,7 +22118,7 @@ var RadialBar = class extends import_react40.PureComponent {
         barSize: this.props.barSize,
         minPointSize: this.props.minPointSize,
         maxBarSize: this.props.maxBarSize
-      }), React37.createElement(SetRadialBarPayloadLegend, this.props), React37.createElement(RadialBarImpl, _extends26({}, this.props, {
+      }), React37.createElement(SetRadialBarPayloadLegend, this.props), React37.createElement(RadialBarImpl, _extends27({}, this.props, {
         id
       })));
     });
@@ -21488,7 +22129,7 @@ _defineProperty42(RadialBar, "defaultProps", defaultRadialBarProps);
 
 // node_modules/recharts/es6/cartesian/Brush.js
 var React38 = __toESM(require_react());
-var import_react43 = __toESM(require_react());
+var import_react45 = __toESM(require_react());
 var import_range4 = __toESM(require_range2());
 
 // node_modules/recharts/es6/util/CssPrefixUtils.js
@@ -21544,14 +22185,14 @@ var generatePrefixStyle = (name, value) => {
 };
 
 // node_modules/recharts/es6/context/chartDataContext.js
-var import_react41 = __toESM(require_react());
+var import_react43 = __toESM(require_react());
 var ChartDataContextProvider = (props) => {
   var {
     chartData
   } = props;
   var dispatch = useAppDispatch();
   var isPanorama = useIsPanorama();
-  (0, import_react41.useEffect)(() => {
+  (0, import_react43.useEffect)(() => {
     if (isPanorama) {
       return () => {
       };
@@ -21568,7 +22209,7 @@ var SetComputedData = (props) => {
     computedData
   } = props;
   var dispatch = useAppDispatch();
-  (0, import_react41.useEffect)(() => {
+  (0, import_react43.useEffect)(() => {
     dispatch(setComputedData(computedData));
     return () => {
       dispatch(setChartData(void 0));
@@ -21593,8 +22234,8 @@ var useDataIndex = () => {
 };
 
 // node_modules/recharts/es6/context/brushUpdateContext.js
-var import_react42 = __toESM(require_react());
-var BrushUpdateDispatchContext = (0, import_react42.createContext)(() => {
+var import_react44 = __toESM(require_react());
+var BrushUpdateDispatchContext = (0, import_react44.createContext)(() => {
 });
 
 // node_modules/recharts/es6/state/brushSlice.js
@@ -21628,14 +22269,14 @@ var {
 var brushReducer = brushSlice.reducer;
 
 // node_modules/recharts/es6/cartesian/Brush.js
-function _extends27() {
-  return _extends27 = Object.assign ? Object.assign.bind() : function(n) {
+function _extends28() {
+  return _extends28 = Object.assign ? Object.assign.bind() : function(n) {
     for (var e = 1; e < arguments.length; e++) {
       var t = arguments[e];
       for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]);
     }
     return n;
-  }, _extends27.apply(null, arguments);
+  }, _extends28.apply(null, arguments);
 }
 function ownKeys43(e, r) {
   var t = Object.keys(e);
@@ -21862,7 +22503,7 @@ function BrushText(_ref4) {
   };
   return React38.createElement(Layer, {
     className: "recharts-brush-texts"
-  }, React38.createElement(Text, _extends27({
+  }, React38.createElement(Text, _extends28({
     textAnchor: "end",
     verticalAnchor: "middle",
     x: Math.min(startX, endX) - offset,
@@ -21872,7 +22513,7 @@ function BrushText(_ref4) {
     tickFormatter,
     dataKey,
     data
-  })), React38.createElement(Text, _extends27({
+  })), React38.createElement(Text, _extends28({
     textAnchor: "start",
     verticalAnchor: "middle",
     x: Math.max(startX, endX) + travellerWidth + offset,
@@ -21931,7 +22572,7 @@ function Panorama(_ref6) {
   if (!isPanoramic) {
     return null;
   }
-  var chartElement = import_react43.Children.only(children);
+  var chartElement = import_react45.Children.only(children);
   if (!chartElement) {
     return null;
   }
@@ -21972,7 +22613,7 @@ var createScale = (_ref7) => {
   };
 };
 var isTouch = (e) => e.changedTouches && !!e.changedTouches.length;
-var BrushWithState = class extends import_react43.PureComponent {
+var BrushWithState = class extends import_react45.PureComponent {
   constructor(props) {
     super(props);
     _defineProperty44(this, "handleDrag", (e) => {
@@ -22124,7 +22765,7 @@ var BrushWithState = class extends import_react43.PureComponent {
     var prevScale = prevState.scale;
     if (prevScale && (width !== prevState.prevWidth || x2 !== prevState.prevX || travellerWidth !== prevState.prevTravellerWidth)) {
       prevScale.range([x2, x2 + width - travellerWidth]);
-      var scaleValues = prevScale.domain().map((entry) => prevScale(entry)).filter(Boolean);
+      var scaleValues = prevScale.domain().map((entry) => prevScale(entry)).filter((value) => value != null);
       return {
         prevData: data,
         prevTravellerWidth: travellerWidth,
@@ -22406,20 +23047,20 @@ function BrushInternal(props) {
   var dispatch = useAppDispatch();
   var chartData = useChartData();
   var dataIndexes = useDataIndex();
-  var onChangeFromContext = (0, import_react43.useContext)(BrushUpdateDispatchContext);
+  var onChangeFromContext = (0, import_react45.useContext)(BrushUpdateDispatchContext);
   var onChangeFromProps = props.onChange;
   var {
     startIndex: startIndexFromProps,
     endIndex: endIndexFromProps
   } = props;
-  (0, import_react43.useEffect)(() => {
+  (0, import_react45.useEffect)(() => {
     dispatch(setDataStartEndIndexes({
       startIndex: startIndexFromProps,
       endIndex: endIndexFromProps
     }));
   }, [dispatch, endIndexFromProps, startIndexFromProps]);
   useBrushChartSynchronisation();
-  var onChange = (0, import_react43.useCallback)((nextState) => {
+  var onChange = (0, import_react45.useCallback)((nextState) => {
     if (dataIndexes == null) {
       return;
     }
@@ -22455,14 +23096,14 @@ function BrushInternal(props) {
     endIndex,
     onChange
   };
-  return React38.createElement(BrushWithState, _extends27({}, props, contextProperties, {
+  return React38.createElement(BrushWithState, _extends28({}, props, contextProperties, {
     startIndexControlledFromProps: startIndexFromProps !== null && startIndexFromProps !== void 0 ? startIndexFromProps : void 0,
     endIndexControlledFromProps: endIndexFromProps !== null && endIndexFromProps !== void 0 ? endIndexFromProps : void 0
   }));
 }
 function BrushSettingsDispatcher(props) {
   var dispatch = useAppDispatch();
-  (0, import_react43.useEffect)(() => {
+  (0, import_react45.useEffect)(() => {
     dispatch(setBrushSettings(props));
     return () => {
       dispatch(setBrushSettings(null));
@@ -22499,7 +23140,7 @@ Brush.displayName = "Brush";
 
 // node_modules/recharts/es6/cartesian/ReferenceLine.js
 var React40 = __toESM(require_react());
-var import_react45 = __toESM(require_react());
+var import_react47 = __toESM(require_react());
 
 // node_modules/recharts/es6/util/CartesianUtils.js
 function ownKeys44(e, r) {
@@ -22723,13 +23364,13 @@ var referenceElementsReducer = referenceElementsSlice.reducer;
 
 // node_modules/recharts/es6/container/ClipPathProvider.js
 var React39 = __toESM(require_react());
-var import_react44 = __toESM(require_react());
-var ClipPathIdContext = (0, import_react44.createContext)(void 0);
+var import_react46 = __toESM(require_react());
+var ClipPathIdContext = (0, import_react46.createContext)(void 0);
 var ClipPathProvider = (_ref2) => {
   var {
     children
   } = _ref2;
-  var [clipPathId] = (0, import_react44.useState)("".concat(uniqueId("recharts"), "-clip"));
+  var [clipPathId] = (0, import_react46.useState)("".concat(uniqueId("recharts"), "-clip"));
   var plotArea = usePlotArea();
   if (plotArea == null) {
     return null;
@@ -22752,7 +23393,7 @@ var ClipPathProvider = (_ref2) => {
   }))), children);
 };
 var useClipPathId = () => {
-  return (0, import_react44.useContext)(ClipPathIdContext);
+  return (0, import_react46.useContext)(ClipPathIdContext);
 };
 
 // node_modules/recharts/es6/cartesian/ReferenceLine.js
@@ -22794,14 +23435,14 @@ function _toPrimitive46(t, r) {
   }
   return ("string" === r ? String : Number)(t);
 }
-function _extends28() {
-  return _extends28 = Object.assign ? Object.assign.bind() : function(n) {
+function _extends29() {
+  return _extends29 = Object.assign ? Object.assign.bind() : function(n) {
     for (var e = 1; e < arguments.length; e++) {
       var t = arguments[e];
       for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]);
     }
     return n;
-  }, _extends28.apply(null, arguments);
+  }, _extends29.apply(null, arguments);
 }
 var renderLine = (option, props) => {
   var line;
@@ -22810,7 +23451,7 @@ var renderLine = (option, props) => {
   } else if (typeof option === "function") {
     line = option(props);
   } else {
-    line = React40.createElement("line", _extends28({}, props, {
+    line = React40.createElement("line", _extends29({}, props, {
       className: "recharts-reference-line-line"
     }));
   }
@@ -22879,7 +23520,7 @@ var getEndPoints = (scales, isFixedX, isFixedY, isSegment, viewBox, position2, x
 };
 function ReportReferenceLine(props) {
   var dispatch = useAppDispatch();
-  (0, import_react45.useEffect)(() => {
+  (0, import_react47.useEffect)(() => {
     dispatch(addLine(props));
     return () => {
       dispatch(removeLine(props));
@@ -22929,7 +23570,7 @@ function ReferenceLineImpl(props) {
   var clipPath = ifOverflow === "hidden" ? "url(#".concat(clipPathId, ")") : void 0;
   var lineProps = _objectSpread45(_objectSpread45({
     clipPath
-  }, filterProps(props, true)), {}, {
+  }, svgPropertiesAndEvents(props)), {}, {
     x1,
     y1,
     x2,
@@ -22955,7 +23596,7 @@ function ReferenceLineSettingsDispatcher(props) {
     y: props.y
   }), React40.createElement(ReferenceLineImpl, props));
 }
-var ReferenceLine = class extends import_react45.Component {
+var ReferenceLine = class extends import_react47.Component {
   render() {
     return React40.createElement(ReferenceLineSettingsDispatcher, this.props);
   }
@@ -22974,7 +23615,7 @@ _defineProperty46(ReferenceLine, "defaultProps", {
 
 // node_modules/recharts/es6/cartesian/ReferenceDot.js
 var React41 = __toESM(require_react());
-var import_react46 = __toESM(require_react());
+var import_react48 = __toESM(require_react());
 function ownKeys46(e, r) {
   var t = Object.keys(e);
   if (Object.getOwnPropertySymbols) {
@@ -23013,14 +23654,14 @@ function _toPrimitive47(t, r) {
   }
   return ("string" === r ? String : Number)(t);
 }
-function _extends29() {
-  return _extends29 = Object.assign ? Object.assign.bind() : function(n) {
+function _extends30() {
+  return _extends30 = Object.assign ? Object.assign.bind() : function(n) {
     for (var e = 1; e < arguments.length; e++) {
       var t = arguments[e];
       for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]);
     }
     return n;
-  }, _extends29.apply(null, arguments);
+  }, _extends30.apply(null, arguments);
 }
 var useCoordinate = (x2, y2, xAxisId, yAxisId, ifOverflow) => {
   var isX = isNumOrStr(x2);
@@ -23048,7 +23689,7 @@ var useCoordinate = (x2, y2, xAxisId, yAxisId, ifOverflow) => {
 };
 function ReportReferenceDot(props) {
   var dispatch = useAppDispatch();
-  (0, import_react46.useEffect)(() => {
+  (0, import_react48.useEffect)(() => {
     dispatch(addDot(props));
     return () => {
       dispatch(removeDot(props));
@@ -23063,7 +23704,7 @@ var renderDot = (option, props) => {
   } else if (typeof option === "function") {
     dot = option(props);
   } else {
-    dot = React41.createElement(Dot, _extends29({}, props, {
+    dot = React41.createElement(Dot, _extends30({}, props, {
       cx: props.cx,
       cy: props.cy,
       className: "recharts-reference-dot-dot"
@@ -23094,7 +23735,7 @@ function ReferenceDotImpl(props) {
   var clipPath = ifOverflow === "hidden" ? "url(#".concat(clipPathId, ")") : void 0;
   var dotProps = _objectSpread46(_objectSpread46({
     clipPath
-  }, filterProps(props, true)), {}, {
+  }, svgPropertiesAndEvents(props)), {}, {
     cx,
     cy
   });
@@ -23127,7 +23768,7 @@ function ReferenceDotSettingsDispatcher(props) {
     ifOverflow
   }), React41.createElement(ReferenceDotImpl, props));
 }
-var ReferenceDot = class extends import_react46.Component {
+var ReferenceDot = class extends import_react48.Component {
   render() {
     return React41.createElement(ReferenceDotSettingsDispatcher, this.props);
   }
@@ -23146,7 +23787,7 @@ _defineProperty47(ReferenceDot, "defaultProps", {
 
 // node_modules/recharts/es6/cartesian/ReferenceArea.js
 var React42 = __toESM(require_react());
-var import_react47 = __toESM(require_react());
+var import_react49 = __toESM(require_react());
 function ownKeys47(e, r) {
   var t = Object.keys(e);
   if (Object.getOwnPropertySymbols) {
@@ -23185,14 +23826,14 @@ function _toPrimitive48(t, r) {
   }
   return ("string" === r ? String : Number)(t);
 }
-function _extends30() {
-  return _extends30 = Object.assign ? Object.assign.bind() : function(n) {
+function _extends31() {
+  return _extends31 = Object.assign ? Object.assign.bind() : function(n) {
     for (var e = 1; e < arguments.length; e++) {
       var t = arguments[e];
       for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]);
     }
     return n;
-  }, _extends30.apply(null, arguments);
+  }, _extends31.apply(null, arguments);
 }
 var getRect = (hasX1, hasX2, hasY1, hasY2, xAxisScale, yAxisScale, props) => {
   var {
@@ -23236,7 +23877,7 @@ var renderRect = (option, props) => {
   } else if (typeof option === "function") {
     rect = option(props);
   } else {
-    rect = React42.createElement(Rectangle, _extends30({}, props, {
+    rect = React42.createElement(Rectangle, _extends31({}, props, {
       className: "recharts-reference-area-rect"
     }));
   }
@@ -23244,7 +23885,7 @@ var renderRect = (option, props) => {
 };
 function ReportReferenceArea(props) {
   var dispatch = useAppDispatch();
-  (0, import_react47.useEffect)(() => {
+  (0, import_react49.useEffect)(() => {
     dispatch(addArea(props));
     return () => {
       dispatch(removeArea(props));
@@ -23287,7 +23928,7 @@ function ReferenceAreaImpl(props) {
     className: clsx("recharts-reference-area", className)
   }, renderRect(shape, _objectSpread47(_objectSpread47({
     clipPath
-  }, filterProps(props, true)), rect)), React42.createElement(CartesianLabelContextProvider, rect, React42.createElement(CartesianLabelFromLabelProp, {
+  }, svgPropertiesAndEvents(props)), rect)), React42.createElement(CartesianLabelContextProvider, rect, React42.createElement(CartesianLabelFromLabelProp, {
     label: props.label
   }), props.children));
 }
@@ -23302,7 +23943,7 @@ function ReferenceAreaSettingsDispatcher(props) {
     y2: props.y2
   }), React42.createElement(ReferenceAreaImpl, props));
 }
-var ReferenceArea = class extends import_react47.Component {
+var ReferenceArea = class extends import_react49.Component {
   render() {
     return React42.createElement(ReferenceAreaSettingsDispatcher, this.props);
   }
@@ -23321,7 +23962,7 @@ _defineProperty48(ReferenceArea, "defaultProps", {
 
 // node_modules/recharts/es6/cartesian/CartesianAxis.js
 var React43 = __toESM(require_react());
-var import_react48 = __toESM(require_react());
+var import_react50 = __toESM(require_react());
 var import_get5 = __toESM(require_get2());
 
 // node_modules/recharts/es6/util/ShallowEqual.js
@@ -23626,17 +24267,64 @@ function getTicks(props, fontSize, letterSpacing) {
   return candidates.filter((entry) => entry.isShow);
 }
 
+// node_modules/recharts/es6/util/YAxisUtils.js
+var getCalculatedYAxisWidth = (_ref2) => {
+  var {
+    ticks: ticks2,
+    label,
+    labelGapWithTick = 5,
+    // Default gap between label and tick
+    tickSize = 0,
+    tickMargin = 0
+  } = _ref2;
+  var maxTickWidth = 0;
+  if (ticks2) {
+    Array.from(ticks2).forEach((tickNode) => {
+      if (tickNode) {
+        var bbox = tickNode.getBoundingClientRect();
+        if (bbox.width > maxTickWidth) {
+          maxTickWidth = bbox.width;
+        }
+      }
+    });
+    var labelWidth = label ? label.getBoundingClientRect().width : 0;
+    var tickWidth = tickSize + tickMargin;
+    var updatedYAxisWidth = maxTickWidth + tickWidth + labelWidth + (label ? labelGapWithTick : 0);
+    return Math.round(updatedYAxisWidth);
+  }
+  return 0;
+};
+
 // node_modules/recharts/es6/cartesian/CartesianAxis.js
-var _excluded28 = ["viewBox"];
-var _excluded29 = ["viewBox"];
-function _extends31() {
-  return _extends31 = Object.assign ? Object.assign.bind() : function(n) {
+var _excluded30 = ["axisLine", "width", "height", "className", "hide", "ticks"];
+var _excluded210 = ["viewBox"];
+var _excluded35 = ["viewBox"];
+function _objectWithoutProperties23(e, t) {
+  if (null == e) return {};
+  var o, r, i = _objectWithoutPropertiesLoose23(e, t);
+  if (Object.getOwnPropertySymbols) {
+    var n = Object.getOwnPropertySymbols(e);
+    for (r = 0; r < n.length; r++) o = n[r], -1 === t.indexOf(o) && {}.propertyIsEnumerable.call(e, o) && (i[o] = e[o]);
+  }
+  return i;
+}
+function _objectWithoutPropertiesLoose23(r, e) {
+  if (null == r) return {};
+  var t = {};
+  for (var n in r) if ({}.hasOwnProperty.call(r, n)) {
+    if (-1 !== e.indexOf(n)) continue;
+    t[n] = r[n];
+  }
+  return t;
+}
+function _extends32() {
+  return _extends32 = Object.assign ? Object.assign.bind() : function(n) {
     for (var e = 1; e < arguments.length; e++) {
       var t = arguments[e];
       for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]);
     }
     return n;
-  }, _extends31.apply(null, arguments);
+  }, _extends32.apply(null, arguments);
 }
 function ownKeys49(e, r) {
   var t = Object.keys(e);
@@ -23659,24 +24347,6 @@ function _objectSpread49(e) {
   }
   return e;
 }
-function _objectWithoutProperties22(e, t) {
-  if (null == e) return {};
-  var o, r, i = _objectWithoutPropertiesLoose22(e, t);
-  if (Object.getOwnPropertySymbols) {
-    var n = Object.getOwnPropertySymbols(e);
-    for (r = 0; r < n.length; r++) o = n[r], -1 === t.indexOf(o) && {}.propertyIsEnumerable.call(e, o) && (i[o] = e[o]);
-  }
-  return i;
-}
-function _objectWithoutPropertiesLoose22(r, e) {
-  if (null == r) return {};
-  var t = {};
-  for (var n in r) if ({}.hasOwnProperty.call(r, n)) {
-    if (-1 !== e.indexOf(n)) continue;
-    t[n] = r[n];
-  }
-  return t;
-}
 function _defineProperty50(e, r, t) {
   return (r = _toPropertyKey50(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: true, configurable: true, writable: true }) : e[r] = t, e;
 }
@@ -23694,281 +24364,7 @@ function _toPrimitive50(t, r) {
   }
   return ("string" === r ? String : Number)(t);
 }
-var CartesianAxis = class _CartesianAxis extends import_react48.Component {
-  constructor(props) {
-    super(props);
-    this.tickRefs = React43.createRef();
-    this.tickRefs.current = [];
-    this.state = {
-      fontSize: "",
-      letterSpacing: ""
-    };
-  }
-  shouldComponentUpdate(_ref2, nextState) {
-    var {
-      viewBox
-    } = _ref2, restProps = _objectWithoutProperties22(_ref2, _excluded28);
-    var _this$props = this.props, {
-      viewBox: viewBoxOld
-    } = _this$props, restPropsOld = _objectWithoutProperties22(_this$props, _excluded29);
-    return !shallowEqual(viewBox, viewBoxOld) || !shallowEqual(restProps, restPropsOld) || !shallowEqual(nextState, this.state);
-  }
-  /**
-   * Calculate the coordinates of endpoints in ticks
-   * @param  data The data of a simple tick
-   * @return (x1, y1): The coordinate of endpoint close to tick text
-   *  (x2, y2): The coordinate of endpoint close to axis
-   */
-  getTickLineCoord(data) {
-    var {
-      x: x2,
-      y: y2,
-      width,
-      height,
-      orientation,
-      tickSize,
-      mirror,
-      tickMargin
-    } = this.props;
-    var x1, x22, y1, y22, tx, ty;
-    var sign2 = mirror ? -1 : 1;
-    var finalTickSize = data.tickSize || tickSize;
-    var tickCoord = isNumber(data.tickCoord) ? data.tickCoord : data.coordinate;
-    switch (orientation) {
-      case "top":
-        x1 = x22 = data.coordinate;
-        y22 = y2 + +!mirror * height;
-        y1 = y22 - sign2 * finalTickSize;
-        ty = y1 - sign2 * tickMargin;
-        tx = tickCoord;
-        break;
-      case "left":
-        y1 = y22 = data.coordinate;
-        x22 = x2 + +!mirror * width;
-        x1 = x22 - sign2 * finalTickSize;
-        tx = x1 - sign2 * tickMargin;
-        ty = tickCoord;
-        break;
-      case "right":
-        y1 = y22 = data.coordinate;
-        x22 = x2 + +mirror * width;
-        x1 = x22 + sign2 * finalTickSize;
-        tx = x1 + sign2 * tickMargin;
-        ty = tickCoord;
-        break;
-      default:
-        x1 = x22 = data.coordinate;
-        y22 = y2 + +mirror * height;
-        y1 = y22 + sign2 * finalTickSize;
-        ty = y1 + sign2 * tickMargin;
-        tx = tickCoord;
-        break;
-    }
-    return {
-      line: {
-        x1,
-        y1,
-        x2: x22,
-        y2: y22
-      },
-      tick: {
-        x: tx,
-        y: ty
-      }
-    };
-  }
-  getTickTextAnchor() {
-    var {
-      orientation,
-      mirror
-    } = this.props;
-    switch (orientation) {
-      case "left":
-        return mirror ? "start" : "end";
-      case "right":
-        return mirror ? "end" : "start";
-      default:
-        return "middle";
-    }
-  }
-  getTickVerticalAnchor() {
-    var {
-      orientation,
-      mirror
-    } = this.props;
-    switch (orientation) {
-      case "left":
-      case "right":
-        return "middle";
-      case "top":
-        return mirror ? "start" : "end";
-      default:
-        return mirror ? "end" : "start";
-    }
-  }
-  renderAxisLine() {
-    var {
-      x: x2,
-      y: y2,
-      width,
-      height,
-      orientation,
-      mirror,
-      axisLine
-    } = this.props;
-    var props = _objectSpread49(_objectSpread49(_objectSpread49({}, filterProps(this.props, false)), filterProps(axisLine, false)), {}, {
-      fill: "none"
-    });
-    if (orientation === "top" || orientation === "bottom") {
-      var needHeight = +(orientation === "top" && !mirror || orientation === "bottom" && mirror);
-      props = _objectSpread49(_objectSpread49({}, props), {}, {
-        x1: x2,
-        y1: y2 + needHeight * height,
-        x2: x2 + width,
-        y2: y2 + needHeight * height
-      });
-    } else {
-      var needWidth = +(orientation === "left" && !mirror || orientation === "right" && mirror);
-      props = _objectSpread49(_objectSpread49({}, props), {}, {
-        x1: x2 + needWidth * width,
-        y1: y2,
-        x2: x2 + needWidth * width,
-        y2: y2 + height
-      });
-    }
-    return React43.createElement("line", _extends31({}, props, {
-      className: clsx("recharts-cartesian-axis-line", (0, import_get5.default)(axisLine, "className"))
-    }));
-  }
-  static renderTickItem(option, props, value) {
-    var tickItem;
-    var combinedClassName = clsx(props.className, "recharts-cartesian-axis-tick-value");
-    if (React43.isValidElement(option)) {
-      tickItem = React43.cloneElement(option, _objectSpread49(_objectSpread49({}, props), {}, {
-        className: combinedClassName
-      }));
-    } else if (typeof option === "function") {
-      tickItem = option(_objectSpread49(_objectSpread49({}, props), {}, {
-        className: combinedClassName
-      }));
-    } else {
-      var className = "recharts-cartesian-axis-tick-value";
-      if (typeof option !== "boolean") {
-        className = clsx(className, option.className);
-      }
-      tickItem = React43.createElement(Text, _extends31({}, props, {
-        className
-      }), value);
-    }
-    return tickItem;
-  }
-  /**
-   * render the ticks
-   * @param {string} fontSize Fontsize to consider for tick spacing
-   * @param {string} letterSpacing Letter spacing to consider for tick spacing
-   * @param {Array} ticks The ticks to actually render (overrides what was passed in props)
-   * @return {ReactElement | null} renderedTicks
-   */
-  renderTicks(fontSize, letterSpacing) {
-    var ticks2 = arguments.length > 2 && arguments[2] !== void 0 ? arguments[2] : [];
-    var {
-      tickLine,
-      stroke,
-      tick,
-      tickFormatter,
-      unit: unit2,
-      padding,
-      tickTextProps
-    } = this.props;
-    var finalTicks = getTicks(_objectSpread49(_objectSpread49({}, this.props), {}, {
-      ticks: ticks2
-    }), fontSize, letterSpacing);
-    var textAnchor = this.getTickTextAnchor();
-    var verticalAnchor = this.getTickVerticalAnchor();
-    var axisProps = svgPropertiesNoEvents(this.props);
-    var customTickProps = filterProps(tick, false);
-    var tickLineProps = _objectSpread49(_objectSpread49({}, axisProps), {}, {
-      fill: "none"
-    }, filterProps(tickLine, false));
-    var items = finalTicks.map((entry, i) => {
-      var {
-        line: lineCoord,
-        tick: tickCoord
-      } = this.getTickLineCoord(entry);
-      var tickProps = _objectSpread49(_objectSpread49(_objectSpread49(_objectSpread49({
-        // @ts-expect-error textAnchor from axisProps is typed as `string` but Text wants type `TextAnchor`
-        textAnchor,
-        verticalAnchor
-      }, axisProps), {}, {
-        stroke: "none",
-        fill: stroke
-      }, customTickProps), tickCoord), {}, {
-        index: i,
-        payload: entry,
-        visibleTicksCount: finalTicks.length,
-        tickFormatter,
-        padding
-      }, tickTextProps);
-      return React43.createElement(Layer, _extends31({
-        className: "recharts-cartesian-axis-tick",
-        key: "tick-".concat(entry.value, "-").concat(entry.coordinate, "-").concat(entry.tickCoord)
-      }, adaptEventsOfChild(this.props, entry, i)), tickLine && // @ts-expect-error recharts scale is not compatible with SVG scale
-      React43.createElement("line", _extends31({}, tickLineProps, lineCoord, {
-        className: clsx("recharts-cartesian-axis-tick-line", (0, import_get5.default)(tickLine, "className"))
-      })), tick && _CartesianAxis.renderTickItem(tick, tickProps, "".concat(typeof tickFormatter === "function" ? tickFormatter(entry.value, i) : entry.value).concat(unit2 || "")));
-    });
-    return items.length > 0 ? React43.createElement("g", {
-      className: "recharts-cartesian-axis-ticks"
-    }, items) : null;
-  }
-  render() {
-    var {
-      axisLine,
-      width,
-      height,
-      className,
-      hide
-    } = this.props;
-    if (hide) {
-      return null;
-    }
-    var {
-      ticks: ticks2
-    } = this.props;
-    if (width != null && width <= 0 || height != null && height <= 0) {
-      return null;
-    }
-    return React43.createElement(Layer, {
-      className: clsx("recharts-cartesian-axis", className),
-      ref: (_ref2) => {
-        if (_ref2) {
-          var tickNodes = _ref2.getElementsByClassName("recharts-cartesian-axis-tick-value");
-          this.tickRefs.current = Array.from(tickNodes);
-          var tick = tickNodes[0];
-          if (tick) {
-            var calculatedFontSize = window.getComputedStyle(tick).fontSize;
-            var calculatedLetterSpacing = window.getComputedStyle(tick).letterSpacing;
-            if (calculatedFontSize !== this.state.fontSize || calculatedLetterSpacing !== this.state.letterSpacing) {
-              this.setState({
-                fontSize: window.getComputedStyle(tick).fontSize,
-                letterSpacing: window.getComputedStyle(tick).letterSpacing
-              });
-            }
-          }
-        }
-      }
-    }, axisLine && this.renderAxisLine(), this.renderTicks(this.state.fontSize, this.state.letterSpacing, ticks2), React43.createElement(CartesianLabelContextProvider, {
-      x: this.props.x,
-      y: this.props.y,
-      width: this.props.width,
-      height: this.props.height
-    }, React43.createElement(CartesianLabelFromLabelProp, {
-      label: this.props.label
-    }), this.props.children));
-  }
-};
-_defineProperty50(CartesianAxis, "displayName", "CartesianAxis");
-_defineProperty50(CartesianAxis, "defaultProps", {
+var defaultCartesianAxisProps = {
   x: 0,
   y: 0,
   width: 0,
@@ -23993,13 +24389,328 @@ _defineProperty50(CartesianAxis, "defaultProps", {
   tickSize: 6,
   tickMargin: 2,
   interval: "preserveEnd"
+};
+function AxisLine2(axisLineProps) {
+  var {
+    x: x2,
+    y: y2,
+    width,
+    height,
+    orientation,
+    mirror,
+    axisLine,
+    otherSvgProps
+  } = axisLineProps;
+  if (!axisLine) {
+    return null;
+  }
+  var props = _objectSpread49(_objectSpread49(_objectSpread49({}, otherSvgProps), svgPropertiesNoEvents(axisLine)), {}, {
+    fill: "none"
+  });
+  if (orientation === "top" || orientation === "bottom") {
+    var needHeight = +(orientation === "top" && !mirror || orientation === "bottom" && mirror);
+    props = _objectSpread49(_objectSpread49({}, props), {}, {
+      x1: x2,
+      y1: y2 + needHeight * height,
+      x2: x2 + width,
+      y2: y2 + needHeight * height
+    });
+  } else {
+    var needWidth = +(orientation === "left" && !mirror || orientation === "right" && mirror);
+    props = _objectSpread49(_objectSpread49({}, props), {}, {
+      x1: x2 + needWidth * width,
+      y1: y2,
+      x2: x2 + needWidth * width,
+      y2: y2 + height
+    });
+  }
+  return React43.createElement("line", _extends32({}, props, {
+    className: clsx("recharts-cartesian-axis-line", (0, import_get5.default)(axisLine, "className"))
+  }));
+}
+function getTickLineCoord2(data, x2, y2, width, height, orientation, tickSize, mirror, tickMargin) {
+  var x1, x22, y1, y22, tx, ty;
+  var sign2 = mirror ? -1 : 1;
+  var finalTickSize = data.tickSize || tickSize;
+  var tickCoord = isNumber(data.tickCoord) ? data.tickCoord : data.coordinate;
+  switch (orientation) {
+    case "top":
+      x1 = x22 = data.coordinate;
+      y22 = y2 + +!mirror * height;
+      y1 = y22 - sign2 * finalTickSize;
+      ty = y1 - sign2 * tickMargin;
+      tx = tickCoord;
+      break;
+    case "left":
+      y1 = y22 = data.coordinate;
+      x22 = x2 + +!mirror * width;
+      x1 = x22 - sign2 * finalTickSize;
+      tx = x1 - sign2 * tickMargin;
+      ty = tickCoord;
+      break;
+    case "right":
+      y1 = y22 = data.coordinate;
+      x22 = x2 + +mirror * width;
+      x1 = x22 + sign2 * finalTickSize;
+      tx = x1 + sign2 * tickMargin;
+      ty = tickCoord;
+      break;
+    default:
+      x1 = x22 = data.coordinate;
+      y22 = y2 + +mirror * height;
+      y1 = y22 + sign2 * finalTickSize;
+      ty = y1 + sign2 * tickMargin;
+      tx = tickCoord;
+      break;
+  }
+  return {
+    line: {
+      x1,
+      y1,
+      x2: x22,
+      y2: y22
+    },
+    tick: {
+      x: tx,
+      y: ty
+    }
+  };
+}
+function getTickTextAnchor3(orientation, mirror) {
+  switch (orientation) {
+    case "left":
+      return mirror ? "start" : "end";
+    case "right":
+      return mirror ? "end" : "start";
+    default:
+      return "middle";
+  }
+}
+function getTickVerticalAnchor(orientation, mirror) {
+  switch (orientation) {
+    case "left":
+    case "right":
+      return "middle";
+    case "top":
+      return mirror ? "start" : "end";
+    default:
+      return mirror ? "end" : "start";
+  }
+}
+function TickItem(props) {
+  var {
+    option,
+    tickProps,
+    value
+  } = props;
+  var tickItem;
+  var combinedClassName = clsx(tickProps.className, "recharts-cartesian-axis-tick-value");
+  if (React43.isValidElement(option)) {
+    tickItem = React43.cloneElement(option, _objectSpread49(_objectSpread49({}, tickProps), {}, {
+      className: combinedClassName
+    }));
+  } else if (typeof option === "function") {
+    tickItem = option(_objectSpread49(_objectSpread49({}, tickProps), {}, {
+      className: combinedClassName
+    }));
+  } else {
+    var className = "recharts-cartesian-axis-tick-value";
+    if (typeof option !== "boolean") {
+      className = clsx(className, option === null || option === void 0 ? void 0 : option.className);
+    }
+    tickItem = React43.createElement(Text, _extends32({}, tickProps, {
+      className
+    }), value);
+  }
+  return tickItem;
+}
+function Ticks2(props) {
+  var {
+    ticks: ticks2 = [],
+    tick,
+    tickLine,
+    stroke,
+    tickFormatter,
+    unit: unit2,
+    padding,
+    tickTextProps,
+    orientation,
+    mirror,
+    x: x2,
+    y: y2,
+    width,
+    height,
+    tickSize,
+    tickMargin,
+    fontSize,
+    letterSpacing,
+    getTicksConfig,
+    events
+  } = props;
+  var finalTicks = getTicks(_objectSpread49(_objectSpread49({}, getTicksConfig), {}, {
+    ticks: ticks2
+  }), fontSize, letterSpacing);
+  var textAnchor = getTickTextAnchor3(orientation, mirror);
+  var verticalAnchor = getTickVerticalAnchor(orientation, mirror);
+  var axisProps = svgPropertiesNoEvents(getTicksConfig);
+  var customTickProps = svgPropertiesNoEventsFromUnknown(tick);
+  var tickLinePropsObject = {};
+  if (typeof tickLine === "object") {
+    tickLinePropsObject = tickLine;
+  }
+  var tickLineProps = _objectSpread49(_objectSpread49({}, axisProps), {}, {
+    fill: "none"
+  }, tickLinePropsObject);
+  var items = finalTicks.map((entry, i) => {
+    var {
+      line: lineCoord,
+      tick: tickCoord
+    } = getTickLineCoord2(entry, x2, y2, width, height, orientation, tickSize, mirror, tickMargin);
+    var tickProps = _objectSpread49(_objectSpread49(_objectSpread49(_objectSpread49({
+      // @ts-expect-error textAnchor from axisProps is typed as `string` but Text wants type `TextAnchor`
+      textAnchor,
+      verticalAnchor
+    }, axisProps), {}, {
+      // @ts-expect-error customTickProps is contributing unknown props
+      stroke: "none",
+      // @ts-expect-error customTickProps is contributing unknown props
+      fill: stroke
+    }, customTickProps), tickCoord), {}, {
+      index: i,
+      payload: entry,
+      visibleTicksCount: finalTicks.length,
+      tickFormatter,
+      padding
+    }, tickTextProps);
+    return React43.createElement(Layer, _extends32({
+      className: "recharts-cartesian-axis-tick",
+      key: "tick-".concat(entry.value, "-").concat(entry.coordinate, "-").concat(entry.tickCoord)
+    }, adaptEventsOfChild(events, entry, i)), tickLine && React43.createElement("line", _extends32({}, tickLineProps, lineCoord, {
+      className: clsx("recharts-cartesian-axis-tick-line", (0, import_get5.default)(tickLine, "className"))
+    })), tick && React43.createElement(TickItem, {
+      option: tick,
+      tickProps,
+      value: "".concat(typeof tickFormatter === "function" ? tickFormatter(entry.value, i) : entry.value).concat(unit2 || "")
+    }));
+  });
+  if (items.length > 0) {
+    return React43.createElement("g", {
+      className: "recharts-cartesian-axis-ticks"
+    }, items);
+  }
+  return null;
+}
+var CartesianAxisComponent = (0, import_react50.forwardRef)((props, ref) => {
+  var {
+    axisLine,
+    width,
+    height,
+    className,
+    hide,
+    ticks: ticks2
+  } = props, rest2 = _objectWithoutProperties23(props, _excluded30);
+  var [fontSize, setFontSize] = (0, import_react50.useState)("");
+  var [letterSpacing, setLetterSpacing] = (0, import_react50.useState)("");
+  var tickRefs = (0, import_react50.useRef)(null);
+  (0, import_react50.useImperativeHandle)(ref, () => ({
+    getCalculatedWidth: () => {
+      var _props$labelRef;
+      return getCalculatedYAxisWidth({
+        ticks: tickRefs.current,
+        label: (_props$labelRef = props.labelRef) === null || _props$labelRef === void 0 ? void 0 : _props$labelRef.current,
+        labelGapWithTick: 5,
+        tickSize: props.tickSize,
+        tickMargin: props.tickMargin
+      });
+    }
+  }));
+  var layerRef = (0, import_react50.useCallback)((el) => {
+    if (el) {
+      var tickNodes = el.getElementsByClassName("recharts-cartesian-axis-tick-value");
+      tickRefs.current = tickNodes;
+      var tick = tickNodes[0];
+      if (tick) {
+        var computedStyle = window.getComputedStyle(tick);
+        var calculatedFontSize = computedStyle.fontSize;
+        var calculatedLetterSpacing = computedStyle.letterSpacing;
+        if (calculatedFontSize !== fontSize || calculatedLetterSpacing !== letterSpacing) {
+          setFontSize(calculatedFontSize);
+          setLetterSpacing(calculatedLetterSpacing);
+        }
+      }
+    }
+  }, [fontSize, letterSpacing]);
+  if (hide) {
+    return null;
+  }
+  if (width != null && width <= 0 || height != null && height <= 0) {
+    return null;
+  }
+  return React43.createElement(Layer, {
+    className: clsx("recharts-cartesian-axis", className),
+    ref: layerRef
+  }, React43.createElement(AxisLine2, {
+    x: props.x,
+    y: props.y,
+    width,
+    height,
+    orientation: props.orientation,
+    mirror: props.mirror,
+    axisLine,
+    otherSvgProps: svgPropertiesNoEvents(props)
+  }), React43.createElement(Ticks2, {
+    ticks: ticks2,
+    tick: props.tick,
+    tickLine: props.tickLine,
+    stroke: props.stroke,
+    tickFormatter: props.tickFormatter,
+    unit: props.unit,
+    padding: props.padding,
+    tickTextProps: props.tickTextProps,
+    orientation: props.orientation,
+    mirror: props.mirror,
+    x: props.x,
+    y: props.y,
+    width: props.width,
+    height: props.height,
+    tickSize: props.tickSize,
+    tickMargin: props.tickMargin,
+    fontSize,
+    letterSpacing,
+    getTicksConfig: props,
+    events: rest2
+  }), React43.createElement(CartesianLabelContextProvider, {
+    x: props.x,
+    y: props.y,
+    width: props.width,
+    height: props.height
+  }, React43.createElement(CartesianLabelFromLabelProp, {
+    label: props.label,
+    labelRef: props.labelRef
+  }), props.children));
 });
+var MemoCartesianAxis = React43.memo(CartesianAxisComponent, (prevProps, nextProps) => {
+  var {
+    viewBox: prevViewBox
+  } = prevProps, prevRestProps = _objectWithoutProperties23(prevProps, _excluded210);
+  var {
+    viewBox: nextViewBox
+  } = nextProps, nextRestProps = _objectWithoutProperties23(nextProps, _excluded35);
+  return shallowEqual(prevViewBox, nextViewBox) && shallowEqual(prevRestProps, nextRestProps);
+});
+var CartesianAxis = React43.forwardRef((outsideProps, ref) => {
+  var props = resolveDefaultProps(outsideProps, defaultCartesianAxisProps);
+  return React43.createElement(MemoCartesianAxis, _extends32({}, props, {
+    ref
+  }));
+});
+CartesianAxis.displayName = "CartesianAxis";
 
 // node_modules/recharts/es6/cartesian/CartesianGrid.js
 var React44 = __toESM(require_react());
-var _excluded30 = ["x1", "y1", "x2", "y2", "key"];
-var _excluded210 = ["offset"];
-var _excluded35 = ["xAxisId", "yAxisId"];
+var _excluded31 = ["x1", "y1", "x2", "y2", "key"];
+var _excluded211 = ["offset"];
+var _excluded36 = ["xAxisId", "yAxisId"];
 var _excluded43 = ["xAxisId", "yAxisId"];
 function ownKeys50(e, r) {
   var t = Object.keys(e);
@@ -24039,25 +24750,25 @@ function _toPrimitive51(t, r) {
   }
   return ("string" === r ? String : Number)(t);
 }
-function _extends32() {
-  return _extends32 = Object.assign ? Object.assign.bind() : function(n) {
+function _extends33() {
+  return _extends33 = Object.assign ? Object.assign.bind() : function(n) {
     for (var e = 1; e < arguments.length; e++) {
       var t = arguments[e];
       for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]);
     }
     return n;
-  }, _extends32.apply(null, arguments);
+  }, _extends33.apply(null, arguments);
 }
-function _objectWithoutProperties23(e, t) {
+function _objectWithoutProperties24(e, t) {
   if (null == e) return {};
-  var o, r, i = _objectWithoutPropertiesLoose23(e, t);
+  var o, r, i = _objectWithoutPropertiesLoose24(e, t);
   if (Object.getOwnPropertySymbols) {
     var n = Object.getOwnPropertySymbols(e);
     for (r = 0; r < n.length; r++) o = n[r], -1 === t.indexOf(o) && {}.propertyIsEnumerable.call(e, o) && (i[o] = e[o]);
   }
   return i;
 }
-function _objectWithoutPropertiesLoose23(r, e) {
+function _objectWithoutPropertiesLoose24(r, e) {
   if (null == r) return {};
   var t = {};
   for (var n in r) if ({}.hasOwnProperty.call(r, n)) {
@@ -24106,11 +24817,11 @@ function renderLineItem(option, props) {
       x2,
       y2,
       key
-    } = props, others = _objectWithoutProperties23(props, _excluded30);
+    } = props, others = _objectWithoutProperties24(props, _excluded31);
     var _svgPropertiesNoEvent = svgPropertiesNoEvents(others), {
       offset: __
-    } = _svgPropertiesNoEvent, restOfFilteredProps = _objectWithoutProperties23(_svgPropertiesNoEvent, _excluded210);
-    lineItem = React44.createElement("line", _extends32({}, restOfFilteredProps, {
+    } = _svgPropertiesNoEvent, restOfFilteredProps = _objectWithoutProperties24(_svgPropertiesNoEvent, _excluded211);
+    lineItem = React44.createElement("line", _extends33({}, restOfFilteredProps, {
       x1,
       y1,
       x2,
@@ -24134,7 +24845,7 @@ function HorizontalGridLines(props) {
   var {
     xAxisId,
     yAxisId
-  } = props, otherLineItemProps = _objectWithoutProperties23(props, _excluded35);
+  } = props, otherLineItemProps = _objectWithoutProperties24(props, _excluded36);
   var items = horizontalPoints.map((entry, i) => {
     var lineItemProps = _objectSpread50(_objectSpread50({}, otherLineItemProps), {}, {
       x1: x2,
@@ -24163,7 +24874,7 @@ function VerticalGridLines(props) {
   var {
     xAxisId,
     yAxisId
-  } = props, otherLineItemProps = _objectWithoutProperties23(props, _excluded43);
+  } = props, otherLineItemProps = _objectWithoutProperties24(props, _excluded43);
   var items = verticalPoints.map((entry, i) => {
     var lineItemProps = _objectSpread50(_objectSpread50({}, otherLineItemProps), {}, {
       x1: entry,
@@ -24268,7 +24979,7 @@ var defaultVerticalCoordinatesGenerator = (_ref2, syncWithTicks) => {
     height,
     offset
   } = _ref2;
-  return getCoordinatesOfGrid(getTicks(_objectSpread50(_objectSpread50(_objectSpread50({}, CartesianAxis.defaultProps), xAxis), {}, {
+  return getCoordinatesOfGrid(getTicks(_objectSpread50(_objectSpread50(_objectSpread50({}, defaultCartesianAxisProps), xAxis), {}, {
     ticks: getTicksOfAxis(xAxis, true),
     viewBox: {
       x: 0,
@@ -24285,7 +24996,7 @@ var defaultHorizontalCoordinatesGenerator = (_ref2, syncWithTicks) => {
     height,
     offset
   } = _ref2;
-  return getCoordinatesOfGrid(getTicks(_objectSpread50(_objectSpread50(_objectSpread50({}, CartesianAxis.defaultProps), yAxis), {}, {
+  return getCoordinatesOfGrid(getTicks(_objectSpread50(_objectSpread50(_objectSpread50({}, defaultCartesianAxisProps), yAxis), {}, {
     ticks: getTicksOfAxis(yAxis, true),
     viewBox: {
       x: 0,
@@ -24383,16 +25094,16 @@ function CartesianGrid(props) {
     width: propsIncludingDefaults.width,
     height: propsIncludingDefaults.height,
     ry: propsIncludingDefaults.ry
-  }), React44.createElement(HorizontalStripes, _extends32({}, propsIncludingDefaults, {
+  }), React44.createElement(HorizontalStripes, _extends33({}, propsIncludingDefaults, {
     horizontalPoints
-  })), React44.createElement(VerticalStripes, _extends32({}, propsIncludingDefaults, {
+  })), React44.createElement(VerticalStripes, _extends33({}, propsIncludingDefaults, {
     verticalPoints
-  })), React44.createElement(HorizontalGridLines, _extends32({}, propsIncludingDefaults, {
+  })), React44.createElement(HorizontalGridLines, _extends33({}, propsIncludingDefaults, {
     offset,
     horizontalPoints,
     xAxis,
     yAxis
-  })), React44.createElement(VerticalGridLines, _extends32({}, propsIncludingDefaults, {
+  })), React44.createElement(VerticalGridLines, _extends33({}, propsIncludingDefaults, {
     offset,
     verticalPoints,
     xAxis,
@@ -24403,7 +25114,7 @@ CartesianGrid.displayName = "CartesianGrid";
 
 // node_modules/recharts/es6/cartesian/Line.js
 var React45 = __toESM(require_react());
-var import_react49 = __toESM(require_react());
+var import_react51 = __toESM(require_react());
 
 // node_modules/recharts/es6/state/selectors/lineSelectors.js
 var selectXAxisWithScale2 = (state, xAxisId, _yAxisId, isPanorama) => selectAxisWithScale(state, "xAxis", xAxisId, isPanorama);
@@ -24455,10 +25166,39 @@ var selectLinePoints = createSelector([selectChartLayout, selectXAxisWithScale2,
   });
 });
 
+// node_modules/recharts/es6/util/getRadiusAndStrokeWidthFromDot.js
+function getRadiusAndStrokeWidthFromDot(dot) {
+  var props = svgPropertiesNoEventsFromUnknown(dot);
+  var defaultR = 3;
+  var defaultStrokeWidth = 2;
+  if (props != null) {
+    var {
+      r,
+      strokeWidth
+    } = props;
+    var realR = Number(r);
+    var realStrokeWidth = Number(strokeWidth);
+    if (Number.isNaN(realR) || realR < 0) {
+      realR = defaultR;
+    }
+    if (Number.isNaN(realStrokeWidth) || realStrokeWidth < 0) {
+      realStrokeWidth = defaultStrokeWidth;
+    }
+    return {
+      r: realR,
+      strokeWidth: realStrokeWidth
+    };
+  }
+  return {
+    r: defaultR,
+    strokeWidth: defaultStrokeWidth
+  };
+}
+
 // node_modules/recharts/es6/cartesian/Line.js
-var _excluded31 = ["id"];
-var _excluded211 = ["type", "layout", "connectNulls", "needClip"];
-var _excluded36 = ["activeDot", "animateNewValues", "animationBegin", "animationDuration", "animationEasing", "connectNulls", "dot", "hide", "isAnimationActive", "label", "legendType", "xAxisId", "yAxisId", "id"];
+var _excluded37 = ["id"];
+var _excluded212 = ["type", "layout", "connectNulls", "needClip"];
+var _excluded38 = ["activeDot", "animateNewValues", "animationBegin", "animationDuration", "animationEasing", "connectNulls", "dot", "hide", "isAnimationActive", "label", "legendType", "xAxisId", "yAxisId", "id"];
 function ownKeys51(e, r) {
   var t = Object.keys(e);
   if (Object.getOwnPropertySymbols) {
@@ -24497,16 +25237,16 @@ function _toPrimitive52(t, r) {
   }
   return ("string" === r ? String : Number)(t);
 }
-function _objectWithoutProperties24(e, t) {
+function _objectWithoutProperties25(e, t) {
   if (null == e) return {};
-  var o, r, i = _objectWithoutPropertiesLoose24(e, t);
+  var o, r, i = _objectWithoutPropertiesLoose25(e, t);
   if (Object.getOwnPropertySymbols) {
     var n = Object.getOwnPropertySymbols(e);
     for (r = 0; r < n.length; r++) o = n[r], -1 === t.indexOf(o) && {}.propertyIsEnumerable.call(e, o) && (i[o] = e[o]);
   }
   return i;
 }
-function _objectWithoutPropertiesLoose24(r, e) {
+function _objectWithoutPropertiesLoose25(r, e) {
   if (null == r) return {};
   var t = {};
   for (var n in r) if ({}.hasOwnProperty.call(r, n)) {
@@ -24515,14 +25255,14 @@ function _objectWithoutPropertiesLoose24(r, e) {
   }
   return t;
 }
-function _extends33() {
-  return _extends33 = Object.assign ? Object.assign.bind() : function(n) {
+function _extends34() {
+  return _extends34 = Object.assign ? Object.assign.bind() : function(n) {
     for (var e = 1; e < arguments.length; e++) {
       var t = arguments[e];
       for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]);
     }
     return n;
-  }, _extends33.apply(null, arguments);
+  }, _extends34.apply(null, arguments);
 }
 var computeLegendPayloadFromAreaData = (props) => {
   var {
@@ -24606,7 +25346,7 @@ function renderDotItem2(option, props) {
     dotItem = option(props);
   } else {
     var className = clsx("recharts-line-dot", typeof option !== "boolean" ? option.className : "");
-    dotItem = React45.createElement(Dot, _extends33({}, props, {
+    dotItem = React45.createElement(Dot, _extends34({}, props, {
       className
     }));
   }
@@ -24637,10 +25377,10 @@ function Dots2(_ref2) {
   }
   var {
     id
-  } = props, propsWithoutId = _objectWithoutProperties24(props, _excluded31);
+  } = props, propsWithoutId = _objectWithoutProperties25(props, _excluded37);
   var clipDot = isClipDot(dot);
   var lineProps = svgPropertiesNoEvents(propsWithoutId);
-  var customDotProps = filterProps(dot, true);
+  var customDotProps = svgPropertiesAndEventsFromUnknown(dot);
   var dots = points.map((entry, i) => {
     var dotProps = _objectSpread51(_objectSpread51(_objectSpread51({
       key: "dot-".concat(i),
@@ -24652,6 +25392,7 @@ function Dots2(_ref2) {
       dataKey,
       value: entry.value,
       payload: entry.payload,
+      // @ts-expect-error we're passing extra property 'points' that the props are not expecting
       points
     });
     return renderDotItem2(dot, dotProps);
@@ -24659,7 +25400,7 @@ function Dots2(_ref2) {
   var dotsProps = {
     clipPath: needClip ? "url(#clipPath-".concat(clipDot ? "" : "dots-").concat(clipPathId, ")") : void 0
   };
-  return React45.createElement(Layer, _extends33({
+  return React45.createElement(Layer, _extends34({
     className: "recharts-line-dots",
     key: "dots"
   }, dotsProps), dots);
@@ -24670,7 +25411,7 @@ function LineLabelListProvider(_ref2) {
     children,
     points
   } = _ref2;
-  var labelListEntries = (0, import_react49.useMemo)(() => {
+  var labelListEntries = (0, import_react51.useMemo)(() => {
     return points === null || points === void 0 ? void 0 : points.map((point6) => {
       var viewBox = {
         x: point6.x,
@@ -24708,8 +25449,8 @@ function StaticCurve(_ref3) {
     layout,
     connectNulls,
     needClip
-  } = props, others = _objectWithoutProperties24(props, _excluded211);
-  var curveProps = _objectSpread51(_objectSpread51({}, filterProps(others, true)), {}, {
+  } = props, others = _objectWithoutProperties25(props, _excluded212);
+  var curveProps = _objectSpread51(_objectSpread51({}, svgPropertiesAndEvents(others)), {}, {
     fill: "none",
     className: "recharts-line-curve",
     clipPath: needClip ? "url(#clipPath-".concat(clipPathId, ")") : void 0,
@@ -24719,7 +25460,7 @@ function StaticCurve(_ref3) {
     connectNulls,
     strokeDasharray: strokeDasharray !== null && strokeDasharray !== void 0 ? strokeDasharray : props.strokeDasharray
   });
-  return React45.createElement(React45.Fragment, null, (points === null || points === void 0 ? void 0 : points.length) > 1 && React45.createElement(Curve, _extends33({}, curveProps, {
+  return React45.createElement(React45.Fragment, null, (points === null || points === void 0 ? void 0 : points.length) > 1 && React45.createElement(Curve, _extends34({}, curveProps, {
     pathRef
   })), React45.createElement(Dots2, {
     points,
@@ -24757,15 +25498,15 @@ function CurveWithAnimation(_ref4) {
   } = props;
   var prevPoints = previousPointsRef.current;
   var animationId = useAnimationId(props, "recharts-line-");
-  var [isAnimating, setIsAnimating] = (0, import_react49.useState)(false);
+  var [isAnimating, setIsAnimating] = (0, import_react51.useState)(false);
   var showLabels = !isAnimating;
-  var handleAnimationEnd = (0, import_react49.useCallback)(() => {
+  var handleAnimationEnd = (0, import_react51.useCallback)(() => {
     if (typeof onAnimationEnd === "function") {
       onAnimationEnd();
     }
     setIsAnimating(false);
   }, [onAnimationEnd]);
-  var handleAnimationStart = (0, import_react49.useCallback)(() => {
+  var handleAnimationStart = (0, import_react51.useCallback)(() => {
     if (typeof onAnimationStart === "function") {
       onAnimationStart();
     }
@@ -24850,9 +25591,9 @@ function RenderCurve(_ref5) {
     clipPathId,
     props
   } = _ref5;
-  var previousPointsRef = (0, import_react49.useRef)(null);
-  var longestAnimatedLengthRef = (0, import_react49.useRef)(0);
-  var pathRef = (0, import_react49.useRef)(null);
+  var previousPointsRef = (0, import_react51.useRef)(null);
+  var longestAnimatedLengthRef = (0, import_react51.useRef)(0);
+  var pathRef = (0, import_react51.useRef)(null);
   return React45.createElement(CurveWithAnimation, {
     props,
     clipPathId,
@@ -24870,9 +25611,8 @@ var errorBarDataPointFormatter2 = (dataPoint, dataKey) => {
     errorVal: getValueByDataKey(dataPoint.payload, dataKey)
   };
 };
-var LineWithState = class extends import_react49.Component {
+var LineWithState = class extends import_react51.Component {
   render() {
-    var _filterProps;
     var {
       hide,
       dot,
@@ -24893,12 +25633,9 @@ var LineWithState = class extends import_react49.Component {
     var layerClass = clsx("recharts-line", className);
     var clipPathId = id;
     var {
-      r = 3,
-      strokeWidth = 2
-    } = (_filterProps = filterProps(dot, false)) !== null && _filterProps !== void 0 ? _filterProps : {
-      r: 3,
-      strokeWidth: 2
-    };
+      r,
+      strokeWidth
+    } = getRadiusAndStrokeWidthFromDot(dot);
     var clipDot = isClipDot(dot);
     var dotSize = r * 2 + strokeWidth;
     return React45.createElement(React45.Fragment, null, React45.createElement(Layer, {
@@ -24965,7 +25702,7 @@ function LineImpl(props) {
     xAxisId,
     yAxisId,
     id
-  } = _resolveDefaultProps, everythingElse = _objectWithoutProperties24(_resolveDefaultProps, _excluded36);
+  } = _resolveDefaultProps, everythingElse = _objectWithoutProperties25(_resolveDefaultProps, _excluded38);
   var {
     needClip
   } = useNeedsClip(xAxisId, yAxisId);
@@ -24982,7 +25719,7 @@ function LineImpl(props) {
     x: left,
     y: top
   } = plotArea;
-  return React45.createElement(LineWithState, _extends33({}, everythingElse, {
+  return React45.createElement(LineWithState, _extends34({}, everythingElse, {
     id,
     connectNulls,
     dot,
@@ -25054,7 +25791,7 @@ function computeLinePoints(_ref6) {
     };
   }).filter(Boolean);
 }
-function Line(outsideProps) {
+function LineFn(outsideProps) {
   var props = resolveDefaultProps(outsideProps, defaultLineProps);
   var isPanorama = useIsPanorama();
   return React45.createElement(RegisterGraphicalItemId, {
@@ -25075,15 +25812,16 @@ function Line(outsideProps) {
     dataKey: props.dataKey,
     hide: props.hide,
     isPanorama
-  }), React45.createElement(LineImpl, _extends33({}, props, {
+  }), React45.createElement(LineImpl, _extends34({}, props, {
     id
   }))));
 }
+var Line = React45.memo(LineFn);
 Line.displayName = "Line";
 
 // node_modules/recharts/es6/cartesian/Area.js
 var React46 = __toESM(require_react());
-var import_react50 = __toESM(require_react());
+var import_react52 = __toESM(require_react());
 
 // node_modules/recharts/es6/state/selectors/areaSelectors.js
 var selectXAxisWithScale3 = (state, xAxisId, _yAxisId, isPanorama) => selectAxisWithScale(state, "xAxis", xAxisId, isPanorama);
@@ -25163,18 +25901,18 @@ var selectArea = createSelector([selectChartLayout, selectXAxisWithScale3, selec
 });
 
 // node_modules/recharts/es6/cartesian/Area.js
-var _excluded37 = ["id"];
-var _excluded212 = ["activeDot", "animationBegin", "animationDuration", "animationEasing", "connectNulls", "dot", "fill", "fillOpacity", "hide", "isAnimationActive", "legendType", "stroke", "xAxisId", "yAxisId"];
-function _objectWithoutProperties25(e, t) {
+var _excluded39 = ["id"];
+var _excluded213 = ["activeDot", "animationBegin", "animationDuration", "animationEasing", "connectNulls", "dot", "fill", "fillOpacity", "hide", "isAnimationActive", "legendType", "stroke", "xAxisId", "yAxisId"];
+function _objectWithoutProperties26(e, t) {
   if (null == e) return {};
-  var o, r, i = _objectWithoutPropertiesLoose25(e, t);
+  var o, r, i = _objectWithoutPropertiesLoose26(e, t);
   if (Object.getOwnPropertySymbols) {
     var n = Object.getOwnPropertySymbols(e);
     for (r = 0; r < n.length; r++) o = n[r], -1 === t.indexOf(o) && {}.propertyIsEnumerable.call(e, o) && (i[o] = e[o]);
   }
   return i;
 }
-function _objectWithoutPropertiesLoose25(r, e) {
+function _objectWithoutPropertiesLoose26(r, e) {
   if (null == r) return {};
   var t = {};
   for (var n in r) if ({}.hasOwnProperty.call(r, n)) {
@@ -25221,14 +25959,14 @@ function _toPrimitive53(t, r) {
   }
   return ("string" === r ? String : Number)(t);
 }
-function _extends34() {
-  return _extends34 = Object.assign ? Object.assign.bind() : function(n) {
+function _extends35() {
+  return _extends35 = Object.assign ? Object.assign.bind() : function(n) {
     for (var e = 1; e < arguments.length; e++) {
       var t = arguments[e];
       for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]);
     }
     return n;
-  }, _extends34.apply(null, arguments);
+  }, _extends35.apply(null, arguments);
 }
 function getLegendItemColor2(stroke, fill2) {
   return stroke && stroke !== "none" ? stroke : fill2;
@@ -25287,7 +26025,7 @@ var renderDotItem3 = (option, props) => {
     dotItem = option(props);
   } else {
     var className = clsx("recharts-area-dot", typeof option !== "boolean" ? option.className : "");
-    dotItem = React46.createElement(Dot, _extends34({}, props, {
+    dotItem = React46.createElement(Dot, _extends35({}, props, {
       className
     }));
   }
@@ -25318,7 +26056,7 @@ function Dots3(_ref2) {
   }
   var clipDot = isClipDot(dot);
   var areaProps = svgPropertiesNoEvents(props);
-  var customDotProps = filterProps(dot, true);
+  var customDotProps = svgPropertiesAndEventsFromUnknown(dot);
   var dots = points.map((entry, i) => {
     var dotProps = _objectSpread52(_objectSpread52(_objectSpread52({
       key: "dot-".concat(i),
@@ -25330,6 +26068,7 @@ function Dots3(_ref2) {
       dataKey,
       value: entry.value,
       payload: entry.payload,
+      // @ts-expect-error we're passing extra property 'points' that the props are not expecting
       points
     });
     return renderDotItem3(dot, dotProps);
@@ -25337,7 +26076,7 @@ function Dots3(_ref2) {
   var dotsProps = {
     clipPath: needClip ? "url(#clipPath-".concat(clipDot ? "" : "dots-").concat(clipPathId, ")") : void 0
   };
-  return React46.createElement(Layer, _extends34({
+  return React46.createElement(Layer, _extends35({
     className: "recharts-area-dots"
   }, dotsProps), dots);
 }
@@ -25383,11 +26122,11 @@ function StaticArea(_ref3) {
   } = props;
   var {
     id
-  } = props, propsWithoutId = _objectWithoutProperties25(props, _excluded37);
+  } = props, propsWithoutId = _objectWithoutProperties26(props, _excluded39);
   var allOtherProps = svgPropertiesNoEvents(propsWithoutId);
   return React46.createElement(React46.Fragment, null, (points === null || points === void 0 ? void 0 : points.length) > 1 && React46.createElement(Layer, {
     clipPath: needClip ? "url(#clipPath-".concat(clipPathId, ")") : void 0
-  }, React46.createElement(Curve, _extends34({}, allOtherProps, {
+  }, React46.createElement(Curve, _extends35({}, allOtherProps, {
     id,
     points,
     connectNulls,
@@ -25396,14 +26135,14 @@ function StaticArea(_ref3) {
     layout,
     stroke: "none",
     className: "recharts-area-area"
-  })), stroke !== "none" && React46.createElement(Curve, _extends34({}, allOtherProps, {
+  })), stroke !== "none" && React46.createElement(Curve, _extends35({}, allOtherProps, {
     className: "recharts-area-curve",
     layout,
     type,
     connectNulls,
     fill: "none",
     points
-  })), stroke !== "none" && isRange && React46.createElement(Curve, _extends34({}, allOtherProps, {
+  })), stroke !== "none" && isRange && React46.createElement(Curve, _extends35({}, allOtherProps, {
     className: "recharts-area-curve",
     layout,
     type,
@@ -25516,15 +26255,15 @@ function AreaWithAnimation(_ref7) {
     onAnimationEnd
   } = props;
   var animationId = useAnimationId(props, "recharts-area-");
-  var [isAnimating, setIsAnimating] = (0, import_react50.useState)(false);
+  var [isAnimating, setIsAnimating] = (0, import_react52.useState)(false);
   var showLabels = !isAnimating;
-  var handleAnimationEnd = (0, import_react50.useCallback)(() => {
+  var handleAnimationEnd = (0, import_react52.useCallback)(() => {
     if (typeof onAnimationEnd === "function") {
       onAnimationEnd();
     }
     setIsAnimating(false);
   }, [onAnimationEnd]);
-  var handleAnimationStart = (0, import_react50.useCallback)(() => {
+  var handleAnimationStart = (0, import_react52.useCallback)(() => {
     if (typeof onAnimationStart === "function") {
       onAnimationStart();
     }
@@ -25628,8 +26367,8 @@ function RenderArea(_ref8) {
     clipPathId,
     props
   } = _ref8;
-  var previousPointsRef = (0, import_react50.useRef)(null);
-  var previousBaselineRef = (0, import_react50.useRef)();
+  var previousPointsRef = (0, import_react52.useRef)(null);
+  var previousBaselineRef = (0, import_react52.useRef)();
   return React46.createElement(AreaWithAnimation, {
     needClip,
     clipPathId,
@@ -25638,9 +26377,8 @@ function RenderArea(_ref8) {
     previousBaselineRef
   });
 }
-var AreaWithState = class extends import_react50.PureComponent {
+var AreaWithState = class extends import_react52.PureComponent {
   render() {
-    var _filterProps;
     var {
       hide,
       dot,
@@ -25662,12 +26400,9 @@ var AreaWithState = class extends import_react50.PureComponent {
     var layerClass = clsx("recharts-area", className);
     var clipPathId = id;
     var {
-      r = 3,
-      strokeWidth = 2
-    } = (_filterProps = filterProps(dot, false)) !== null && _filterProps !== void 0 ? _filterProps : {
-      r: 3,
-      strokeWidth: 2
-    };
+      r,
+      strokeWidth
+    } = getRadiusAndStrokeWidthFromDot(dot);
     var clipDot = isClipDot(dot);
     var dotSize = r * 2 + strokeWidth;
     return React46.createElement(React46.Fragment, null, React46.createElement(Layer, {
@@ -25733,7 +26468,7 @@ function AreaImpl(props) {
     stroke,
     xAxisId,
     yAxisId
-  } = _resolveDefaultProps, everythingElse = _objectWithoutProperties25(_resolveDefaultProps, _excluded212);
+  } = _resolveDefaultProps, everythingElse = _objectWithoutProperties26(_resolveDefaultProps, _excluded213);
   var layout = useChartLayout();
   var chartName = useChartName();
   var {
@@ -25761,7 +26496,7 @@ function AreaImpl(props) {
   if (!points || !points.length) {
     return null;
   }
-  return React46.createElement(AreaWithState, _extends34({}, everythingElse, {
+  return React46.createElement(AreaWithState, _extends35({}, everythingElse, {
     activeDot,
     animationBegin,
     animationDuration,
@@ -25901,7 +26636,7 @@ function computeArea(_ref9) {
     isRange
   };
 }
-function Area(outsideProps) {
+function AreaFn(outsideProps) {
   var props = resolveDefaultProps(outsideProps, defaultAreaProps);
   var isPanorama = useIsPanorama();
   return React46.createElement(RegisterGraphicalItemId, {
@@ -25926,19 +26661,20 @@ function Area(outsideProps) {
     baseValue: props.baseValue,
     isPanorama,
     connectNulls: props.connectNulls
-  }), React46.createElement(AreaImpl, _extends34({}, props, {
+  }), React46.createElement(AreaImpl, _extends35({}, props, {
     id
   }))));
 }
+var Area = React46.memo(AreaFn);
 Area.displayName = "Area";
 
 // node_modules/recharts/es6/cartesian/Scatter.js
 var React49 = __toESM(require_react());
-var import_react52 = __toESM(require_react());
+var import_react54 = __toESM(require_react());
 
 // node_modules/recharts/es6/cartesian/ZAxis.js
 var React47 = __toESM(require_react());
-var import_react51 = __toESM(require_react());
+var import_react53 = __toESM(require_react());
 function _defineProperty54(e, r, t) {
   return (r = _toPropertyKey54(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: true, configurable: true, writable: true }) : e[r] = t, e;
 }
@@ -25958,7 +26694,7 @@ function _toPrimitive54(t, r) {
 }
 function SetZAxisSettings(settings) {
   var dispatch = useAppDispatch();
-  (0, import_react51.useEffect)(() => {
+  (0, import_react53.useEffect)(() => {
     dispatch(addZAxis(settings));
     return () => {
       dispatch(removeZAxis(settings));
@@ -25966,7 +26702,7 @@ function SetZAxisSettings(settings) {
   }, [settings, dispatch]);
   return null;
 }
-var ZAxis = class extends import_react51.Component {
+var ZAxis = class extends import_react53.Component {
   render() {
     return React47.createElement(SetZAxisSettings, {
       domain: this.props.domain,
@@ -25994,26 +26730,26 @@ _defineProperty54(ZAxis, "defaultProps", {
 
 // node_modules/recharts/es6/util/ScatterUtils.js
 var React48 = __toESM(require_react());
-var _excluded38 = ["option", "isActive"];
-function _extends35() {
-  return _extends35 = Object.assign ? Object.assign.bind() : function(n) {
+var _excluded40 = ["option", "isActive"];
+function _extends36() {
+  return _extends36 = Object.assign ? Object.assign.bind() : function(n) {
     for (var e = 1; e < arguments.length; e++) {
       var t = arguments[e];
       for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]);
     }
     return n;
-  }, _extends35.apply(null, arguments);
+  }, _extends36.apply(null, arguments);
 }
-function _objectWithoutProperties26(e, t) {
+function _objectWithoutProperties27(e, t) {
   if (null == e) return {};
-  var o, r, i = _objectWithoutPropertiesLoose26(e, t);
+  var o, r, i = _objectWithoutPropertiesLoose27(e, t);
   if (Object.getOwnPropertySymbols) {
     var n = Object.getOwnPropertySymbols(e);
     for (r = 0; r < n.length; r++) o = n[r], -1 === t.indexOf(o) && {}.propertyIsEnumerable.call(e, o) && (i[o] = e[o]);
   }
   return i;
 }
-function _objectWithoutPropertiesLoose26(r, e) {
+function _objectWithoutPropertiesLoose27(r, e) {
   if (null == r) return {};
   var t = {};
   for (var n in r) if ({}.hasOwnProperty.call(r, n)) {
@@ -26026,17 +26762,17 @@ function ScatterSymbol(_ref2) {
   var {
     option,
     isActive
-  } = _ref2, props = _objectWithoutProperties26(_ref2, _excluded38);
+  } = _ref2, props = _objectWithoutProperties27(_ref2, _excluded40);
   if (typeof option === "string") {
-    return React48.createElement(Shape, _extends35({
-      option: React48.createElement(Symbols, _extends35({
+    return React48.createElement(Shape, _extends36({
+      option: React48.createElement(Symbols, _extends36({
         type: option
       }, props)),
       isActive,
       shapeType: "symbols"
     }, props));
   }
-  return React48.createElement(Shape, _extends35({
+  return React48.createElement(Shape, _extends36({
     option,
     isActive,
     shapeType: "symbols"
@@ -26086,19 +26822,19 @@ var selectScatterPoints = createSelector([scatterChartDataSelector, selectXAxisW
 });
 
 // node_modules/recharts/es6/cartesian/Scatter.js
-var _excluded39 = ["onMouseEnter", "onClick", "onMouseLeave"];
-var _excluded213 = ["id"];
+var _excluded41 = ["onMouseEnter", "onClick", "onMouseLeave"];
+var _excluded214 = ["id"];
 var _excluded310 = ["animationBegin", "animationDuration", "animationEasing", "hide", "isAnimationActive", "legendType", "lineJointType", "lineType", "shape", "xAxisId", "yAxisId", "zAxisId"];
-function _objectWithoutProperties27(e, t) {
+function _objectWithoutProperties28(e, t) {
   if (null == e) return {};
-  var o, r, i = _objectWithoutPropertiesLoose27(e, t);
+  var o, r, i = _objectWithoutPropertiesLoose28(e, t);
   if (Object.getOwnPropertySymbols) {
     var n = Object.getOwnPropertySymbols(e);
     for (r = 0; r < n.length; r++) o = n[r], -1 === t.indexOf(o) && {}.propertyIsEnumerable.call(e, o) && (i[o] = e[o]);
   }
   return i;
 }
-function _objectWithoutPropertiesLoose27(r, e) {
+function _objectWithoutPropertiesLoose28(r, e) {
   if (null == r) return {};
   var t = {};
   for (var n in r) if ({}.hasOwnProperty.call(r, n)) {
@@ -26107,14 +26843,14 @@ function _objectWithoutPropertiesLoose27(r, e) {
   }
   return t;
 }
-function _extends36() {
-  return _extends36 = Object.assign ? Object.assign.bind() : function(n) {
+function _extends37() {
+  return _extends37 = Object.assign ? Object.assign.bind() : function(n) {
     for (var e = 1; e < arguments.length; e++) {
       var t = arguments[e];
       for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]);
     }
     return n;
-  }, _extends36.apply(null, arguments);
+  }, _extends37.apply(null, arguments);
 }
 function ownKeys53(e, r) {
   var t = Object.keys(e);
@@ -26185,7 +26921,7 @@ function ScatterLine(_ref2) {
     return null;
   }
   var scatterProps = svgPropertiesNoEvents(props);
-  var customLineProps = filterProps(line, false);
+  var customLineProps = svgPropertiesNoEventsFromUnknown(line);
   var linePoints, lineItem;
   if (lineType === "joint") {
     linePoints = points.map((entry) => ({
@@ -26209,7 +26945,9 @@ function ScatterLine(_ref2) {
     }];
   }
   var lineProps = _objectSpread53(_objectSpread53(_objectSpread53({}, scatterProps), {}, {
+    // @ts-expect-error customLineProps is contributing unknown props
     fill: "none",
+    // @ts-expect-error customLineProps is contributing unknown props
     stroke: scatterProps && scatterProps.fill
   }, customLineProps), {}, {
     points: linePoints
@@ -26219,7 +26957,7 @@ function ScatterLine(_ref2) {
   } else if (typeof line === "function") {
     lineItem = line(lineProps);
   } else {
-    lineItem = React49.createElement(Curve, _extends36({}, lineProps, {
+    lineItem = React49.createElement(Curve, _extends37({}, lineProps, {
       type: lineJointType
     }));
   }
@@ -26235,7 +26973,7 @@ function ScatterLabelListProvider(_ref2) {
     children
   } = _ref2;
   var chartViewBox = useViewBox();
-  var labelListEntries = (0, import_react52.useMemo)(() => {
+  var labelListEntries = (0, import_react54.useMemo)(() => {
     return points === null || points === void 0 ? void 0 : points.map((point6) => {
       var viewBox = {
         /*
@@ -26284,7 +27022,7 @@ function ScatterSymbols(props) {
     onMouseEnter: onMouseEnterFromProps,
     onClick: onItemClickFromProps,
     onMouseLeave: onMouseLeaveFromProps
-  } = allOtherScatterProps, restOfAllOtherProps = _objectWithoutProperties27(allOtherScatterProps, _excluded39);
+  } = allOtherScatterProps, restOfAllOtherProps = _objectWithoutProperties28(allOtherScatterProps, _excluded41);
   var onMouseEnterFromContext = useMouseEnterItemDispatch(onMouseEnterFromProps, allOtherScatterProps.dataKey);
   var onMouseLeaveFromContext = useMouseLeaveItemDispatch(onMouseLeaveFromProps);
   var onClickFromContext = useMouseClickItemDispatch(onItemClickFromProps, allOtherScatterProps.dataKey);
@@ -26293,7 +27031,7 @@ function ScatterSymbols(props) {
   }
   var {
     id
-  } = allOtherScatterProps, allOtherPropsWithoutId = _objectWithoutProperties27(allOtherScatterProps, _excluded213);
+  } = allOtherScatterProps, allOtherPropsWithoutId = _objectWithoutProperties28(allOtherScatterProps, _excluded214);
   var baseProps = svgPropertiesNoEvents(allOtherPropsWithoutId);
   return React49.createElement(React49.Fragment, null, React49.createElement(ScatterLine, {
     points,
@@ -26307,18 +27045,22 @@ function ScatterSymbols(props) {
       [DATA_ITEM_INDEX_ATTRIBUTE_NAME]: i,
       [DATA_ITEM_DATAKEY_ATTRIBUTE_NAME]: String(dataKey)
     });
-    return React49.createElement(Layer, _extends36({
-      className: "recharts-scatter-symbol"
-    }, adaptEventsOfChild(restOfAllOtherProps, entry, i), {
-      // @ts-expect-error the types need a bit of attention
-      onMouseEnter: onMouseEnterFromContext(entry, i),
-      onMouseLeave: onMouseLeaveFromContext(entry, i),
-      onClick: onClickFromContext(entry, i),
-      key: "symbol-".concat(entry === null || entry === void 0 ? void 0 : entry.cx, "-").concat(entry === null || entry === void 0 ? void 0 : entry.cy, "-").concat(entry === null || entry === void 0 ? void 0 : entry.size, "-").concat(i)
-    }), React49.createElement(ScatterSymbol, _extends36({
-      option,
-      isActive
-    }, symbolProps)));
+    return React49.createElement(
+      Layer,
+      _extends37({
+        key: "symbol-".concat(entry === null || entry === void 0 ? void 0 : entry.cx, "-").concat(entry === null || entry === void 0 ? void 0 : entry.cy, "-").concat(entry === null || entry === void 0 ? void 0 : entry.size, "-").concat(i),
+        className: "recharts-scatter-symbol"
+      }, adaptEventsOfChild(restOfAllOtherProps, entry, i), {
+        // @ts-expect-error the types need a bit of attention
+        onMouseEnter: onMouseEnterFromContext(entry, i),
+        onMouseLeave: onMouseLeaveFromContext(entry, i),
+        onClick: onClickFromContext(entry, i)
+      }),
+      React49.createElement(ScatterSymbol, _extends37({
+        option,
+        isActive
+      }, symbolProps))
+    );
   }));
 }
 function SymbolsWithAnimation(_ref3) {
@@ -26335,11 +27077,11 @@ function SymbolsWithAnimation(_ref3) {
   } = props;
   var prevPoints = previousPointsRef.current;
   var animationId = useAnimationId(props, "recharts-scatter-");
-  var [isAnimating, setIsAnimating] = (0, import_react52.useState)(false);
-  var handleAnimationEnd = (0, import_react52.useCallback)(() => {
+  var [isAnimating, setIsAnimating] = (0, import_react54.useState)(false);
+  var handleAnimationEnd = (0, import_react54.useCallback)(() => {
     setIsAnimating(false);
   }, []);
-  var handleAnimationStart = (0, import_react52.useCallback)(() => {
+  var handleAnimationStart = (0, import_react54.useCallback)(() => {
     setIsAnimating(true);
   }, []);
   var showLabels = !isAnimating;
@@ -26526,7 +27268,7 @@ function ScatterWithId(props) {
     yAxisId,
     id
   } = props;
-  var previousPointsRef = (0, import_react52.useRef)(null);
+  var previousPointsRef = (0, import_react54.useRef)(null);
   if (hide) {
     return null;
   }
@@ -26582,11 +27324,11 @@ function ScatterImpl(props) {
     xAxisId,
     yAxisId,
     zAxisId
-  } = _resolveDefaultProps, everythingElse = _objectWithoutProperties27(_resolveDefaultProps, _excluded310);
+  } = _resolveDefaultProps, everythingElse = _objectWithoutProperties28(_resolveDefaultProps, _excluded310);
   var {
     needClip
   } = useNeedsClip(xAxisId, yAxisId);
-  var cells = (0, import_react52.useMemo)(() => findAllByType(props.children, Cell), [props.children]);
+  var cells = (0, import_react54.useMemo)(() => findAllByType(props.children, Cell), [props.children]);
   var isPanorama = useIsPanorama();
   var points = useAppSelector((state) => {
     return selectScatterPoints(state, xAxisId, yAxisId, zAxisId, props.id, cells, isPanorama);
@@ -26602,7 +27344,7 @@ function ScatterImpl(props) {
     args: _objectSpread53(_objectSpread53({}, props), {}, {
       points
     })
-  }), React49.createElement(ScatterWithId, _extends36({}, everythingElse, {
+  }), React49.createElement(ScatterWithId, _extends37({}, everythingElse, {
     xAxisId,
     yAxisId,
     zAxisId,
@@ -26619,7 +27361,7 @@ function ScatterImpl(props) {
     needClip
   })));
 }
-function Scatter(outsideProps) {
+function ScatterFn(outsideProps) {
   var props = resolveDefaultProps(outsideProps, defaultScatterProps);
   var isPanorama = useIsPanorama();
   return React49.createElement(RegisterGraphicalItemId, {
@@ -26639,215 +27381,20 @@ function Scatter(outsideProps) {
     name: props.name,
     tooltipType: props.tooltipType,
     isPanorama
-  }), React49.createElement(ScatterImpl, _extends36({}, props, {
+  }), React49.createElement(ScatterImpl, _extends37({}, props, {
     id
   }))));
 }
+var Scatter = React49.memo(ScatterFn);
 Scatter.displayName = "Scatter";
 
 // node_modules/recharts/es6/cartesian/XAxis.js
 var React50 = __toESM(require_react());
-var import_react53 = __toESM(require_react());
-var _excluded40 = ["children"];
-var _excluded214 = ["dangerouslySetInnerHTML", "ticks"];
-var _excluded311 = ["id"];
-function _defineProperty56(e, r, t) {
-  return (r = _toPropertyKey56(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: true, configurable: true, writable: true }) : e[r] = t, e;
-}
-function _toPropertyKey56(t) {
-  var i = _toPrimitive56(t, "string");
-  return "symbol" == typeof i ? i : i + "";
-}
-function _toPrimitive56(t, r) {
-  if ("object" != typeof t || !t) return t;
-  var e = t[Symbol.toPrimitive];
-  if (void 0 !== e) {
-    var i = e.call(t, r || "default");
-    if ("object" != typeof i) return i;
-    throw new TypeError("@@toPrimitive must return a primitive value.");
-  }
-  return ("string" === r ? String : Number)(t);
-}
-function _extends37() {
-  return _extends37 = Object.assign ? Object.assign.bind() : function(n) {
-    for (var e = 1; e < arguments.length; e++) {
-      var t = arguments[e];
-      for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]);
-    }
-    return n;
-  }, _extends37.apply(null, arguments);
-}
-function _objectWithoutProperties28(e, t) {
-  if (null == e) return {};
-  var o, r, i = _objectWithoutPropertiesLoose28(e, t);
-  if (Object.getOwnPropertySymbols) {
-    var n = Object.getOwnPropertySymbols(e);
-    for (r = 0; r < n.length; r++) o = n[r], -1 === t.indexOf(o) && {}.propertyIsEnumerable.call(e, o) && (i[o] = e[o]);
-  }
-  return i;
-}
-function _objectWithoutPropertiesLoose28(r, e) {
-  if (null == r) return {};
-  var t = {};
-  for (var n in r) if ({}.hasOwnProperty.call(r, n)) {
-    if (-1 !== e.indexOf(n)) continue;
-    t[n] = r[n];
-  }
-  return t;
-}
-function SetXAxisSettings(props) {
-  var dispatch = useAppDispatch();
-  var settings = (0, import_react53.useMemo)(() => {
-    var {
-      children
-    } = props, rest2 = _objectWithoutProperties28(props, _excluded40);
-    return rest2;
-  }, [props]);
-  (0, import_react53.useEffect)(() => {
-    dispatch(addXAxis(settings));
-    return () => {
-      dispatch(removeXAxis(settings));
-    };
-  }, [settings, dispatch]);
-  return props.children;
-}
-var XAxisImpl = (props) => {
-  var {
-    xAxisId,
-    className
-  } = props;
-  var viewBox = useAppSelector(selectAxisViewBox);
-  var isPanorama = useIsPanorama();
-  var axisType = "xAxis";
-  var scale = useAppSelector((state) => selectAxisScale(state, axisType, xAxisId, isPanorama));
-  var cartesianTickItems = useAppSelector((state) => selectTicksOfAxis(state, axisType, xAxisId, isPanorama));
-  var axisSize = useAppSelector((state) => selectXAxisSize(state, xAxisId));
-  var position2 = useAppSelector((state) => selectXAxisPosition(state, xAxisId));
-  var synchronizedSettings = useAppSelector((state) => selectXAxisSettingsNoDefaults(state, xAxisId));
-  if (axisSize == null || position2 == null || synchronizedSettings == null) {
-    return null;
-  }
-  var {
-    dangerouslySetInnerHTML,
-    ticks: ticks2
-  } = props, allOtherProps = _objectWithoutProperties28(props, _excluded214);
-  var {
-    id
-  } = synchronizedSettings, restSynchronizedSettings = _objectWithoutProperties28(synchronizedSettings, _excluded311);
-  return React50.createElement(CartesianAxis, _extends37({}, allOtherProps, restSynchronizedSettings, {
-    scale,
-    x: position2.x,
-    y: position2.y,
-    width: axisSize.width,
-    height: axisSize.height,
-    className: clsx("recharts-".concat(axisType, " ").concat(axisType), className),
-    viewBox,
-    ticks: cartesianTickItems
-  }));
-};
-var XAxisSettingsDispatcher = (props) => {
-  var _props$interval, _props$includeHidden, _props$angle, _props$minTickGap, _props$tick;
-  return React50.createElement(SetXAxisSettings, {
-    interval: (_props$interval = props.interval) !== null && _props$interval !== void 0 ? _props$interval : "preserveEnd",
-    id: props.xAxisId,
-    scale: props.scale,
-    type: props.type,
-    padding: props.padding,
-    allowDataOverflow: props.allowDataOverflow,
-    domain: props.domain,
-    dataKey: props.dataKey,
-    allowDuplicatedCategory: props.allowDuplicatedCategory,
-    allowDecimals: props.allowDecimals,
-    tickCount: props.tickCount,
-    includeHidden: (_props$includeHidden = props.includeHidden) !== null && _props$includeHidden !== void 0 ? _props$includeHidden : false,
-    reversed: props.reversed,
-    ticks: props.ticks,
-    height: props.height,
-    orientation: props.orientation,
-    mirror: props.mirror,
-    hide: props.hide,
-    unit: props.unit,
-    name: props.name,
-    angle: (_props$angle = props.angle) !== null && _props$angle !== void 0 ? _props$angle : 0,
-    minTickGap: (_props$minTickGap = props.minTickGap) !== null && _props$minTickGap !== void 0 ? _props$minTickGap : 5,
-    tick: (_props$tick = props.tick) !== null && _props$tick !== void 0 ? _props$tick : true,
-    tickFormatter: props.tickFormatter
-  }, React50.createElement(XAxisImpl, props));
-};
-var XAxis = class extends import_react53.Component {
-  render() {
-    return React50.createElement(XAxisSettingsDispatcher, this.props);
-  }
-};
-_defineProperty56(XAxis, "displayName", "XAxis");
-_defineProperty56(XAxis, "defaultProps", {
-  allowDataOverflow: implicitXAxis.allowDataOverflow,
-  allowDecimals: implicitXAxis.allowDecimals,
-  allowDuplicatedCategory: implicitXAxis.allowDuplicatedCategory,
-  height: implicitXAxis.height,
-  hide: false,
-  mirror: implicitXAxis.mirror,
-  orientation: implicitXAxis.orientation,
-  padding: implicitXAxis.padding,
-  reversed: implicitXAxis.reversed,
-  scale: implicitXAxis.scale,
-  tickCount: implicitXAxis.tickCount,
-  type: implicitXAxis.type,
-  xAxisId: 0
-});
-
-// node_modules/recharts/es6/cartesian/YAxis.js
-var React51 = __toESM(require_react());
-var import_react54 = __toESM(require_react());
-
-// node_modules/recharts/es6/util/YAxisUtils.js
-var getCalculatedYAxisWidth = (_ref2) => {
-  var {
-    ticks: ticks2,
-    label,
-    labelGapWithTick = 5,
-    // Default gap between label and tick
-    tickSize = 0,
-    tickMargin = 0
-  } = _ref2;
-  var maxTickWidth = 0;
-  if (ticks2) {
-    ticks2.forEach((tickNode) => {
-      if (tickNode) {
-        var bbox = tickNode.getBoundingClientRect();
-        if (bbox.width > maxTickWidth) {
-          maxTickWidth = bbox.width;
-        }
-      }
-    });
-    var labelWidth = label ? label.getBoundingClientRect().width : 0;
-    var tickWidth = tickSize + tickMargin;
-    var updatedYAxisWidth = maxTickWidth + tickWidth + labelWidth + (label ? labelGapWithTick : 0);
-    return Math.round(updatedYAxisWidth);
-  }
-  return 0;
-};
-
-// node_modules/recharts/es6/cartesian/YAxis.js
-var _excluded41 = ["dangerouslySetInnerHTML", "ticks"];
+var import_react55 = __toESM(require_react());
+var _excluded44 = ["dangerouslySetInnerHTML", "ticks"];
 var _excluded215 = ["id"];
-function _defineProperty57(e, r, t) {
-  return (r = _toPropertyKey57(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: true, configurable: true, writable: true }) : e[r] = t, e;
-}
-function _toPropertyKey57(t) {
-  var i = _toPrimitive57(t, "string");
-  return "symbol" == typeof i ? i : i + "";
-}
-function _toPrimitive57(t, r) {
-  if ("object" != typeof t || !t) return t;
-  var e = t[Symbol.toPrimitive];
-  if (void 0 !== e) {
-    var i = e.call(t, r || "default");
-    if ("object" != typeof i) return i;
-    throw new TypeError("@@toPrimitive must return a primitive value.");
-  }
-  return ("string" === r ? String : Number)(t);
-}
+var _excluded311 = ["domain"];
+var _excluded45 = ["domain"];
 function _extends38() {
   return _extends38 = Object.assign ? Object.assign.bind() : function(n) {
     for (var e = 1; e < arguments.length; e++) {
@@ -26875,9 +27422,154 @@ function _objectWithoutPropertiesLoose29(r, e) {
   }
   return t;
 }
+function SetXAxisSettings(settings) {
+  var dispatch = useAppDispatch();
+  (0, import_react55.useLayoutEffect)(() => {
+    dispatch(addXAxis(settings));
+    return () => {
+      dispatch(removeXAxis(settings));
+    };
+  }, [settings, dispatch]);
+  return null;
+}
+var XAxisImpl = (props) => {
+  var {
+    xAxisId,
+    className
+  } = props;
+  var viewBox = useAppSelector(selectAxisViewBox);
+  var isPanorama = useIsPanorama();
+  var axisType = "xAxis";
+  var scale = useAppSelector((state) => selectAxisScale(state, axisType, xAxisId, isPanorama));
+  var cartesianTickItems = useAppSelector((state) => selectTicksOfAxis(state, axisType, xAxisId, isPanorama));
+  var axisSize = useAppSelector((state) => selectXAxisSize(state, xAxisId));
+  var position2 = useAppSelector((state) => selectXAxisPosition(state, xAxisId));
+  var synchronizedSettings = useAppSelector((state) => selectXAxisSettingsNoDefaults(state, xAxisId));
+  if (axisSize == null || position2 == null || synchronizedSettings == null) {
+    return null;
+  }
+  var {
+    dangerouslySetInnerHTML,
+    ticks: ticks2
+  } = props, allOtherProps = _objectWithoutProperties29(props, _excluded44);
+  var {
+    id
+  } = synchronizedSettings, restSynchronizedSettings = _objectWithoutProperties29(synchronizedSettings, _excluded215);
+  return React50.createElement(CartesianAxis, _extends38({}, allOtherProps, restSynchronizedSettings, {
+    scale,
+    x: position2.x,
+    y: position2.y,
+    width: axisSize.width,
+    height: axisSize.height,
+    className: clsx("recharts-".concat(axisType, " ").concat(axisType), className),
+    viewBox,
+    ticks: cartesianTickItems
+  }));
+};
+var xAxisDefaultProps = {
+  allowDataOverflow: implicitXAxis.allowDataOverflow,
+  allowDecimals: implicitXAxis.allowDecimals,
+  allowDuplicatedCategory: implicitXAxis.allowDuplicatedCategory,
+  height: implicitXAxis.height,
+  hide: false,
+  mirror: implicitXAxis.mirror,
+  orientation: implicitXAxis.orientation,
+  padding: implicitXAxis.padding,
+  reversed: implicitXAxis.reversed,
+  scale: implicitXAxis.scale,
+  tickCount: implicitXAxis.tickCount,
+  type: implicitXAxis.type,
+  xAxisId: 0
+};
+var XAxisSettingsDispatcher = (outsideProps) => {
+  var _props$interval, _props$includeHidden, _props$angle, _props$minTickGap, _props$tick;
+  var props = resolveDefaultProps(outsideProps, xAxisDefaultProps);
+  return React50.createElement(React50.Fragment, null, React50.createElement(SetXAxisSettings, {
+    interval: (_props$interval = props.interval) !== null && _props$interval !== void 0 ? _props$interval : "preserveEnd",
+    id: props.xAxisId,
+    scale: props.scale,
+    type: props.type,
+    padding: props.padding,
+    allowDataOverflow: props.allowDataOverflow,
+    domain: props.domain,
+    dataKey: props.dataKey,
+    allowDuplicatedCategory: props.allowDuplicatedCategory,
+    allowDecimals: props.allowDecimals,
+    tickCount: props.tickCount,
+    includeHidden: (_props$includeHidden = props.includeHidden) !== null && _props$includeHidden !== void 0 ? _props$includeHidden : false,
+    reversed: props.reversed,
+    ticks: props.ticks,
+    height: props.height,
+    orientation: props.orientation,
+    mirror: props.mirror,
+    hide: props.hide,
+    unit: props.unit,
+    name: props.name,
+    angle: (_props$angle = props.angle) !== null && _props$angle !== void 0 ? _props$angle : 0,
+    minTickGap: (_props$minTickGap = props.minTickGap) !== null && _props$minTickGap !== void 0 ? _props$minTickGap : 5,
+    tick: (_props$tick = props.tick) !== null && _props$tick !== void 0 ? _props$tick : true,
+    tickFormatter: props.tickFormatter
+  }), React50.createElement(XAxisImpl, props));
+};
+var XAxisMemoComparator = (prevProps, nextProps) => {
+  var {
+    domain: prevDomain
+  } = prevProps, prevRest = _objectWithoutProperties29(prevProps, _excluded311);
+  var {
+    domain: nextDomain
+  } = nextProps, nextRest = _objectWithoutProperties29(nextProps, _excluded45);
+  if (!shallowEqual(prevRest, nextRest)) {
+    return false;
+  }
+  if (Array.isArray(prevDomain) && prevDomain.length === 2 && Array.isArray(nextDomain) && nextDomain.length === 2) {
+    return prevDomain[0] === nextDomain[0] && prevDomain[1] === nextDomain[1];
+  }
+  return shallowEqual({
+    domain: prevDomain
+  }, {
+    domain: nextDomain
+  });
+};
+var XAxis = React50.memo(XAxisSettingsDispatcher, XAxisMemoComparator);
+XAxis.displayName = "XAxis";
+
+// node_modules/recharts/es6/cartesian/YAxis.js
+var React51 = __toESM(require_react());
+var import_react56 = __toESM(require_react());
+var _excluded46 = ["dangerouslySetInnerHTML", "ticks"];
+var _excluded216 = ["id"];
+var _excluded312 = ["domain"];
+var _excluded47 = ["domain"];
+function _extends39() {
+  return _extends39 = Object.assign ? Object.assign.bind() : function(n) {
+    for (var e = 1; e < arguments.length; e++) {
+      var t = arguments[e];
+      for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]);
+    }
+    return n;
+  }, _extends39.apply(null, arguments);
+}
+function _objectWithoutProperties30(e, t) {
+  if (null == e) return {};
+  var o, r, i = _objectWithoutPropertiesLoose30(e, t);
+  if (Object.getOwnPropertySymbols) {
+    var n = Object.getOwnPropertySymbols(e);
+    for (r = 0; r < n.length; r++) o = n[r], -1 === t.indexOf(o) && {}.propertyIsEnumerable.call(e, o) && (i[o] = e[o]);
+  }
+  return i;
+}
+function _objectWithoutPropertiesLoose30(r, e) {
+  if (null == r) return {};
+  var t = {};
+  for (var n in r) if ({}.hasOwnProperty.call(r, n)) {
+    if (-1 !== e.indexOf(n)) continue;
+    t[n] = r[n];
+  }
+  return t;
+}
 function SetYAxisSettings(settings) {
   var dispatch = useAppDispatch();
-  (0, import_react54.useEffect)(() => {
+  (0, import_react56.useLayoutEffect)(() => {
     dispatch(addYAxis(settings));
     return () => {
       dispatch(removeYAxis(settings));
@@ -26886,15 +27578,14 @@ function SetYAxisSettings(settings) {
   return null;
 }
 var YAxisImpl = (props) => {
-  var _cartesianAxisRef$cur;
   var {
     yAxisId,
     className,
     width,
     label
   } = props;
-  var cartesianAxisRef = (0, import_react54.useRef)(null);
-  var labelRef = (0, import_react54.useRef)(null);
+  var cartesianAxisRef = (0, import_react56.useRef)(null);
+  var labelRef = (0, import_react56.useRef)(null);
   var viewBox = useAppSelector(selectAxisViewBox);
   var isPanorama = useIsPanorama();
   var dispatch = useAppDispatch();
@@ -26904,24 +27595,15 @@ var YAxisImpl = (props) => {
   var position2 = useAppSelector((state) => selectYAxisPosition(state, yAxisId));
   var cartesianTickItems = useAppSelector((state) => selectTicksOfAxis(state, axisType, yAxisId, isPanorama));
   var synchronizedSettings = useAppSelector((state) => selectYAxisSettingsNoDefaults(state, yAxisId));
-  (0, import_react54.useLayoutEffect)(() => {
-    var _axisComponent$tickRe;
-    if (width !== "auto" || !axisSize || isLabelContentAFunction(label) || (0, import_react54.isValidElement)(label) || synchronizedSettings == null) {
+  (0, import_react56.useLayoutEffect)(() => {
+    if (width !== "auto" || !axisSize || isLabelContentAFunction(label) || (0, import_react56.isValidElement)(label) || synchronizedSettings == null) {
       return;
     }
     var axisComponent = cartesianAxisRef.current;
-    var tickNodes = axisComponent === null || axisComponent === void 0 || (_axisComponent$tickRe = axisComponent.tickRefs) === null || _axisComponent$tickRe === void 0 ? void 0 : _axisComponent$tickRe.current;
-    var {
-      tickSize,
-      tickMargin
-    } = axisComponent.props;
-    var updatedYAxisWidth = getCalculatedYAxisWidth({
-      ticks: tickNodes,
-      label: labelRef.current,
-      labelGapWithTick: 5,
-      tickSize,
-      tickMargin
-    });
+    if (!axisComponent) {
+      return;
+    }
+    var updatedYAxisWidth = axisComponent.getCalculatedWidth();
     if (Math.round(axisSize.width) !== Math.round(updatedYAxisWidth)) {
       dispatch(updateYAxisWidth({
         id: yAxisId,
@@ -26929,15 +27611,16 @@ var YAxisImpl = (props) => {
       }));
     }
   }, [
-    cartesianAxisRef,
-    cartesianAxisRef === null || cartesianAxisRef === void 0 || (_cartesianAxisRef$cur = cartesianAxisRef.current) === null || _cartesianAxisRef$cur === void 0 || (_cartesianAxisRef$cur = _cartesianAxisRef$cur.tickRefs) === null || _cartesianAxisRef$cur === void 0 ? void 0 : _cartesianAxisRef$cur.current,
-    // required to do re-calculation when using brush
-    axisSize === null || axisSize === void 0 ? void 0 : axisSize.width,
+    // The dependency on cartesianAxisRef.current is not needed because useLayoutEffect will run after every render.
+    // The ref will be populated by then.
+    // To re-run this effect when ticks change, we can depend on the ticks array from the store.
+    cartesianTickItems,
     axisSize,
     dispatch,
     label,
     yAxisId,
-    width
+    width,
+    synchronizedSettings
   ]);
   if (axisSize == null || position2 == null || synchronizedSettings == null) {
     return null;
@@ -26945,11 +27628,11 @@ var YAxisImpl = (props) => {
   var {
     dangerouslySetInnerHTML,
     ticks: ticks2
-  } = props, allOtherProps = _objectWithoutProperties29(props, _excluded41);
+  } = props, allOtherProps = _objectWithoutProperties30(props, _excluded46);
   var {
     id
-  } = synchronizedSettings, restSynchronizedSettings = _objectWithoutProperties29(synchronizedSettings, _excluded215);
-  return React51.createElement(CartesianAxis, _extends38({}, allOtherProps, restSynchronizedSettings, {
+  } = synchronizedSettings, restSynchronizedSettings = _objectWithoutProperties30(synchronizedSettings, _excluded216);
+  return React51.createElement(CartesianAxis, _extends39({}, allOtherProps, restSynchronizedSettings, {
     ref: cartesianAxisRef,
     labelRef,
     scale,
@@ -26967,8 +27650,24 @@ var YAxisImpl = (props) => {
     ticks: cartesianTickItems
   }));
 };
-var YAxisSettingsDispatcher = (props) => {
+var yAxisDefaultProps = {
+  allowDataOverflow: implicitYAxis.allowDataOverflow,
+  allowDecimals: implicitYAxis.allowDecimals,
+  allowDuplicatedCategory: implicitYAxis.allowDuplicatedCategory,
+  hide: false,
+  mirror: implicitYAxis.mirror,
+  orientation: implicitYAxis.orientation,
+  padding: implicitYAxis.padding,
+  reversed: implicitYAxis.reversed,
+  scale: implicitYAxis.scale,
+  tickCount: implicitYAxis.tickCount,
+  type: implicitYAxis.type,
+  width: implicitYAxis.width,
+  yAxisId: 0
+};
+var YAxisSettingsDispatcher = (outsideProps) => {
   var _props$interval, _props$includeHidden, _props$angle, _props$minTickGap, _props$tick;
+  var props = resolveDefaultProps(outsideProps, yAxisDefaultProps);
   return React51.createElement(React51.Fragment, null, React51.createElement(SetYAxisSettings, {
     interval: (_props$interval = props.interval) !== null && _props$interval !== void 0 ? _props$interval : "preserveEnd",
     id: props.yAxisId,
@@ -26996,35 +27695,34 @@ var YAxisSettingsDispatcher = (props) => {
     tickFormatter: props.tickFormatter
   }), React51.createElement(YAxisImpl, props));
 };
-var YAxisDefaultProps = {
-  allowDataOverflow: implicitYAxis.allowDataOverflow,
-  allowDecimals: implicitYAxis.allowDecimals,
-  allowDuplicatedCategory: implicitYAxis.allowDuplicatedCategory,
-  hide: false,
-  mirror: implicitYAxis.mirror,
-  orientation: implicitYAxis.orientation,
-  padding: implicitYAxis.padding,
-  reversed: implicitYAxis.reversed,
-  scale: implicitYAxis.scale,
-  tickCount: implicitYAxis.tickCount,
-  type: implicitYAxis.type,
-  width: implicitYAxis.width,
-  yAxisId: 0
-};
-var YAxis = class extends import_react54.Component {
-  render() {
-    return React51.createElement(YAxisSettingsDispatcher, this.props);
+var YAxisMemoComparator = (prevProps, nextProps) => {
+  var {
+    domain: prevDomain
+  } = prevProps, prevRest = _objectWithoutProperties30(prevProps, _excluded312);
+  var {
+    domain: nextDomain
+  } = nextProps, nextRest = _objectWithoutProperties30(nextProps, _excluded47);
+  if (!shallowEqual(prevRest, nextRest)) {
+    return false;
   }
+  if (Array.isArray(prevDomain) && prevDomain.length === 2 && Array.isArray(nextDomain) && nextDomain.length === 2) {
+    return prevDomain[0] === nextDomain[0] && prevDomain[1] === nextDomain[1];
+  }
+  return shallowEqual({
+    domain: prevDomain
+  }, {
+    domain: nextDomain
+  });
 };
-_defineProperty57(YAxis, "displayName", "YAxis");
-_defineProperty57(YAxis, "defaultProps", YAxisDefaultProps);
+var YAxis = React51.memo(YAxisSettingsDispatcher, YAxisMemoComparator);
+YAxis.displayName = "YAxis";
 
 // node_modules/recharts/es6/cartesian/ErrorBar.js
 var React52 = __toESM(require_react());
-var import_react56 = __toESM(require_react());
+var import_react58 = __toESM(require_react());
 
 // node_modules/recharts/es6/animation/CSSTransitionAnimate.js
-var import_react55 = __toESM(require_react());
+var import_react57 = __toESM(require_react());
 var defaultProps5 = {
   begin: 0,
   duration: 1e3,
@@ -27053,18 +27751,18 @@ function CSSTransitionAnimate(outsideProps) {
     children
   } = props;
   var animationManager = useAnimationManager(animationId + attributeName, props.animationManager);
-  var [style, setStyle] = (0, import_react55.useState)(() => {
+  var [style, setStyle] = (0, import_react57.useState)(() => {
     if (!isActive) {
       return to2;
     }
     return from2;
   });
-  var initialized = (0, import_react55.useRef)(false);
-  var onAnimationStart = (0, import_react55.useCallback)(() => {
+  var initialized = (0, import_react57.useRef)(false);
+  var onAnimationStart = (0, import_react57.useCallback)(() => {
     setStyle(from2);
     onAnimationStartFromProps();
   }, [from2, onAnimationStartFromProps]);
-  (0, import_react55.useEffect)(() => {
+  (0, import_react57.useEffect)(() => {
     if (!isActive || !canBegin) {
       return noop2;
     }
@@ -27102,15 +27800,15 @@ function CSSTransitionAnimate(outsideProps) {
 }
 
 // node_modules/recharts/es6/cartesian/ErrorBar.js
-var _excluded44 = ["direction", "width", "dataKey", "isAnimationActive", "animationBegin", "animationDuration", "animationEasing"];
-function _extends39() {
-  return _extends39 = Object.assign ? Object.assign.bind() : function(n) {
+var _excluded48 = ["direction", "width", "dataKey", "isAnimationActive", "animationBegin", "animationDuration", "animationEasing"];
+function _extends40() {
+  return _extends40 = Object.assign ? Object.assign.bind() : function(n) {
     for (var e = 1; e < arguments.length; e++) {
       var t = arguments[e];
       for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]);
     }
     return n;
-  }, _extends39.apply(null, arguments);
+  }, _extends40.apply(null, arguments);
 }
 function ownKeys54(e, r) {
   var t = Object.keys(e);
@@ -27126,21 +27824,21 @@ function _objectSpread54(e) {
   for (var r = 1; r < arguments.length; r++) {
     var t = null != arguments[r] ? arguments[r] : {};
     r % 2 ? ownKeys54(Object(t), true).forEach(function(r2) {
-      _defineProperty58(e, r2, t[r2]);
+      _defineProperty56(e, r2, t[r2]);
     }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys54(Object(t)).forEach(function(r2) {
       Object.defineProperty(e, r2, Object.getOwnPropertyDescriptor(t, r2));
     });
   }
   return e;
 }
-function _defineProperty58(e, r, t) {
-  return (r = _toPropertyKey58(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: true, configurable: true, writable: true }) : e[r] = t, e;
+function _defineProperty56(e, r, t) {
+  return (r = _toPropertyKey56(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: true, configurable: true, writable: true }) : e[r] = t, e;
 }
-function _toPropertyKey58(t) {
-  var i = _toPrimitive58(t, "string");
+function _toPropertyKey56(t) {
+  var i = _toPrimitive56(t, "string");
   return "symbol" == typeof i ? i : i + "";
 }
-function _toPrimitive58(t, r) {
+function _toPrimitive56(t, r) {
   if ("object" != typeof t || !t) return t;
   var e = t[Symbol.toPrimitive];
   if (void 0 !== e) {
@@ -27150,16 +27848,16 @@ function _toPrimitive58(t, r) {
   }
   return ("string" === r ? String : Number)(t);
 }
-function _objectWithoutProperties30(e, t) {
+function _objectWithoutProperties31(e, t) {
   if (null == e) return {};
-  var o, r, i = _objectWithoutPropertiesLoose30(e, t);
+  var o, r, i = _objectWithoutPropertiesLoose31(e, t);
   if (Object.getOwnPropertySymbols) {
     var n = Object.getOwnPropertySymbols(e);
     for (r = 0; r < n.length; r++) o = n[r], -1 === t.indexOf(o) && {}.propertyIsEnumerable.call(e, o) && (i[o] = e[o]);
   }
   return i;
 }
-function _objectWithoutPropertiesLoose30(r, e) {
+function _objectWithoutPropertiesLoose31(r, e) {
   if (null == r) return {};
   var t = {};
   for (var n in r) if ({}.hasOwnProperty.call(r, n)) {
@@ -27177,7 +27875,7 @@ function ErrorBarImpl(props) {
     animationBegin,
     animationDuration,
     animationEasing
-  } = props, others = _objectWithoutProperties30(props, _excluded44);
+  } = props, others = _objectWithoutProperties31(props, _excluded48);
   var svgProps = svgPropertiesNoEvents(others);
   var {
     data,
@@ -27268,15 +27966,15 @@ function ErrorBarImpl(props) {
     }
     var scaleDirection = direction === "x" ? "scaleX" : "scaleY";
     var transformOrigin = "".concat(x2 + offset, "px ").concat(y2 + offset, "px");
-    return React52.createElement(Layer, _extends39({
+    return React52.createElement(Layer, _extends40({
       className: "recharts-errorBar",
       key: "bar-".concat(lineCoordinates.map((c2) => "".concat(c2.x1, "-").concat(c2.x2, "-").concat(c2.y1, "-").concat(c2.y2)))
-    }, svgProps), lineCoordinates.map((coordinates) => {
+    }, svgProps), lineCoordinates.map((c2) => {
       var lineStyle = isAnimationActive ? {
         transformOrigin
       } : void 0;
       return React52.createElement(CSSTransitionAnimate, {
-        animationId: "error-bar-".concat(direction),
+        animationId: "error-bar-".concat(direction, "_").concat(c2.x1, "-").concat(c2.x2, "-").concat(c2.y1, "-").concat(c2.y2),
         from: "".concat(scaleDirection, "(0)"),
         to: "".concat(scaleDirection, "(1)"),
         attributeName: "transform",
@@ -27284,8 +27982,8 @@ function ErrorBarImpl(props) {
         easing: animationEasing,
         isActive: isAnimationActive,
         duration: animationDuration,
-        key: "errorbar-".concat(coordinates.x1, "-").concat(coordinates.x2, "-").concat(coordinates.y1, "-").concat(coordinates.y2)
-      }, (style) => React52.createElement("line", _extends39({}, coordinates, {
+        key: "errorbar-".concat(c2.x1, "-").concat(c2.x2, "-").concat(c2.y1, "-").concat(c2.y2)
+      }, (style) => React52.createElement("line", _extends40({}, c2, {
         style: _objectSpread54(_objectSpread54({}, lineStyle), style)
       })));
     }));
@@ -27326,7 +28024,7 @@ function ErrorBarInternal(props) {
   return React52.createElement(React52.Fragment, null, React52.createElement(ReportErrorBarSettings, {
     dataKey: props.dataKey,
     direction: realDirection
-  }), React52.createElement(ErrorBarImpl, _extends39({}, props, {
+  }), React52.createElement(ErrorBarImpl, _extends40({}, props, {
     direction: realDirection,
     width,
     isAnimationActive,
@@ -27335,25 +28033,25 @@ function ErrorBarInternal(props) {
     animationEasing
   })));
 }
-var ErrorBar = class extends import_react56.Component {
+var ErrorBar = class extends import_react58.Component {
   render() {
     return React52.createElement(ErrorBarInternal, this.props);
   }
 };
-_defineProperty58(ErrorBar, "defaultProps", errorBarDefaultProps);
-_defineProperty58(ErrorBar, "displayName", "ErrorBar");
+_defineProperty56(ErrorBar, "defaultProps", errorBarDefaultProps);
+_defineProperty56(ErrorBar, "displayName", "ErrorBar");
 
 // node_modules/recharts/es6/chart/LineChart.js
 var React58 = __toESM(require_react());
-var import_react65 = __toESM(require_react());
+var import_react67 = __toESM(require_react());
 
 // node_modules/recharts/es6/chart/CartesianChart.js
 var React57 = __toESM(require_react());
-var import_react64 = __toESM(require_react());
+var import_react66 = __toESM(require_react());
 
 // node_modules/recharts/es6/state/RechartsStoreProvider.js
 var React53 = __toESM(require_react());
-var import_react57 = __toESM(require_react());
+var import_react59 = __toESM(require_react());
 
 // node_modules/recharts/es6/state/selectors/selectActivePropsFromChartPointer.js
 var pickChartPointer = (_state, chartPointer) => chartPointer;
@@ -27663,7 +28361,24 @@ var createRechartsStore = function createRechartsStore2(preloadedState2) {
     middleware: (getDefaultMiddleware) => getDefaultMiddleware({
       serializableCheck: false
     }).concat([mouseClickMiddleware.middleware, mouseMoveMiddleware.middleware, keyboardEventsMiddleware.middleware, externalEventsMiddleware.middleware, touchEventMiddleware.middleware]),
-    devTools: !!window.RECHARTS_DEV_TOOLS_ENABLED && {
+    /*
+     * I can't find out how to satisfy typescript here.
+     * We return `EnhancerArray<[StoreEnhancer<{}, {}>, StoreEnhancer]>` from this function,
+     * but the types say we should return `EnhancerArray<StoreEnhancer<{}, {}>`.
+     * Looks like it's badly inferred generics, but it won't allow me to provide the correct type manually either.
+     * So let's just ignore the error for now.
+     */
+    // @ts-expect-error mismatched generics
+    enhancers: (getDefaultEnhancers) => {
+      var enhancers = getDefaultEnhancers;
+      if (typeof getDefaultEnhancers === "function") {
+        enhancers = getDefaultEnhancers();
+      }
+      return enhancers.concat(autoBatchEnhancer({
+        type: "raf"
+      }));
+    },
+    devTools: Global.devToolsEnabled && {
       serialize: {
         replacer: reduxDevtoolsJsonStringifyReplacer
       },
@@ -27680,7 +28395,7 @@ function RechartsStoreProvider(_ref2) {
     reduxStoreName
   } = _ref2;
   var isPanorama = useIsPanorama();
-  var storeRef = (0, import_react57.useRef)(null);
+  var storeRef = (0, import_react59.useRef)(null);
   if (isPanorama) {
     return children;
   }
@@ -27695,34 +28410,28 @@ function RechartsStoreProvider(_ref2) {
 }
 
 // node_modules/recharts/es6/state/ReportMainChartProps.js
-var import_react58 = __toESM(require_react());
+var import_react60 = __toESM(require_react());
 function ReportMainChartProps(_ref2) {
   var {
     layout,
-    width,
-    height,
     margin
   } = _ref2;
   var dispatch = useAppDispatch();
   var isPanorama = useIsPanorama();
-  (0, import_react58.useEffect)(() => {
+  (0, import_react60.useEffect)(() => {
     if (!isPanorama) {
       dispatch(setLayout(layout));
-      dispatch(setChartSize({
-        width,
-        height
-      }));
       dispatch(setMargin(margin));
     }
-  }, [dispatch, isPanorama, layout, width, height, margin]);
+  }, [dispatch, isPanorama, layout, margin]);
   return null;
 }
 
 // node_modules/recharts/es6/state/ReportChartProps.js
-var import_react59 = __toESM(require_react());
+var import_react61 = __toESM(require_react());
 function ReportChartProps(props) {
   var dispatch = useAppDispatch();
-  (0, import_react59.useEffect)(() => {
+  (0, import_react61.useEffect)(() => {
     dispatch(updateOptions(props));
   }, [dispatch, props]);
   return null;
@@ -27730,22 +28439,22 @@ function ReportChartProps(props) {
 
 // node_modules/recharts/es6/chart/CategoricalChart.js
 var React56 = __toESM(require_react());
-var import_react63 = __toESM(require_react());
+var import_react65 = __toESM(require_react());
 
 // node_modules/recharts/es6/container/RootSurface.js
 var React54 = __toESM(require_react());
-var import_react60 = __toESM(require_react());
-var _excluded45 = ["children"];
-function _objectWithoutProperties31(e, t) {
+var import_react62 = __toESM(require_react());
+var _excluded49 = ["children"];
+function _objectWithoutProperties32(e, t) {
   if (null == e) return {};
-  var o, r, i = _objectWithoutPropertiesLoose31(e, t);
+  var o, r, i = _objectWithoutPropertiesLoose32(e, t);
   if (Object.getOwnPropertySymbols) {
     var n = Object.getOwnPropertySymbols(e);
     for (r = 0; r < n.length; r++) o = n[r], -1 === t.indexOf(o) && {}.propertyIsEnumerable.call(e, o) && (i[o] = e[o]);
   }
   return i;
 }
-function _objectWithoutPropertiesLoose31(r, e) {
+function _objectWithoutPropertiesLoose32(r, e) {
   if (null == r) return {};
   var t = {};
   for (var n in r) if ({}.hasOwnProperty.call(r, n)) {
@@ -27754,20 +28463,30 @@ function _objectWithoutPropertiesLoose31(r, e) {
   }
   return t;
 }
-function _extends40() {
-  return _extends40 = Object.assign ? Object.assign.bind() : function(n) {
+function _extends41() {
+  return _extends41 = Object.assign ? Object.assign.bind() : function(n) {
     for (var e = 1; e < arguments.length; e++) {
       var t = arguments[e];
       for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]);
     }
     return n;
-  }, _extends40.apply(null, arguments);
+  }, _extends41.apply(null, arguments);
 }
 var FULL_WIDTH_AND_HEIGHT = {
   width: "100%",
-  height: "100%"
+  height: "100%",
+  /*
+   * display: block is necessary here because the default for an SVG is display: inline,
+   * which in some browsers (Chrome) adds a little bit of extra space above and below the SVG
+   * to make space for the descender of letters like "g" and "y". This throws off the height calculation
+   * and causes the container to grow indefinitely on each render with responsive=true.
+   * Display: block removes that extra space.
+   *
+   * Interestingly, Firefox does not have this problem, but it doesn't hurt to add the style anyway.
+   */
+  display: "block"
 };
-var MainChartSurface = (0, import_react60.forwardRef)((props, ref) => {
+var MainChartSurface = (0, import_react62.forwardRef)((props, ref) => {
   var width = useChartWidth();
   var height = useChartHeight();
   var hasAccessibilityLayer = useAccessibilityLayer();
@@ -27791,7 +28510,7 @@ var MainChartSurface = (0, import_react60.forwardRef)((props, ref) => {
   } else {
     role = hasAccessibilityLayer ? "application" : void 0;
   }
-  return React54.createElement(Surface, _extends40({}, otherAttributes, {
+  return React54.createElement(Surface, _extends41({}, otherAttributes, {
     title,
     desc,
     role,
@@ -27823,30 +28542,30 @@ var BrushPanoramaSurface = (_ref2) => {
     y: y2
   }, children);
 };
-var RootSurface = (0, import_react60.forwardRef)((_ref2, ref) => {
+var RootSurface = (0, import_react62.forwardRef)((_ref2, ref) => {
   var {
     children
-  } = _ref2, rest2 = _objectWithoutProperties31(_ref2, _excluded45);
+  } = _ref2, rest2 = _objectWithoutProperties32(_ref2, _excluded49);
   var isPanorama = useIsPanorama();
   if (isPanorama) {
     return React54.createElement(BrushPanoramaSurface, null, children);
   }
-  return React54.createElement(MainChartSurface, _extends40({
+  return React54.createElement(MainChartSurface, _extends41({
     ref
   }, rest2), children);
 });
 
 // node_modules/recharts/es6/chart/RechartsWrapper.js
 var React55 = __toESM(require_react());
-var import_react62 = __toESM(require_react());
+var import_react64 = __toESM(require_react());
 
 // node_modules/recharts/es6/util/useReportScale.js
-var import_react61 = __toESM(require_react());
+var import_react63 = __toESM(require_react());
 function useReportScale() {
   var dispatch = useAppDispatch();
-  var [ref, setRef] = (0, import_react61.useState)(null);
+  var [ref, setRef] = (0, import_react63.useState)(null);
   var scale = useAppSelector(selectContainerScale);
-  (0, import_react61.useEffect)(() => {
+  (0, import_react63.useEffect)(() => {
     if (ref == null) {
       return;
     }
@@ -27874,21 +28593,21 @@ function _objectSpread55(e) {
   for (var r = 1; r < arguments.length; r++) {
     var t = null != arguments[r] ? arguments[r] : {};
     r % 2 ? ownKeys55(Object(t), true).forEach(function(r2) {
-      _defineProperty59(e, r2, t[r2]);
+      _defineProperty57(e, r2, t[r2]);
     }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys55(Object(t)).forEach(function(r2) {
       Object.defineProperty(e, r2, Object.getOwnPropertyDescriptor(t, r2));
     });
   }
   return e;
 }
-function _defineProperty59(e, r, t) {
-  return (r = _toPropertyKey59(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: true, configurable: true, writable: true }) : e[r] = t, e;
+function _defineProperty57(e, r, t) {
+  return (r = _toPropertyKey57(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: true, configurable: true, writable: true }) : e[r] = t, e;
 }
-function _toPropertyKey59(t) {
-  var i = _toPrimitive59(t, "string");
+function _toPropertyKey57(t) {
+  var i = _toPrimitive57(t, "string");
   return "symbol" == typeof i ? i : i + "";
 }
-function _toPrimitive59(t, r) {
+function _toPrimitive57(t, r) {
   if ("object" != typeof t || !t) return t;
   var e = t[Symbol.toPrimitive];
   if (void 0 !== e) {
@@ -27898,11 +28617,163 @@ function _toPrimitive59(t, r) {
   }
   return ("string" === r ? String : Number)(t);
 }
-var RechartsWrapper = (0, import_react62.forwardRef)((_ref2, ref) => {
+function _extends42() {
+  return _extends42 = Object.assign ? Object.assign.bind() : function(n) {
+    for (var e = 1; e < arguments.length; e++) {
+      var t = arguments[e];
+      for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]);
+    }
+    return n;
+  }, _extends42.apply(null, arguments);
+}
+var EventSynchronizer = () => {
+  useSynchronisedEventsFromOtherCharts();
+  return null;
+};
+function getNumberOrZero(value) {
+  if (typeof value === "number") {
+    return value;
+  }
+  if (typeof value === "string") {
+    var parsed = parseFloat(value);
+    if (!Number.isNaN(parsed)) {
+      return parsed;
+    }
+  }
+  return 0;
+}
+var ResponsiveDiv = (0, import_react64.forwardRef)((props, ref) => {
+  var _props$style, _props$style2;
+  var observerRef = (0, import_react64.useRef)(null);
+  var [sizes, setSizes] = (0, import_react64.useState)({
+    containerWidth: getNumberOrZero((_props$style = props.style) === null || _props$style === void 0 ? void 0 : _props$style.width),
+    containerHeight: getNumberOrZero((_props$style2 = props.style) === null || _props$style2 === void 0 ? void 0 : _props$style2.height)
+  });
+  var setContainerSize = (0, import_react64.useCallback)((newWidth, newHeight) => {
+    setSizes((prevState) => {
+      var roundedWidth = Math.round(newWidth);
+      var roundedHeight = Math.round(newHeight);
+      if (prevState.containerWidth === roundedWidth && prevState.containerHeight === roundedHeight) {
+        return prevState;
+      }
+      return {
+        containerWidth: roundedWidth,
+        containerHeight: roundedHeight
+      };
+    });
+  }, []);
+  var innerRef = (0, import_react64.useCallback)((node) => {
+    if (typeof ref === "function") {
+      ref(node);
+    }
+    if (node != null) {
+      var {
+        width: containerWidth,
+        height: containerHeight
+      } = node.getBoundingClientRect();
+      setContainerSize(containerWidth, containerHeight);
+      var callback = (entries) => {
+        var {
+          width,
+          height
+        } = entries[0].contentRect;
+        setContainerSize(width, height);
+      };
+      var observer = new ResizeObserver(callback);
+      observer.observe(node);
+      observerRef.current = observer;
+    }
+  }, [ref, setContainerSize]);
+  (0, import_react64.useEffect)(() => {
+    return () => {
+      var observer = observerRef.current;
+      if (observer != null) {
+        observer.disconnect();
+      }
+    };
+  }, [setContainerSize]);
+  return React55.createElement(React55.Fragment, null, React55.createElement(ReportChartSize, {
+    width: sizes.containerWidth,
+    height: sizes.containerHeight
+  }), React55.createElement("div", _extends42({
+    ref: innerRef
+  }, props)));
+});
+var ReadSizeOnceDiv = (0, import_react64.forwardRef)((props, ref) => {
+  var {
+    width,
+    height
+  } = props;
+  var [sizes, setSizes] = (0, import_react64.useState)({
+    containerWidth: getNumberOrZero(width),
+    containerHeight: getNumberOrZero(height)
+  });
+  var setContainerSize = (0, import_react64.useCallback)((newWidth, newHeight) => {
+    setSizes((prevState) => {
+      var roundedWidth = Math.round(newWidth);
+      var roundedHeight = Math.round(newHeight);
+      if (prevState.containerWidth === roundedWidth && prevState.containerHeight === roundedHeight) {
+        return prevState;
+      }
+      return {
+        containerWidth: roundedWidth,
+        containerHeight: roundedHeight
+      };
+    });
+  }, []);
+  var innerRef = (0, import_react64.useCallback)((node) => {
+    if (typeof ref === "function") {
+      ref(node);
+    }
+    if (node != null) {
+      var {
+        width: containerWidth,
+        height: containerHeight
+      } = node.getBoundingClientRect();
+      setContainerSize(containerWidth, containerHeight);
+    }
+  }, [ref, setContainerSize]);
+  return React55.createElement(React55.Fragment, null, React55.createElement(ReportChartSize, {
+    width: sizes.containerWidth,
+    height: sizes.containerHeight
+  }), React55.createElement("div", _extends42({
+    ref: innerRef
+  }, props)));
+});
+var StaticDiv = (0, import_react64.forwardRef)((props, ref) => {
+  var {
+    width,
+    height
+  } = props;
+  return React55.createElement(React55.Fragment, null, React55.createElement(ReportChartSize, {
+    width,
+    height
+  }), React55.createElement("div", _extends42({
+    ref
+  }, props)));
+});
+var NonResponsiveDiv = (0, import_react64.forwardRef)((props, ref) => {
+  var {
+    width,
+    height
+  } = props;
+  if (isPercent(width) || isPercent(height)) {
+    return React55.createElement(ReadSizeOnceDiv, _extends42({}, props, {
+      ref
+    }));
+  }
+  return React55.createElement(StaticDiv, _extends42({}, props, {
+    ref
+  }));
+});
+function getWrapperDivComponent(responsive) {
+  return responsive === true ? ResponsiveDiv : NonResponsiveDiv;
+}
+var RechartsWrapper = (0, import_react64.forwardRef)((props, ref) => {
   var {
     children,
     className,
-    height,
+    height: heightFromProps,
     onClick,
     onContextMenu,
     onDoubleClick,
@@ -27915,103 +28786,116 @@ var RechartsWrapper = (0, import_react62.forwardRef)((_ref2, ref) => {
     onTouchMove,
     onTouchStart,
     style,
-    width
-  } = _ref2;
+    width: widthFromProps,
+    responsive,
+    dispatchTouchEvents = true
+  } = props;
+  var containerRef = (0, import_react64.useRef)(null);
   var dispatch = useAppDispatch();
-  var [tooltipPortal, setTooltipPortal] = (0, import_react62.useState)(null);
-  var [legendPortal, setLegendPortal] = (0, import_react62.useState)(null);
-  useSynchronisedEventsFromOtherCharts();
+  var [tooltipPortal, setTooltipPortal] = (0, import_react64.useState)(null);
+  var [legendPortal, setLegendPortal] = (0, import_react64.useState)(null);
   var setScaleRef = useReportScale();
-  var innerRef = (0, import_react62.useCallback)((node) => {
+  var responsiveContainerCalculations = useResponsiveContainerContext();
+  var width = (responsiveContainerCalculations === null || responsiveContainerCalculations === void 0 ? void 0 : responsiveContainerCalculations.width) > 0 ? responsiveContainerCalculations.width : widthFromProps;
+  var height = (responsiveContainerCalculations === null || responsiveContainerCalculations === void 0 ? void 0 : responsiveContainerCalculations.height) > 0 ? responsiveContainerCalculations.height : heightFromProps;
+  var innerRef = (0, import_react64.useCallback)((node) => {
     setScaleRef(node);
     if (typeof ref === "function") {
       ref(node);
     }
     setTooltipPortal(node);
     setLegendPortal(node);
+    if (node != null) {
+      containerRef.current = node;
+    }
   }, [setScaleRef, ref, setTooltipPortal, setLegendPortal]);
-  var myOnClick = (0, import_react62.useCallback)((e) => {
+  var myOnClick = (0, import_react64.useCallback)((e) => {
     dispatch(mouseClickAction(e));
     dispatch(externalEventAction({
       handler: onClick,
       reactEvent: e
     }));
   }, [dispatch, onClick]);
-  var myOnMouseEnter = (0, import_react62.useCallback)((e) => {
+  var myOnMouseEnter = (0, import_react64.useCallback)((e) => {
     dispatch(mouseMoveAction(e));
     dispatch(externalEventAction({
       handler: onMouseEnter,
       reactEvent: e
     }));
   }, [dispatch, onMouseEnter]);
-  var myOnMouseLeave = (0, import_react62.useCallback)((e) => {
+  var myOnMouseLeave = (0, import_react64.useCallback)((e) => {
     dispatch(mouseLeaveChart());
     dispatch(externalEventAction({
       handler: onMouseLeave,
       reactEvent: e
     }));
   }, [dispatch, onMouseLeave]);
-  var myOnMouseMove = (0, import_react62.useCallback)((e) => {
+  var myOnMouseMove = (0, import_react64.useCallback)((e) => {
     dispatch(mouseMoveAction(e));
     dispatch(externalEventAction({
       handler: onMouseMove,
       reactEvent: e
     }));
   }, [dispatch, onMouseMove]);
-  var onFocus = (0, import_react62.useCallback)(() => {
+  var onFocus = (0, import_react64.useCallback)(() => {
     dispatch(focusAction());
   }, [dispatch]);
-  var onKeyDown = (0, import_react62.useCallback)((e) => {
+  var onKeyDown = (0, import_react64.useCallback)((e) => {
     dispatch(keyDownAction(e.key));
   }, [dispatch]);
-  var myOnContextMenu = (0, import_react62.useCallback)((e) => {
+  var myOnContextMenu = (0, import_react64.useCallback)((e) => {
     dispatch(externalEventAction({
       handler: onContextMenu,
       reactEvent: e
     }));
   }, [dispatch, onContextMenu]);
-  var myOnDoubleClick = (0, import_react62.useCallback)((e) => {
+  var myOnDoubleClick = (0, import_react64.useCallback)((e) => {
     dispatch(externalEventAction({
       handler: onDoubleClick,
       reactEvent: e
     }));
   }, [dispatch, onDoubleClick]);
-  var myOnMouseDown = (0, import_react62.useCallback)((e) => {
+  var myOnMouseDown = (0, import_react64.useCallback)((e) => {
     dispatch(externalEventAction({
       handler: onMouseDown,
       reactEvent: e
     }));
   }, [dispatch, onMouseDown]);
-  var myOnMouseUp = (0, import_react62.useCallback)((e) => {
+  var myOnMouseUp = (0, import_react64.useCallback)((e) => {
     dispatch(externalEventAction({
       handler: onMouseUp,
       reactEvent: e
     }));
   }, [dispatch, onMouseUp]);
-  var myOnTouchStart = (0, import_react62.useCallback)((e) => {
+  var myOnTouchStart = (0, import_react64.useCallback)((e) => {
     dispatch(externalEventAction({
       handler: onTouchStart,
       reactEvent: e
     }));
   }, [dispatch, onTouchStart]);
-  var myOnTouchMove = (0, import_react62.useCallback)((e) => {
-    dispatch(touchEventAction(e));
+  var myOnTouchMove = (0, import_react64.useCallback)((e) => {
+    if (dispatchTouchEvents) {
+      dispatch(touchEventAction(e));
+    }
     dispatch(externalEventAction({
       handler: onTouchMove,
       reactEvent: e
     }));
-  }, [dispatch, onTouchMove]);
-  var myOnTouchEnd = (0, import_react62.useCallback)((e) => {
+  }, [dispatch, dispatchTouchEvents, onTouchMove]);
+  var myOnTouchEnd = (0, import_react64.useCallback)((e) => {
     dispatch(externalEventAction({
       handler: onTouchEnd,
       reactEvent: e
     }));
   }, [dispatch, onTouchEnd]);
+  var WrapperDiv = getWrapperDivComponent(responsive);
   return React55.createElement(TooltipPortalContext.Provider, {
     value: tooltipPortal
   }, React55.createElement(LegendPortalContext.Provider, {
     value: legendPortal
-  }, React55.createElement("div", {
+  }, React55.createElement(WrapperDiv, {
+    width: width !== null && width !== void 0 ? width : style === null || style === void 0 ? void 0 : style.width,
+    height: height !== null && height !== void 0 ? height : style === null || style === void 0 ? void 0 : style.height,
     className: clsx("recharts-wrapper", className),
     style: _objectSpread55({
       position: "relative",
@@ -28033,21 +28917,21 @@ var RechartsWrapper = (0, import_react62.forwardRef)((_ref2, ref) => {
     onTouchMove: myOnTouchMove,
     onTouchStart: myOnTouchStart,
     ref: innerRef
-  }, children)));
+  }, React55.createElement(EventSynchronizer, null), children)));
 });
 
 // node_modules/recharts/es6/chart/CategoricalChart.js
-var _excluded46 = ["children", "className", "width", "height", "style", "compact", "title", "desc"];
-function _objectWithoutProperties32(e, t) {
+var _excluded50 = ["width", "height", "responsive", "children", "className", "style", "compact", "title", "desc"];
+function _objectWithoutProperties33(e, t) {
   if (null == e) return {};
-  var o, r, i = _objectWithoutPropertiesLoose32(e, t);
+  var o, r, i = _objectWithoutPropertiesLoose33(e, t);
   if (Object.getOwnPropertySymbols) {
     var n = Object.getOwnPropertySymbols(e);
     for (r = 0; r < n.length; r++) o = n[r], -1 === t.indexOf(o) && {}.propertyIsEnumerable.call(e, o) && (i[o] = e[o]);
   }
   return i;
 }
-function _objectWithoutPropertiesLoose32(r, e) {
+function _objectWithoutPropertiesLoose33(r, e) {
   if (null == r) return {};
   var t = {};
   for (var n in r) if ({}.hasOwnProperty.call(r, n)) {
@@ -28056,30 +28940,35 @@ function _objectWithoutPropertiesLoose32(r, e) {
   }
   return t;
 }
-var CategoricalChart = (0, import_react63.forwardRef)((props, ref) => {
+var CategoricalChart = (0, import_react65.forwardRef)((props, ref) => {
   var {
-    children,
-    className,
     width,
     height,
+    responsive,
+    children,
+    className,
     style,
     compact: compact2,
     title,
     desc
-  } = props, others = _objectWithoutProperties32(props, _excluded46);
+  } = props, others = _objectWithoutProperties33(props, _excluded50);
   var attrs = svgPropertiesNoEvents(others);
   if (compact2) {
-    return React56.createElement(RootSurface, {
+    return React56.createElement(React56.Fragment, null, React56.createElement(ReportChartSize, {
+      width,
+      height
+    }), React56.createElement(RootSurface, {
       otherAttributes: attrs,
       title,
       desc
-    }, children);
+    }, children));
   }
   return React56.createElement(RechartsWrapper, {
     className,
     style,
     width,
     height,
+    responsive,
     onClick: props.onClick,
     onMouseLeave: props.onMouseLeave,
     onMouseEnter: props.onMouseEnter,
@@ -28100,33 +28989,14 @@ var CategoricalChart = (0, import_react63.forwardRef)((props, ref) => {
 });
 
 // node_modules/recharts/es6/chart/CartesianChart.js
-var _excluded47 = ["width", "height"];
-function _extends41() {
-  return _extends41 = Object.assign ? Object.assign.bind() : function(n) {
+function _extends43() {
+  return _extends43 = Object.assign ? Object.assign.bind() : function(n) {
     for (var e = 1; e < arguments.length; e++) {
       var t = arguments[e];
       for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]);
     }
     return n;
-  }, _extends41.apply(null, arguments);
-}
-function _objectWithoutProperties33(e, t) {
-  if (null == e) return {};
-  var o, r, i = _objectWithoutPropertiesLoose33(e, t);
-  if (Object.getOwnPropertySymbols) {
-    var n = Object.getOwnPropertySymbols(e);
-    for (r = 0; r < n.length; r++) o = n[r], -1 === t.indexOf(o) && {}.propertyIsEnumerable.call(e, o) && (i[o] = e[o]);
-  }
-  return i;
-}
-function _objectWithoutPropertiesLoose33(r, e) {
-  if (null == r) return {};
-  var t = {};
-  for (var n in r) if ({}.hasOwnProperty.call(r, n)) {
-    if (-1 !== e.indexOf(n)) continue;
-    t[n] = r[n];
-  }
-  return t;
+  }, _extends43.apply(null, arguments);
 }
 var defaultMargin = {
   top: 5,
@@ -28142,18 +29012,12 @@ var defaultProps6 = {
   barGap: 4,
   margin: defaultMargin,
   reverseStackOrder: false,
-  syncMethod: "index"
+  syncMethod: "index",
+  responsive: false
 };
-var CartesianChart = (0, import_react64.forwardRef)(function CartesianChart2(props, ref) {
+var CartesianChart = (0, import_react66.forwardRef)(function CartesianChart2(props, ref) {
   var _categoricalChartProp;
   var rootChartProps = resolveDefaultProps(props.categoricalChartProps, defaultProps6);
-  var {
-    width,
-    height
-  } = rootChartProps, otherCategoricalProps = _objectWithoutProperties33(rootChartProps, _excluded47);
-  if (!isPositiveNumber(width) || !isPositiveNumber(height)) {
-    return null;
-  }
   var {
     chartName,
     defaultTooltipEventType,
@@ -28176,8 +29040,6 @@ var CartesianChart = (0, import_react64.forwardRef)(function CartesianChart2(pro
   }, React57.createElement(ChartDataContextProvider, {
     chartData: categoricalChartProps.data
   }), React57.createElement(ReportMainChartProps, {
-    width,
-    height,
     layout: rootChartProps.layout,
     margin: rootChartProps.margin
   }), React57.createElement(ReportChartProps, {
@@ -28190,16 +29052,14 @@ var CartesianChart = (0, import_react64.forwardRef)(function CartesianChart2(pro
     syncId: rootChartProps.syncId,
     syncMethod: rootChartProps.syncMethod,
     className: rootChartProps.className
-  }), React57.createElement(CategoricalChart, _extends41({}, otherCategoricalProps, {
-    width,
-    height,
+  }), React57.createElement(CategoricalChart, _extends43({}, rootChartProps, {
     ref
   })));
 });
 
 // node_modules/recharts/es6/chart/LineChart.js
 var allowedTooltipTypes = ["axis"];
-var LineChart = (0, import_react65.forwardRef)((props, ref) => {
+var LineChart = (0, import_react67.forwardRef)((props, ref) => {
   return React58.createElement(CartesianChart, {
     chartName: "LineChart",
     defaultTooltipEventType: "axis",
@@ -28212,9 +29072,9 @@ var LineChart = (0, import_react65.forwardRef)((props, ref) => {
 
 // node_modules/recharts/es6/chart/BarChart.js
 var React59 = __toESM(require_react());
-var import_react66 = __toESM(require_react());
+var import_react68 = __toESM(require_react());
 var allowedTooltipTypes2 = ["axis", "item"];
-var BarChart = (0, import_react66.forwardRef)((props, ref) => {
+var BarChart = (0, import_react68.forwardRef)((props, ref) => {
   return React59.createElement(CartesianChart, {
     chartName: "BarChart",
     defaultTooltipEventType: "axis",
@@ -28227,32 +29087,32 @@ var BarChart = (0, import_react66.forwardRef)((props, ref) => {
 
 // node_modules/recharts/es6/chart/PieChart.js
 var React61 = __toESM(require_react());
-var import_react69 = __toESM(require_react());
+var import_react71 = __toESM(require_react());
 
 // node_modules/recharts/es6/chart/PolarChart.js
-var import_react68 = __toESM(require_react());
+var import_react70 = __toESM(require_react());
 var React60 = __toESM(require_react());
 
 // node_modules/recharts/es6/state/ReportPolarOptions.js
-var import_react67 = __toESM(require_react());
+var import_react69 = __toESM(require_react());
 function ReportPolarOptions(props) {
   var dispatch = useAppDispatch();
-  (0, import_react67.useEffect)(() => {
+  (0, import_react69.useEffect)(() => {
     dispatch(updatePolarOptions(props));
   }, [dispatch, props]);
   return null;
 }
 
 // node_modules/recharts/es6/chart/PolarChart.js
-var _excluded48 = ["width", "height", "layout"];
-function _extends42() {
-  return _extends42 = Object.assign ? Object.assign.bind() : function(n) {
+var _excluded51 = ["layout"];
+function _extends44() {
+  return _extends44 = Object.assign ? Object.assign.bind() : function(n) {
     for (var e = 1; e < arguments.length; e++) {
       var t = arguments[e];
       for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]);
     }
     return n;
-  }, _extends42.apply(null, arguments);
+  }, _extends44.apply(null, arguments);
 }
 function _objectWithoutProperties34(e, t) {
   if (null == e) return {};
@@ -28286,19 +29146,15 @@ var defaultProps7 = {
   margin: defaultMargin2,
   reverseStackOrder: false,
   syncMethod: "index",
-  layout: "radial"
+  layout: "radial",
+  responsive: false
 };
-var PolarChart = (0, import_react68.forwardRef)(function PolarChart2(props, ref) {
+var PolarChart = (0, import_react70.forwardRef)(function PolarChart2(props, ref) {
   var _polarChartProps$id;
   var polarChartProps = resolveDefaultProps(props.categoricalChartProps, defaultProps7);
   var {
-    width,
-    height,
     layout
-  } = polarChartProps, otherCategoricalProps = _objectWithoutProperties34(polarChartProps, _excluded48);
-  if (!isPositiveNumber(width) || !isPositiveNumber(height)) {
-    return null;
-  }
+  } = polarChartProps, otherCategoricalProps = _objectWithoutProperties34(polarChartProps, _excluded51);
   var {
     chartName,
     defaultTooltipEventType,
@@ -28320,8 +29176,6 @@ var PolarChart = (0, import_react68.forwardRef)(function PolarChart2(props, ref)
   }, React60.createElement(ChartDataContextProvider, {
     chartData: polarChartProps.data
   }), React60.createElement(ReportMainChartProps, {
-    width,
-    height,
     layout,
     margin: polarChartProps.margin
   }), React60.createElement(ReportChartProps, {
@@ -28341,10 +29195,7 @@ var PolarChart = (0, import_react68.forwardRef)(function PolarChart2(props, ref)
     endAngle: polarChartProps.endAngle,
     innerRadius: polarChartProps.innerRadius,
     outerRadius: polarChartProps.outerRadius
-  }), React60.createElement(CategoricalChart, _extends42({
-    width,
-    height
-  }, otherCategoricalProps, {
+  }), React60.createElement(CategoricalChart, _extends44({}, otherCategoricalProps, {
     ref
   })));
 });
@@ -28360,7 +29211,7 @@ var defaultProps8 = {
   innerRadius: 0,
   outerRadius: "80%"
 };
-var PieChart = (0, import_react69.forwardRef)((props, ref) => {
+var PieChart = (0, import_react71.forwardRef)((props, ref) => {
   var propsWithDefaults = resolveDefaultProps(props, defaultProps8);
   return React61.createElement(PolarChart, {
     chartName: "PieChart",
@@ -28374,10 +29225,10 @@ var PieChart = (0, import_react69.forwardRef)((props, ref) => {
 
 // node_modules/recharts/es6/chart/Treemap.js
 var React62 = __toESM(require_react());
-var import_react70 = __toESM(require_react());
+var import_react72 = __toESM(require_react());
 var import_omit2 = __toESM(require_omit2());
 var import_get6 = __toESM(require_get2());
-var _excluded49 = ["width", "height", "className", "style", "children", "type"];
+var _excluded52 = ["width", "height", "className", "style", "children", "type"];
 function _objectWithoutProperties35(e, t) {
   if (null == e) return {};
   var o, r, i = _objectWithoutPropertiesLoose35(e, t);
@@ -28396,14 +29247,14 @@ function _objectWithoutPropertiesLoose35(r, e) {
   }
   return t;
 }
-function _extends43() {
-  return _extends43 = Object.assign ? Object.assign.bind() : function(n) {
+function _extends45() {
+  return _extends45 = Object.assign ? Object.assign.bind() : function(n) {
     for (var e = 1; e < arguments.length; e++) {
       var t = arguments[e];
       for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]);
     }
     return n;
-  }, _extends43.apply(null, arguments);
+  }, _extends45.apply(null, arguments);
 }
 function ownKeys56(e, r) {
   var t = Object.keys(e);
@@ -28419,21 +29270,21 @@ function _objectSpread56(e) {
   for (var r = 1; r < arguments.length; r++) {
     var t = null != arguments[r] ? arguments[r] : {};
     r % 2 ? ownKeys56(Object(t), true).forEach(function(r2) {
-      _defineProperty60(e, r2, t[r2]);
+      _defineProperty58(e, r2, t[r2]);
     }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys56(Object(t)).forEach(function(r2) {
       Object.defineProperty(e, r2, Object.getOwnPropertyDescriptor(t, r2));
     });
   }
   return e;
 }
-function _defineProperty60(e, r, t) {
-  return (r = _toPropertyKey60(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: true, configurable: true, writable: true }) : e[r] = t, e;
+function _defineProperty58(e, r, t) {
+  return (r = _toPropertyKey58(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: true, configurable: true, writable: true }) : e[r] = t, e;
 }
-function _toPropertyKey60(t) {
-  var i = _toPrimitive60(t, "string");
+function _toPropertyKey58(t) {
+  var i = _toPrimitive58(t, "string");
   return "symbol" == typeof i ? i : i + "";
 }
-function _toPrimitive60(t, r) {
+function _toPrimitive58(t, r) {
   if ("object" != typeof t || !t) return t;
   var e = t[Symbol.toPrimitive];
   if (void 0 !== e) {
@@ -28445,6 +29296,9 @@ function _toPrimitive60(t, r) {
 }
 var NODE_VALUE_KEY = "value";
 var treemapPayloadSearcher = (data, activeIndex) => {
+  if (!data || !activeIndex) {
+    return void 0;
+  }
   return (0, import_get6.default)(data, activeIndex);
 };
 var addToTreemapNodeIndex = function addToTreemapNodeIndex2(indexInChildrenArr) {
@@ -28481,7 +29335,7 @@ var computeNode = (_ref2) => {
     nestedActiveTooltipIndex: currentTooltipIndex
   })) : null;
   var nodeValue;
-  if (children && children.length) {
+  if (computedChildren && computedChildren.length) {
     nodeValue = computedChildren.reduce((result, child) => result + child[NODE_VALUE_KEY], 0);
   } else {
     nodeValue = isNan(node[dataKey]) || node[dataKey] <= 0 ? 0 : node[dataKey];
@@ -28541,7 +29395,9 @@ var horizontalPosition = (row, parentSize, parentRect, isFlush) => {
     child.width = Math.min(rowHeight ? Math.round(child.area / rowHeight) : 0, parentRect.x + parentRect.width - curX);
     curX += child.width;
   }
-  child.width += parentRect.x + parentRect.width - curX;
+  if (child != null) {
+    child.width += parentRect.x + parentRect.width - curX;
+  }
   return _objectSpread56(_objectSpread56({}, parentRect), {}, {
     y: parentRect.y + rowHeight,
     height: parentRect.height - rowHeight
@@ -28597,7 +29453,8 @@ var squarify = (node, aspectRatio) => {
         tempChildren.shift();
         best = score;
       } else {
-        row.area -= row.pop().area;
+        var _row$pop$area, _row$pop;
+        row.area -= (_row$pop$area = (_row$pop = row.pop()) === null || _row$pop === void 0 ? void 0 : _row$pop.area) !== null && _row$pop$area !== void 0 ? _row$pop$area : 0;
         rect = position(row, size, rect, false);
         size = Math.min(rect.width, rect.height);
         row.length = row.area = 0;
@@ -28614,11 +29471,24 @@ var squarify = (node, aspectRatio) => {
   }
   return node;
 };
+var defaultTreeMapProps = {
+  aspectRatio: 0.5 * (1 + Math.sqrt(5)),
+  dataKey: "value",
+  nameKey: "name",
+  type: "flat",
+  isAnimationActive: !Global.isSsr,
+  isUpdateAnimationActive: !Global.isSsr,
+  animationBegin: 0,
+  animationDuration: 1500,
+  animationEasing: "linear"
+};
 var defaultState = {
   isAnimationFinished: false,
   formatRoot: null,
   currentRoot: null,
-  nestIndex: []
+  nestIndex: [],
+  prevAspectRatio: defaultTreeMapProps.aspectRatio,
+  prevDataKey: defaultTreeMapProps.dataKey
 };
 function ContentItem(_ref2) {
   var {
@@ -28676,7 +29546,7 @@ function ContentItem(_ref2) {
     }, nodeProps.name);
   }
   var colors = colorPanel || COLOR_PANEL;
-  return React62.createElement("g", null, React62.createElement(Rectangle, _extends43({
+  return React62.createElement("g", null, React62.createElement(Rectangle, _extends45({
     fill: nodeProps.depth < 2 ? colors[index2 % colors.length] : "rgba(255,255,255,0)",
     stroke: "#fff"
   }, (0, import_omit2.default)(nodeProps, ["children"]), {
@@ -28688,10 +29558,10 @@ function ContentItem(_ref2) {
 }
 function ContentItemWithEvents(props) {
   var dispatch = useAppDispatch();
-  var activeCoordinate = props.nodeProps ? {
+  var activeCoordinate = {
     x: props.nodeProps.x + props.nodeProps.width / 2,
     y: props.nodeProps.y + props.nodeProps.height / 2
-  } : null;
+  };
   var onMouseEnter = () => {
     dispatch(setActiveMouseOverItemIndex({
       activeIndex: props.nodeProps.tooltipIndex,
@@ -28708,7 +29578,7 @@ function ContentItemWithEvents(props) {
       activeCoordinate
     }));
   };
-  return React62.createElement(ContentItem, _extends43({}, props, {
+  return React62.createElement(ContentItem, _extends45({}, props, {
     onMouseEnter,
     onMouseLeave,
     onClick
@@ -28750,36 +29620,148 @@ var defaultTreemapMargin = {
   bottom: 0,
   left: 0
 };
-var TreemapWithState = class extends import_react70.PureComponent {
+function TreemapItem(_ref4) {
+  var {
+    content,
+    nodeProps,
+    isLeaf,
+    treemapProps,
+    onNestClick
+  } = _ref4;
+  var {
+    isAnimationActive,
+    animationBegin,
+    animationDuration,
+    animationEasing,
+    isUpdateAnimationActive,
+    type,
+    colorPanel,
+    dataKey,
+    onAnimationStart,
+    onAnimationEnd,
+    onMouseEnter: onMouseEnterFromProps,
+    onClick: onItemClickFromProps,
+    onMouseLeave: onMouseLeaveFromProps
+  } = treemapProps;
+  var {
+    width,
+    height,
+    x: x2,
+    y: y2
+  } = nodeProps;
+  var translateX = -x2 - width;
+  var translateY = 0;
+  var onMouseEnter = (e) => {
+    if ((isLeaf || type === "nest") && typeof onMouseEnterFromProps === "function") {
+      onMouseEnterFromProps(nodeProps, e);
+    }
+  };
+  var onMouseLeave = (e) => {
+    if ((isLeaf || type === "nest") && typeof onMouseLeaveFromProps === "function") {
+      onMouseLeaveFromProps(nodeProps, e);
+    }
+  };
+  var onClick = () => {
+    if (type === "nest") {
+      onNestClick(nodeProps);
+    }
+    if ((isLeaf || type === "nest") && typeof onItemClickFromProps === "function") {
+      onItemClickFromProps(nodeProps);
+    }
+  };
+  var handleAnimationEnd = (0, import_react72.useCallback)(() => {
+    if (typeof onAnimationEnd === "function") {
+      onAnimationEnd();
+    }
+  }, [onAnimationEnd]);
+  var handleAnimationStart = (0, import_react72.useCallback)(() => {
+    if (typeof onAnimationStart === "function") {
+      onAnimationStart();
+    }
+  }, [onAnimationStart]);
+  return React62.createElement(CSSTransitionAnimate, {
+    animationId: "treemap-".concat(nodeProps.tooltipIndex),
+    from: "translate(".concat(translateX, "px, ").concat(translateY, "px)"),
+    to: "translate(0, 0)",
+    attributeName: "transform",
+    begin: animationBegin,
+    easing: animationEasing,
+    isActive: isAnimationActive,
+    duration: animationDuration,
+    onAnimationStart: handleAnimationStart,
+    onAnimationEnd: handleAnimationEnd
+  }, (style) => React62.createElement(Layer, {
+    onMouseEnter,
+    onMouseLeave,
+    onClick,
+    style: _objectSpread56(_objectSpread56({}, style), {}, {
+      transformOrigin: "".concat(x2, " ").concat(y2)
+    })
+  }, React62.createElement(ContentItemWithEvents, {
+    content,
+    dataKey,
+    nodeProps: _objectSpread56(_objectSpread56({}, nodeProps), {}, {
+      isAnimationActive,
+      isUpdateAnimationActive: !isUpdateAnimationActive,
+      width,
+      height,
+      x: x2,
+      y: y2
+    }),
+    type,
+    colorPanel
+  })));
+}
+var TreemapWithState = class extends import_react72.PureComponent {
   constructor() {
     super(...arguments);
-    _defineProperty60(this, "state", _objectSpread56({}, defaultState));
-    _defineProperty60(this, "handleAnimationEnd", () => {
+    _defineProperty58(this, "state", _objectSpread56({}, defaultState));
+    _defineProperty58(this, "handleClick", (node) => {
       var {
-        onAnimationEnd
+        onClick,
+        type
       } = this.props;
-      this.setState({
-        isAnimationFinished: true
-      });
-      if (typeof onAnimationEnd === "function") {
-        onAnimationEnd();
+      if (type === "nest" && node.children) {
+        var {
+          width,
+          height,
+          dataKey,
+          nameKey,
+          aspectRatio
+        } = this.props;
+        var root = computeNode({
+          depth: 0,
+          node: _objectSpread56(_objectSpread56({}, node), {}, {
+            x: 0,
+            y: 0,
+            width,
+            height
+          }),
+          index: 0,
+          dataKey,
+          nameKey,
+          // with Treemap nesting, should this continue nesting the index or start from empty string?
+          nestedActiveTooltipIndex: node.tooltipIndex
+        });
+        var formatRoot = squarify(root, aspectRatio);
+        var {
+          nestIndex
+        } = this.state;
+        nestIndex.push(node);
+        this.setState({
+          formatRoot,
+          currentRoot: root,
+          nestIndex
+        });
+      }
+      if (onClick) {
+        onClick(node);
       }
     });
-    _defineProperty60(this, "handleAnimationStart", () => {
-      var {
-        onAnimationStart
-      } = this.props;
-      this.setState({
-        isAnimationFinished: false
-      });
-      if (typeof onAnimationStart === "function") {
-        onAnimationStart();
-      }
-    });
-    _defineProperty60(this, "handleTouchMove", (_state, e) => {
+    _defineProperty58(this, "handleTouchMove", (e) => {
       var touchEvent = e.touches[0];
       var target = document.elementFromPoint(touchEvent.clientX, touchEvent.clientY);
-      if (!target || !target.getAttribute) {
+      if (!target || !target.getAttribute || this.state.formatRoot == null) {
         return;
       }
       var itemIndex = target.getAttribute("data-recharts-item-index");
@@ -28833,66 +29815,6 @@ var TreemapWithState = class extends import_react70.PureComponent {
     }
     return null;
   }
-  handleMouseEnter(node, e) {
-    e.persist();
-    var {
-      onMouseEnter
-    } = this.props;
-    if (onMouseEnter) {
-      onMouseEnter(node, e);
-    }
-  }
-  handleMouseLeave(node, e) {
-    e.persist();
-    var {
-      onMouseLeave
-    } = this.props;
-    if (onMouseLeave) {
-      onMouseLeave(node, e);
-    }
-  }
-  handleClick(node) {
-    var {
-      onClick,
-      type
-    } = this.props;
-    if (type === "nest" && node.children) {
-      var {
-        width,
-        height,
-        dataKey,
-        nameKey,
-        aspectRatio
-      } = this.props;
-      var root = computeNode({
-        depth: 0,
-        node: _objectSpread56(_objectSpread56({}, node), {}, {
-          x: 0,
-          y: 0,
-          width,
-          height
-        }),
-        index: 0,
-        dataKey,
-        nameKey,
-        // with Treemap nesting, should this continue nesting the index or start from empty string?
-        nestedActiveTooltipIndex: node.tooltipIndex
-      });
-      var formatRoot = squarify(root, aspectRatio);
-      var {
-        nestIndex
-      } = this.state;
-      nestIndex.push(node);
-      this.setState({
-        formatRoot,
-        currentRoot: root,
-        nestIndex
-      });
-    }
-    if (onClick) {
-      onClick(node);
-    }
-  }
   handleNestIndex(node, i) {
     var {
       nestIndex
@@ -28926,80 +29848,6 @@ var TreemapWithState = class extends import_react70.PureComponent {
       nestIndex
     });
   }
-  renderItem(content, nodeProps, isLeaf) {
-    var {
-      isAnimationActive,
-      animationBegin,
-      animationDuration,
-      animationEasing,
-      isUpdateAnimationActive,
-      type,
-      colorPanel,
-      dataKey
-    } = this.props;
-    var {
-      isAnimationFinished
-    } = this.state;
-    var {
-      width,
-      height,
-      x: x2,
-      y: y2,
-      depth
-    } = nodeProps;
-    var translateX = parseInt("".concat((Math.random() * 2 - 1) * width), 10);
-    var event = {};
-    if (isLeaf || type === "nest") {
-      event = {
-        onMouseEnter: this.handleMouseEnter.bind(this, nodeProps),
-        onMouseLeave: this.handleMouseLeave.bind(this, nodeProps),
-        onClick: this.handleClick.bind(this, nodeProps)
-      };
-    }
-    if (!isAnimationActive) {
-      return React62.createElement(Layer, event, React62.createElement(ContentItemWithEvents, {
-        content,
-        dataKey,
-        nodeProps: _objectSpread56(_objectSpread56({}, nodeProps), {}, {
-          isAnimationActive: false,
-          isUpdateAnimationActive: false,
-          width,
-          height,
-          x: x2,
-          y: y2
-        }),
-        type,
-        colorPanel
-      }));
-    }
-    return React62.createElement(CSSTransitionAnimate, {
-      animationId: "treemap-".concat(nodeProps.tooltipIndex),
-      from: "translate(".concat(translateX, "px, ").concat(translateX, "px)"),
-      to: "translate(0, 0)",
-      attributeName: "transform",
-      begin: animationBegin,
-      easing: animationEasing,
-      isActive: isAnimationActive,
-      duration: animationDuration,
-      onAnimationStart: this.handleAnimationStart,
-      onAnimationEnd: this.handleAnimationEnd
-    }, (style) => React62.createElement(Layer, _extends43({}, event, {
-      style
-    }), depth > 2 && !isAnimationFinished ? null : React62.createElement(ContentItemWithEvents, {
-      content,
-      dataKey,
-      nodeProps: _objectSpread56(_objectSpread56({}, nodeProps), {}, {
-        isAnimationActive,
-        isUpdateAnimationActive: !isUpdateAnimationActive,
-        width,
-        height,
-        x: x2,
-        y: y2
-      }),
-      type,
-      colorPanel
-    })));
-  }
   renderNode(root, node) {
     var {
       content,
@@ -29012,14 +29860,20 @@ var TreemapWithState = class extends import_react70.PureComponent {
     var {
       currentRoot
     } = this.state;
-    var isCurrentRootChild = (currentRoot.children || []).filter((item) => item.depth === node.depth && item.name === node.name);
+    var isCurrentRootChild = ((currentRoot === null || currentRoot === void 0 ? void 0 : currentRoot.children) || []).filter((item) => item.depth === node.depth && item.name === node.name);
     if (!isCurrentRootChild.length && root.depth && type === "nest") {
       return null;
     }
     return React62.createElement(Layer, {
       key: "recharts-treemap-node-".concat(nodeProps.x, "-").concat(nodeProps.y, "-").concat(nodeProps.name),
       className: "recharts-treemap-depth-".concat(node.depth)
-    }, this.renderItem(content, nodeProps, isLeaf), node.children && node.children.length ? node.children.map((child) => this.renderNode(node, child)) : null);
+    }, React62.createElement(TreemapItem, {
+      isLeaf,
+      content,
+      nodeProps,
+      treemapProps: this.props,
+      onNestClick: this.handleClick
+    }), node.children && node.children.length ? node.children.map((child) => this.renderNode(node, child)) : null);
   }
   renderAllNodes() {
     var {
@@ -29047,7 +29901,7 @@ var TreemapWithState = class extends import_react70.PureComponent {
       }
     }, nestIndex.map((item, i) => {
       var name = (0, import_get6.default)(item, nameKey, "root");
-      var content = null;
+      var content;
       if (React62.isValidElement(nestIndexContent)) {
         content = React62.cloneElement(nestIndexContent, item, i);
       }
@@ -29082,101 +29936,96 @@ var TreemapWithState = class extends import_react70.PureComponent {
       style,
       children,
       type
-    } = _this$props, others = _objectWithoutProperties35(_this$props, _excluded49);
+    } = _this$props, others = _objectWithoutProperties35(_this$props, _excluded52);
     var attrs = svgPropertiesNoEvents(others);
-    return React62.createElement(TooltipPortalContext.Provider, {
-      value: this.state.tooltipPortal
-    }, React62.createElement(SetTooltipEntrySettings, {
+    return React62.createElement(React62.Fragment, null, React62.createElement(SetTooltipEntrySettings, {
       fn: getTooltipEntrySettings8,
       args: {
         props: this.props,
         currentRoot: this.state.currentRoot
       }
-    }), React62.createElement(RechartsWrapper, {
-      className,
-      style,
+    }), React62.createElement(Surface, _extends45({}, attrs, {
       width,
-      height,
-      ref: (node) => {
-        if (this.state.tooltipPortal == null) {
-          this.setState({
-            tooltipPortal: node
-          });
-        }
-      },
-      onMouseEnter: void 0,
-      onMouseLeave: void 0,
-      onClick: void 0,
-      onMouseMove: void 0,
-      onMouseDown: void 0,
-      onMouseUp: void 0,
-      onContextMenu: void 0,
-      onDoubleClick: void 0,
-      onTouchStart: void 0,
-      onTouchMove: this.handleTouchMove,
-      onTouchEnd: void 0
-    }, React62.createElement(Surface, _extends43({}, attrs, {
-      width,
-      height: type === "nest" ? height - 30 : height
-    }), this.renderAllNodes(), children), type === "nest" && this.renderNestIndex()));
+      height: type === "nest" ? height - 30 : height,
+      onTouchMove: this.handleTouchMove
+    }), this.renderAllNodes(), children), type === "nest" && this.renderNestIndex());
   }
 };
-_defineProperty60(TreemapWithState, "displayName", "Treemap");
-_defineProperty60(TreemapWithState, "defaultProps", {
-  aspectRatio: 0.5 * (1 + Math.sqrt(5)),
-  dataKey: "value",
-  nameKey: "name",
-  type: "flat",
-  isAnimationActive: !Global.isSsr,
-  isUpdateAnimationActive: !Global.isSsr,
-  animationBegin: 0,
-  animationDuration: 1500,
-  animationEasing: "linear"
-});
+_defineProperty58(TreemapWithState, "displayName", "Treemap");
 function TreemapDispatchInject(props) {
   var dispatch = useAppDispatch();
-  return React62.createElement(TreemapWithState, _extends43({}, props, {
-    dispatch
-  }));
-}
-function Treemap(props) {
-  var _props$className;
-  var {
-    width,
-    height
-  } = props;
+  var width = useChartWidth();
+  var height = useChartHeight();
   if (!isPositiveNumber(width) || !isPositiveNumber(height)) {
     return null;
   }
+  return React62.createElement(TreemapWithState, _extends45({}, props, {
+    width,
+    height,
+    dispatch
+  }));
+}
+function Treemap(outsideProps) {
+  var _props$className;
+  var props = resolveDefaultProps(outsideProps, defaultTreeMapProps);
+  var {
+    className,
+    style,
+    width,
+    height
+  } = props;
+  var [tooltipPortal, setTooltipPortal] = (0, import_react72.useState)(null);
   return React62.createElement(RechartsStoreProvider, {
     preloadedState: {
       options
     },
     reduxStoreName: (_props$className = props.className) !== null && _props$className !== void 0 ? _props$className : "Treemap"
-  }, React62.createElement(ReportChartSize, {
-    width,
-    height
-  }), React62.createElement(ReportChartMargin, {
+  }, React62.createElement(ReportChartMargin, {
     margin: defaultTreemapMargin
-  }), React62.createElement(TreemapDispatchInject, props));
+  }), React62.createElement(RechartsWrapper, {
+    dispatchTouchEvents: false,
+    className,
+    style,
+    width,
+    height,
+    responsive: false,
+    ref: (node) => {
+      if (tooltipPortal == null && node != null) {
+        setTooltipPortal(node);
+      }
+    },
+    onMouseEnter: void 0,
+    onMouseLeave: void 0,
+    onClick: void 0,
+    onMouseMove: void 0,
+    onMouseDown: void 0,
+    onMouseUp: void 0,
+    onContextMenu: void 0,
+    onDoubleClick: void 0,
+    onTouchStart: void 0,
+    onTouchMove: void 0,
+    onTouchEnd: void 0
+  }, React62.createElement(TooltipPortalContext.Provider, {
+    value: tooltipPortal
+  }, React62.createElement(TreemapDispatchInject, props))));
 }
 
 // node_modules/recharts/es6/chart/Sankey.js
 var React63 = __toESM(require_react());
-var import_react71 = __toESM(require_react());
+var import_react73 = __toESM(require_react());
 var import_maxBy3 = __toESM(require_maxBy3());
-var import_sumBy2 = __toESM(require_sumBy2());
+var import_sumBy3 = __toESM(require_sumBy2());
 var import_get7 = __toESM(require_get2());
-var _excluded50 = ["sourceX", "sourceY", "sourceControlX", "targetX", "targetY", "targetControlX", "linkWidth"];
-var _excluded216 = ["width", "height", "className", "style", "children"];
-function _extends44() {
-  return _extends44 = Object.assign ? Object.assign.bind() : function(n) {
+var _excluded53 = ["sourceX", "sourceY", "sourceControlX", "targetX", "targetY", "targetControlX", "linkWidth"];
+var _excluded217 = ["className", "style", "children"];
+function _extends46() {
+  return _extends46 = Object.assign ? Object.assign.bind() : function(n) {
     for (var e = 1; e < arguments.length; e++) {
       var t = arguments[e];
       for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]);
     }
     return n;
-  }, _extends44.apply(null, arguments);
+  }, _extends46.apply(null, arguments);
 }
 function _objectWithoutProperties36(e, t) {
   if (null == e) return {};
@@ -29210,21 +30059,21 @@ function _objectSpread57(e) {
   for (var r = 1; r < arguments.length; r++) {
     var t = null != arguments[r] ? arguments[r] : {};
     r % 2 ? ownKeys57(Object(t), true).forEach(function(r2) {
-      _defineProperty61(e, r2, t[r2]);
+      _defineProperty59(e, r2, t[r2]);
     }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys57(Object(t)).forEach(function(r2) {
       Object.defineProperty(e, r2, Object.getOwnPropertyDescriptor(t, r2));
     });
   }
   return e;
 }
-function _defineProperty61(e, r, t) {
-  return (r = _toPropertyKey61(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: true, configurable: true, writable: true }) : e[r] = t, e;
+function _defineProperty59(e, r, t) {
+  return (r = _toPropertyKey59(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: true, configurable: true, writable: true }) : e[r] = t, e;
 }
-function _toPropertyKey61(t) {
-  var i = _toPrimitive61(t, "string");
+function _toPropertyKey59(t) {
+  var i = _toPrimitive59(t, "string");
   return "symbol" == typeof i ? i : i + "";
 }
-function _toPrimitive61(t, r) {
+function _toPrimitive59(t, r) {
   if ("object" != typeof t || !t) return t;
   var e = t[Symbol.toPrimitive];
   if (void 0 !== e) {
@@ -29289,6 +30138,7 @@ var updateDepthOfTargets = (tree, curNode) => {
   }
 };
 var getNodesTree = (_ref2, width, nodeWidth) => {
+  var _maxBy$depth, _maxBy;
   var {
     nodes,
     links
@@ -29306,7 +30156,7 @@ var getNodesTree = (_ref2, width, nodeWidth) => {
       updateDepthOfTargets(tree, node);
     }
   }
-  var maxDepth = (0, import_maxBy3.default)(tree, (entry) => entry.depth).depth;
+  var maxDepth = (_maxBy$depth = (_maxBy = (0, import_maxBy3.default)(tree, (entry) => entry.depth)) === null || _maxBy === void 0 ? void 0 : _maxBy.depth) !== null && _maxBy$depth !== void 0 ? _maxBy$depth : 0;
   if (maxDepth >= 1) {
     var childWidth = (width - nodeWidth) / maxDepth;
     for (var _i = 0, _len = tree.length; _i < _len; _i++) {
@@ -29335,7 +30185,7 @@ var getDepthTree = (tree) => {
   return result;
 };
 var updateYOfTree = (depthTree, height, nodePadding, links) => {
-  var yRatio = Math.min(...depthTree.map((nodes) => (height - (nodes.length - 1) * nodePadding) / (0, import_sumBy2.default)(nodes, getValue)));
+  var yRatio = Math.min(...depthTree.map((nodes) => (height - (nodes.length - 1) * nodePadding) / (0, import_sumBy3.default)(nodes, getValue)));
   for (var d = 0, maxDepth = depthTree.length; d < maxDepth; d++) {
     for (var i = 0, len = depthTree[d].length; i < len; i++) {
       var node = depthTree[d][i];
@@ -29445,32 +30295,33 @@ var computeData = (_ref2) => {
     tree
   } = getNodesTree(data, width, nodeWidth);
   var depthTree = getDepthTree(tree);
-  var newLinks = updateYOfTree(depthTree, height, nodePadding, links);
+  var linksWithDy = updateYOfTree(depthTree, height, nodePadding, links);
   resolveCollisions(depthTree, height, nodePadding, sort2);
   var alpha2 = 1;
   for (var i = 1; i <= iterations; i++) {
-    relaxRightToLeft(tree, depthTree, newLinks, alpha2 *= 0.99);
+    relaxRightToLeft(tree, depthTree, linksWithDy, alpha2 *= 0.99);
     resolveCollisions(depthTree, height, nodePadding, sort2);
-    relaxLeftToRight(tree, depthTree, newLinks, alpha2);
+    relaxLeftToRight(tree, depthTree, linksWithDy, alpha2);
     resolveCollisions(depthTree, height, nodePadding, sort2);
   }
-  updateYOfLinks(tree, newLinks);
+  updateYOfLinks(tree, linksWithDy);
+  var newLinks = linksWithDy;
   return {
     nodes: tree,
     links: newLinks
   };
 };
-var getCoordinateOfTooltip = (item, type) => {
-  if (type === "node") {
-    return {
-      x: +item.x + +item.width / 2,
-      y: +item.y + +item.height / 2
-    };
-  }
-  return "sourceX" in item && {
+var getNodeCoordinateOfTooltip = (item) => {
+  return {
+    x: +item.x + +item.width / 2,
+    y: +item.y + +item.height / 2
+  };
+};
+var getLinkCoordinateOfTooltip = (item) => {
+  return "sourceX" in item ? {
     x: (item.sourceX + item.targetX) / 2,
     y: (item.sourceY + item.targetY) / 2
-  };
+  } : void 0;
 };
 var getPayloadOfTooltip = (item, type, nameKey) => {
   var {
@@ -29492,7 +30343,7 @@ var getPayloadOfTooltip = (item, type, nameKey) => {
       value: getValueByDataKey(payload, "value")
     };
   }
-  return null;
+  return void 0;
 };
 var sankeyPayloadSearcher = (_, activeIndex, computedData, nameKey) => {
   if (activeIndex == null || typeof activeIndex !== "string") {
@@ -29561,8 +30412,8 @@ function renderLinkItem(option, props) {
     targetY,
     targetControlX,
     linkWidth
-  } = props, others = _objectWithoutProperties36(props, _excluded50);
-  return React63.createElement("path", _extends44({
+  } = props, others = _objectWithoutProperties36(props, _excluded53);
+  return React63.createElement("path", _extends46({
     className: "recharts-sankey-link",
     d: "\n          M".concat(sourceX, ",").concat(sourceY, "\n          C").concat(sourceControlX, ",").concat(sourceY, " ").concat(targetControlX, ",").concat(targetY, " ").concat(targetX, ",").concat(targetY, "\n        "),
     fill: "none",
@@ -29597,8 +30448,10 @@ var buildLinkProps = (_ref3) => {
   var targetY = targetNode.y + targetRelativeY + linkWidth / 2 + top;
   var linkProps = _objectSpread57({
     sourceX,
+    // @ts-expect-error the linkContent from below is contributing unknown props
     targetX,
     sourceY,
+    // @ts-expect-error the linkContent from below is contributing unknown props
     targetY,
     sourceControlX,
     targetControlX,
@@ -29610,7 +30463,7 @@ var buildLinkProps = (_ref3) => {
       source: sourceNode,
       target: targetNode
     })
-  }, filterProps(linkContent, false));
+  }, svgPropertiesNoEventsFromUnknown(linkContent));
   return linkProps;
 };
 function SankeyLinkElement(_ref4) {
@@ -29623,7 +30476,7 @@ function SankeyLinkElement(_ref4) {
     onClick: _onClick,
     dataKey
   } = _ref4;
-  var activeCoordinate = getCoordinateOfTooltip(props, "link");
+  var activeCoordinate = getLinkCoordinateOfTooltip(props);
   var activeIndex = "link-".concat(i);
   var dispatch = useAppDispatch();
   var events = {
@@ -29686,7 +30539,7 @@ function renderNodeItem(option, props) {
   }
   return (
     // @ts-expect-error recharts radius is not compatible with SVG radius
-    React63.createElement(Rectangle, _extends44({
+    React63.createElement(Rectangle, _extends46({
       className: "recharts-sankey-node",
       fill: "#0088fe",
       fillOpacity: "0.8"
@@ -29707,7 +30560,7 @@ var buildNodeProps = (_ref6) => {
     dx,
     dy
   } = node;
-  var nodeProps = _objectSpread57(_objectSpread57({}, filterProps(nodeContent, false)), {}, {
+  var nodeProps = _objectSpread57(_objectSpread57({}, svgPropertiesNoEventsFromUnknown(nodeContent)), {}, {
     x: x2 + left,
     y: y2 + top,
     width: dx,
@@ -29728,7 +30581,7 @@ function NodeElement(_ref7) {
     dataKey
   } = _ref7;
   var dispatch = useAppDispatch();
-  var activeCoordinate = getCoordinateOfTooltip(props, "node");
+  var activeCoordinate = getNodeCoordinateOfTooltip(props);
   var activeIndex = "node-".concat(i);
   var events = {
     onMouseEnter: (e) => {
@@ -29768,6 +30621,7 @@ function AllNodeElements(_ref8) {
     key: "recharts-sankey-nodes"
   }, modifiedNodes.map((modifiedNode, i) => {
     return React63.createElement(NodeElement, {
+      key: "node-".concat(modifiedNode.index, "-").concat(modifiedNode.x, "-").concat(modifiedNode.y),
       props: modifiedNode,
       nodeContent,
       i,
@@ -29778,187 +30632,7 @@ function AllNodeElements(_ref8) {
     });
   }));
 }
-var Sankey = class extends import_react71.PureComponent {
-  constructor() {
-    super(...arguments);
-    _defineProperty61(this, "state", {
-      nodes: [],
-      links: [],
-      modifiedLinks: [],
-      modifiedNodes: []
-    });
-  }
-  static getDerivedStateFromProps(nextProps, prevState) {
-    var {
-      data,
-      width,
-      height,
-      margin,
-      iterations,
-      nodeWidth,
-      nodePadding,
-      sort: sort2,
-      linkCurvature
-    } = nextProps;
-    if (data !== prevState.prevData || width !== prevState.prevWidth || height !== prevState.prevHeight || !shallowEqual(margin, prevState.prevMargin) || iterations !== prevState.prevIterations || nodeWidth !== prevState.prevNodeWidth || nodePadding !== prevState.prevNodePadding || sort2 !== prevState.sort) {
-      var contentWidth = width - (margin && margin.left || 0) - (margin && margin.right || 0);
-      var contentHeight = height - (margin && margin.top || 0) - (margin && margin.bottom || 0);
-      var {
-        links,
-        nodes
-      } = computeData({
-        data,
-        width: contentWidth,
-        height: contentHeight,
-        iterations,
-        nodeWidth,
-        nodePadding,
-        sort: sort2
-      });
-      var top = (0, import_get7.default)(margin, "top") || 0;
-      var left = (0, import_get7.default)(margin, "left") || 0;
-      var modifiedLinks = links.map((link2, i) => {
-        return buildLinkProps({
-          link: link2,
-          nodes,
-          i,
-          top,
-          left,
-          linkContent: nextProps.link,
-          linkCurvature
-        });
-      });
-      var modifiedNodes = nodes.map((node, i) => {
-        return buildNodeProps({
-          node,
-          nodeContent: nextProps.node,
-          i,
-          top,
-          left
-        });
-      });
-      return _objectSpread57(_objectSpread57({}, prevState), {}, {
-        nodes,
-        links,
-        modifiedLinks,
-        modifiedNodes,
-        prevData: data,
-        prevWidth: iterations,
-        prevHeight: height,
-        prevMargin: margin,
-        prevNodePadding: nodePadding,
-        prevNodeWidth: nodeWidth,
-        prevIterations: iterations,
-        prevSort: sort2
-      });
-    }
-    return null;
-  }
-  handleMouseEnter(item, type, e) {
-    var {
-      onMouseEnter
-    } = this.props;
-    if (onMouseEnter) {
-      onMouseEnter(item, type, e);
-    }
-  }
-  handleMouseLeave(item, type, e) {
-    var {
-      onMouseLeave
-    } = this.props;
-    if (onMouseLeave) {
-      onMouseLeave(item, type, e);
-    }
-  }
-  handleClick(item, type, e) {
-    var {
-      onClick
-    } = this.props;
-    if (onClick) onClick(item, type, e);
-  }
-  render() {
-    var _this$props = this.props, {
-      width,
-      height,
-      className,
-      style,
-      children
-    } = _this$props, others = _objectWithoutProperties36(_this$props, _excluded216);
-    if (!isPositiveNumber(width) || !isPositiveNumber(height)) {
-      return null;
-    }
-    var {
-      links,
-      modifiedNodes,
-      modifiedLinks
-    } = this.state;
-    var attrs = svgPropertiesNoEvents(others);
-    return React63.createElement(RechartsStoreProvider, {
-      preloadedState: {
-        options: options2
-      },
-      reduxStoreName: className !== null && className !== void 0 ? className : "Sankey"
-    }, React63.createElement(SetTooltipEntrySettings, {
-      fn: getTooltipEntrySettings9,
-      args: this.props
-    }), React63.createElement(SetComputedData, {
-      computedData: {
-        links: modifiedLinks,
-        nodes: modifiedNodes
-      }
-    }), React63.createElement(ReportChartSize, {
-      width,
-      height
-    }), React63.createElement(ReportChartMargin, {
-      margin: defaultSankeyMargin
-    }), React63.createElement(TooltipPortalContext.Provider, {
-      value: this.state.tooltipPortal
-    }, React63.createElement(RechartsWrapper, {
-      className,
-      style,
-      width,
-      height,
-      ref: (node) => {
-        if (this.state.tooltipPortal == null) {
-          this.setState({
-            tooltipPortal: node
-          });
-        }
-      },
-      onMouseEnter: void 0,
-      onMouseLeave: void 0,
-      onClick: void 0,
-      onMouseMove: void 0,
-      onMouseDown: void 0,
-      onMouseUp: void 0,
-      onContextMenu: void 0,
-      onDoubleClick: void 0,
-      onTouchStart: void 0,
-      onTouchMove: void 0,
-      onTouchEnd: void 0
-    }, React63.createElement(Surface, _extends44({}, attrs, {
-      width,
-      height
-    }), children, React63.createElement(AllSankeyLinkElements, {
-      links,
-      modifiedLinks,
-      linkContent: this.props.link,
-      dataKey: this.props.dataKey,
-      onMouseEnter: (linkProps, e) => this.handleMouseEnter(linkProps, "link", e),
-      onMouseLeave: (linkProps, e) => this.handleMouseLeave(linkProps, "link", e),
-      onClick: (linkProps, e) => this.handleClick(linkProps, "link", e)
-    }), React63.createElement(AllNodeElements, {
-      modifiedNodes,
-      nodeContent: this.props.node,
-      dataKey: this.props.dataKey,
-      onMouseEnter: (nodeProps, e) => this.handleMouseEnter(nodeProps, "node", e),
-      onMouseLeave: (nodeProps, e) => this.handleMouseLeave(nodeProps, "node", e),
-      onClick: (nodeProps, e) => this.handleClick(nodeProps, "node", e)
-    })))));
-  }
-};
-_defineProperty61(Sankey, "displayName", "Sankey");
-_defineProperty61(Sankey, "defaultProps", {
+var sankeyDefaultProps = {
   nameKey: "name",
   dataKey: "value",
   nodePadding: 10,
@@ -29972,11 +30646,181 @@ _defineProperty61(Sankey, "defaultProps", {
     left: 5
   },
   sort: true
-});
+};
+function SankeyImpl(props) {
+  var {
+    className,
+    style,
+    children
+  } = props, others = _objectWithoutProperties36(props, _excluded217);
+  var {
+    link: link2,
+    dataKey,
+    node,
+    onMouseEnter,
+    onMouseLeave,
+    onClick,
+    data,
+    iterations,
+    nodeWidth,
+    nodePadding,
+    sort: sort2,
+    linkCurvature,
+    margin
+  } = props;
+  var attrs = svgPropertiesNoEvents(others);
+  var width = useChartWidth();
+  var height = useChartHeight();
+  var {
+    links,
+    modifiedLinks,
+    modifiedNodes
+  } = (0, import_react73.useMemo)(() => {
+    var _margin$left, _margin$right, _margin$top, _margin$bottom;
+    if (!data || !width || !height || width <= 0 || height <= 0) {
+      return {
+        nodes: [],
+        links: [],
+        modifiedLinks: [],
+        modifiedNodes: []
+      };
+    }
+    var contentWidth = width - ((_margin$left = margin.left) !== null && _margin$left !== void 0 ? _margin$left : 0) - ((_margin$right = margin.right) !== null && _margin$right !== void 0 ? _margin$right : 0);
+    var contentHeight = height - ((_margin$top = margin.top) !== null && _margin$top !== void 0 ? _margin$top : 0) - ((_margin$bottom = margin.bottom) !== null && _margin$bottom !== void 0 ? _margin$bottom : 0);
+    var computed = computeData({
+      data,
+      width: contentWidth,
+      height: contentHeight,
+      iterations,
+      nodeWidth,
+      nodePadding,
+      sort: sort2
+    });
+    var top = margin.top || 0;
+    var left = margin.left || 0;
+    var newModifiedLinks = computed.links.map((l, i) => {
+      return buildLinkProps({
+        link: l,
+        nodes: computed.nodes,
+        i,
+        top,
+        left,
+        linkContent: link2,
+        linkCurvature
+      });
+    });
+    var newModifiedNodes = computed.nodes.map((n, i) => {
+      return buildNodeProps({
+        node: n,
+        nodeContent: node,
+        i,
+        top,
+        left
+      });
+    });
+    return {
+      nodes: computed.nodes,
+      links: computed.links,
+      modifiedLinks: newModifiedLinks,
+      modifiedNodes: newModifiedNodes
+    };
+  }, [data, width, height, margin, iterations, nodeWidth, nodePadding, sort2, link2, node, linkCurvature]);
+  var handleMouseEnter = (0, import_react73.useCallback)((item, type, e) => {
+    if (onMouseEnter) {
+      onMouseEnter(item, type, e);
+    }
+  }, [onMouseEnter]);
+  var handleMouseLeave = (0, import_react73.useCallback)((item, type, e) => {
+    if (onMouseLeave) {
+      onMouseLeave(item, type, e);
+    }
+  }, [onMouseLeave]);
+  var handleClick = (0, import_react73.useCallback)((item, type, e) => {
+    if (onClick) {
+      onClick(item, type, e);
+    }
+  }, [onClick]);
+  if (!isPositiveNumber(width) || !isPositiveNumber(height) || !data || !data.links || !data.nodes) {
+    return null;
+  }
+  return React63.createElement(React63.Fragment, null, React63.createElement(SetComputedData, {
+    computedData: {
+      links: modifiedLinks,
+      nodes: modifiedNodes
+    }
+  }), React63.createElement(Surface, _extends46({}, attrs, {
+    width,
+    height
+  }), children, React63.createElement(AllSankeyLinkElements, {
+    links,
+    modifiedLinks,
+    linkContent: link2,
+    dataKey,
+    onMouseEnter: (linkProps, e) => handleMouseEnter(linkProps, "link", e),
+    onMouseLeave: (linkProps, e) => handleMouseLeave(linkProps, "link", e),
+    onClick: (linkProps, e) => handleClick(linkProps, "link", e)
+  }), React63.createElement(AllNodeElements, {
+    modifiedNodes,
+    nodeContent: node,
+    dataKey,
+    onMouseEnter: (nodeProps, e) => handleMouseEnter(nodeProps, "node", e),
+    onMouseLeave: (nodeProps, e) => handleMouseLeave(nodeProps, "node", e),
+    onClick: (nodeProps, e) => handleClick(nodeProps, "node", e)
+  })));
+}
+function Sankey(outsideProps) {
+  var props = resolveDefaultProps(outsideProps, sankeyDefaultProps);
+  var {
+    width,
+    height,
+    style,
+    className
+  } = props;
+  var [tooltipPortal, setTooltipPortal] = (0, import_react73.useState)(null);
+  return React63.createElement(RechartsStoreProvider, {
+    preloadedState: {
+      options: options2
+    },
+    reduxStoreName: className !== null && className !== void 0 ? className : "Sankey"
+  }, React63.createElement(SetTooltipEntrySettings, {
+    fn: getTooltipEntrySettings9,
+    args: props
+  }), React63.createElement(ReportChartSize, {
+    width,
+    height
+  }), React63.createElement(ReportChartMargin, {
+    margin: defaultSankeyMargin
+  }), React63.createElement(RechartsWrapper, {
+    className,
+    style,
+    width,
+    height,
+    responsive: false,
+    ref: (node) => {
+      if (node && !tooltipPortal) {
+        setTooltipPortal(node);
+      }
+    },
+    onMouseEnter: void 0,
+    onMouseLeave: void 0,
+    onClick: void 0,
+    onMouseMove: void 0,
+    onMouseDown: void 0,
+    onMouseUp: void 0,
+    onContextMenu: void 0,
+    onDoubleClick: void 0,
+    onTouchStart: void 0,
+    onTouchMove: void 0,
+    onTouchEnd: void 0
+  }, React63.createElement(TooltipPortalContext.Provider, {
+    value: tooltipPortal
+  }, React63.createElement(SankeyImpl, props))));
+}
+Sankey.displayName = "Sankey";
 
 // node_modules/recharts/es6/chart/RadarChart.js
 var React64 = __toESM(require_react());
-var import_react72 = __toESM(require_react());
+var import_react74 = __toESM(require_react());
 var allowedTooltipTypes4 = ["axis"];
 var defaultProps9 = {
   layout: "centric",
@@ -29987,7 +30831,7 @@ var defaultProps9 = {
   innerRadius: 0,
   outerRadius: "80%"
 };
-var RadarChart = (0, import_react72.forwardRef)((props, ref) => {
+var RadarChart = (0, import_react74.forwardRef)((props, ref) => {
   var propsWithDefaults = resolveDefaultProps(props, defaultProps9);
   return React64.createElement(PolarChart, {
     chartName: "RadarChart",
@@ -30001,9 +30845,9 @@ var RadarChart = (0, import_react72.forwardRef)((props, ref) => {
 
 // node_modules/recharts/es6/chart/ScatterChart.js
 var React65 = __toESM(require_react());
-var import_react73 = __toESM(require_react());
+var import_react75 = __toESM(require_react());
 var allowedTooltipTypes5 = ["item"];
-var ScatterChart = (0, import_react73.forwardRef)((props, ref) => {
+var ScatterChart = (0, import_react75.forwardRef)((props, ref) => {
   return React65.createElement(CartesianChart, {
     chartName: "ScatterChart",
     defaultTooltipEventType: "item",
@@ -30016,9 +30860,9 @@ var ScatterChart = (0, import_react73.forwardRef)((props, ref) => {
 
 // node_modules/recharts/es6/chart/AreaChart.js
 var React66 = __toESM(require_react());
-var import_react74 = __toESM(require_react());
+var import_react76 = __toESM(require_react());
 var allowedTooltipTypes6 = ["axis"];
-var AreaChart = (0, import_react74.forwardRef)((props, ref) => {
+var AreaChart = (0, import_react76.forwardRef)((props, ref) => {
   return React66.createElement(CartesianChart, {
     chartName: "AreaChart",
     defaultTooltipEventType: "axis",
@@ -30031,7 +30875,7 @@ var AreaChart = (0, import_react74.forwardRef)((props, ref) => {
 
 // node_modules/recharts/es6/chart/RadialBarChart.js
 var React67 = __toESM(require_react());
-var import_react75 = __toESM(require_react());
+var import_react77 = __toESM(require_react());
 var allowedTooltipTypes7 = ["axis", "item"];
 var defaultProps10 = {
   layout: "radial",
@@ -30042,7 +30886,7 @@ var defaultProps10 = {
   innerRadius: 0,
   outerRadius: "80%"
 };
-var RadialBarChart = (0, import_react75.forwardRef)((props, ref) => {
+var RadialBarChart = (0, import_react77.forwardRef)((props, ref) => {
   var propsWithDefaults = resolveDefaultProps(props, defaultProps10);
   return React67.createElement(PolarChart, {
     chartName: "RadialBarChart",
@@ -30056,9 +30900,9 @@ var RadialBarChart = (0, import_react75.forwardRef)((props, ref) => {
 
 // node_modules/recharts/es6/chart/ComposedChart.js
 var React68 = __toESM(require_react());
-var import_react76 = __toESM(require_react());
+var import_react78 = __toESM(require_react());
 var allowedTooltipTypes8 = ["axis"];
-var ComposedChart = (0, import_react76.forwardRef)((props, ref) => {
+var ComposedChart = (0, import_react78.forwardRef)((props, ref) => {
   return React68.createElement(CartesianChart, {
     chartName: "ComposedChart",
     defaultTooltipEventType: "axis",
@@ -30071,16 +30915,16 @@ var ComposedChart = (0, import_react76.forwardRef)((props, ref) => {
 
 // node_modules/recharts/es6/chart/SunburstChart.js
 var React69 = __toESM(require_react());
-var import_react77 = __toESM(require_react());
+var import_react79 = __toESM(require_react());
 var import_get8 = __toESM(require_get2());
-function _extends45() {
-  return _extends45 = Object.assign ? Object.assign.bind() : function(n) {
+function _extends47() {
+  return _extends47 = Object.assign ? Object.assign.bind() : function(n) {
     for (var e = 1; e < arguments.length; e++) {
       var t = arguments[e];
       for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]);
     }
     return n;
-  }, _extends45.apply(null, arguments);
+  }, _extends47.apply(null, arguments);
 }
 function ownKeys58(e, r) {
   var t = Object.keys(e);
@@ -30096,21 +30940,21 @@ function _objectSpread58(e) {
   for (var r = 1; r < arguments.length; r++) {
     var t = null != arguments[r] ? arguments[r] : {};
     r % 2 ? ownKeys58(Object(t), true).forEach(function(r2) {
-      _defineProperty62(e, r2, t[r2]);
+      _defineProperty60(e, r2, t[r2]);
     }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys58(Object(t)).forEach(function(r2) {
       Object.defineProperty(e, r2, Object.getOwnPropertyDescriptor(t, r2));
     });
   }
   return e;
 }
-function _defineProperty62(e, r, t) {
-  return (r = _toPropertyKey62(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: true, configurable: true, writable: true }) : e[r] = t, e;
+function _defineProperty60(e, r, t) {
+  return (r = _toPropertyKey60(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: true, configurable: true, writable: true }) : e[r] = t, e;
 }
-function _toPropertyKey62(t) {
-  var i = _toPrimitive62(t, "string");
+function _toPropertyKey60(t) {
+  var i = _toPrimitive60(t, "string");
   return "symbol" == typeof i ? i : i + "";
 }
-function _toPrimitive62(t, r) {
+function _toPrimitive60(t, r) {
   if ("object" != typeof t || !t) return t;
   var e = t[Symbol.toPrimitive];
   if (void 0 !== e) {
@@ -30196,8 +31040,6 @@ var SunburstChartImpl = (_ref2) => {
     className,
     data,
     children,
-    width,
-    height,
     padding = 2,
     dataKey = "value",
     nameKey = "name",
@@ -30206,22 +31048,29 @@ var SunburstChartImpl = (_ref2) => {
     fill: fill2 = "#333",
     stroke = "#FFF",
     textOptions = defaultTextProps,
-    outerRadius = Math.min(width, height) / 2,
-    cx = width / 2,
-    cy = height / 2,
+    outerRadius: outerRadiusFromProps,
+    cx: cxFromProps,
+    cy: cyFromProps,
     startAngle = 0,
     endAngle = 360,
     onClick,
     onMouseEnter,
-    onMouseLeave
+    onMouseLeave,
+    responsive = false,
+    style
   } = _ref2;
   var dispatch = useAppDispatch();
+  var width = useChartWidth();
+  var height = useChartHeight();
+  var outerRadius = outerRadiusFromProps !== null && outerRadiusFromProps !== void 0 ? outerRadiusFromProps : Math.min(width, height) / 2;
+  var cx = cxFromProps !== null && cxFromProps !== void 0 ? cxFromProps : width / 2;
+  var cy = cyFromProps !== null && cyFromProps !== void 0 ? cyFromProps : height / 2;
   var rScale = linear2([0, data[dataKey]], [0, endAngle]);
   var treeDepth = getMaxDepthOf(data);
   var thickness = (outerRadius - innerRadius) / treeDepth;
   var sectors = [];
   var positions = /* @__PURE__ */ new Map([]);
-  var [tooltipPortal, setTooltipPortal] = (0, import_react77.useState)(null);
+  var [tooltipPortal, setTooltipPortal] = (0, import_react79.useState)(null);
   function handleMouseEnter(node, e) {
     if (onMouseEnter) onMouseEnter(node, e);
     dispatch(setActiveMouseOverItemIndex({
@@ -30284,7 +31133,7 @@ var SunburstChartImpl = (_ref2) => {
           outerRadius: innerR + radius,
           cx,
           cy
-        }), React69.createElement(Text, _extends45({}, textOptions, {
+        }), React69.createElement(Text, _extends47({}, textOptions, {
           alignmentBaseline: "middle",
           textAnchor: "middle",
           x: textX + cx,
@@ -30320,6 +31169,8 @@ var SunburstChartImpl = (_ref2) => {
     className,
     width,
     height,
+    responsive,
+    style,
     ref: (node) => {
       if (tooltipPortal == null && node != null) {
         setTooltipPortal(node);
@@ -30368,19 +31219,19 @@ var SunburstChart = (props) => {
 
 // node_modules/recharts/es6/cartesian/Funnel.js
 var React71 = __toESM(require_react());
-var import_react78 = __toESM(require_react());
+var import_react80 = __toESM(require_react());
 var import_omit3 = __toESM(require_omit2());
 
 // node_modules/recharts/es6/util/FunnelUtils.js
 var React70 = __toESM(require_react());
-function _extends46() {
-  return _extends46 = Object.assign ? Object.assign.bind() : function(n) {
+function _extends48() {
+  return _extends48 = Object.assign ? Object.assign.bind() : function(n) {
     for (var e = 1; e < arguments.length; e++) {
       var t = arguments[e];
       for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]);
     }
     return n;
-  }, _extends46.apply(null, arguments);
+  }, _extends48.apply(null, arguments);
 }
 function ownKeys59(e, r) {
   var t = Object.keys(e);
@@ -30396,21 +31247,21 @@ function _objectSpread59(e) {
   for (var r = 1; r < arguments.length; r++) {
     var t = null != arguments[r] ? arguments[r] : {};
     r % 2 ? ownKeys59(Object(t), true).forEach(function(r2) {
-      _defineProperty63(e, r2, t[r2]);
+      _defineProperty61(e, r2, t[r2]);
     }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys59(Object(t)).forEach(function(r2) {
       Object.defineProperty(e, r2, Object.getOwnPropertyDescriptor(t, r2));
     });
   }
   return e;
 }
-function _defineProperty63(e, r, t) {
-  return (r = _toPropertyKey63(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: true, configurable: true, writable: true }) : e[r] = t, e;
+function _defineProperty61(e, r, t) {
+  return (r = _toPropertyKey61(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: true, configurable: true, writable: true }) : e[r] = t, e;
 }
-function _toPropertyKey63(t) {
-  var i = _toPrimitive63(t, "string");
+function _toPropertyKey61(t) {
+  var i = _toPrimitive61(t, "string");
   return "symbol" == typeof i ? i : i + "";
 }
-function _toPrimitive63(t, r) {
+function _toPrimitive61(t, r) {
   if ("object" != typeof t || !t) return t;
   var e = t[Symbol.toPrimitive];
   if (void 0 !== e) {
@@ -30434,7 +31285,7 @@ function typeGuardTrapezoidProps(option, props) {
   });
 }
 function FunnelTrapezoid(props) {
-  return React70.createElement(Shape, _extends46({
+  return React70.createElement(Shape, _extends48({
     shapeType: "trapezoid",
     propTransformer: typeGuardTrapezoidProps
   }, props));
@@ -30455,21 +31306,21 @@ function _objectSpread60(e) {
   for (var r = 1; r < arguments.length; r++) {
     var t = null != arguments[r] ? arguments[r] : {};
     r % 2 ? ownKeys60(Object(t), true).forEach(function(r2) {
-      _defineProperty64(e, r2, t[r2]);
+      _defineProperty62(e, r2, t[r2]);
     }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys60(Object(t)).forEach(function(r2) {
       Object.defineProperty(e, r2, Object.getOwnPropertyDescriptor(t, r2));
     });
   }
   return e;
 }
-function _defineProperty64(e, r, t) {
-  return (r = _toPropertyKey64(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: true, configurable: true, writable: true }) : e[r] = t, e;
+function _defineProperty62(e, r, t) {
+  return (r = _toPropertyKey62(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: true, configurable: true, writable: true }) : e[r] = t, e;
 }
-function _toPropertyKey64(t) {
-  var i = _toPrimitive64(t, "string");
+function _toPropertyKey62(t) {
+  var i = _toPrimitive62(t, "string");
   return "symbol" == typeof i ? i : i + "";
 }
-function _toPrimitive64(t, r) {
+function _toPrimitive62(t, r) {
   if ("object" != typeof t || !t) return t;
   var e = t[Symbol.toPrimitive];
   if (void 0 !== e) {
@@ -30523,16 +31374,16 @@ var selectFunnelTrapezoids = createSelector([selectChartOffsetInternal, pickFunn
 });
 
 // node_modules/recharts/es6/cartesian/Funnel.js
-var _excluded51 = ["onMouseEnter", "onClick", "onMouseLeave", "shape", "activeShape"];
-var _excluded217 = ["stroke", "fill", "legendType", "hide", "isAnimationActive", "animationBegin", "animationDuration", "animationEasing", "nameKey", "lastShapeType"];
-function _extends47() {
-  return _extends47 = Object.assign ? Object.assign.bind() : function(n) {
+var _excluded54 = ["onMouseEnter", "onClick", "onMouseLeave", "shape", "activeShape"];
+var _excluded218 = ["stroke", "fill", "legendType", "hide", "isAnimationActive", "animationBegin", "animationDuration", "animationEasing", "nameKey", "lastShapeType"];
+function _extends49() {
+  return _extends49 = Object.assign ? Object.assign.bind() : function(n) {
     for (var e = 1; e < arguments.length; e++) {
       var t = arguments[e];
       for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]);
     }
     return n;
-  }, _extends47.apply(null, arguments);
+  }, _extends49.apply(null, arguments);
 }
 function _objectWithoutProperties37(e, t) {
   if (null == e) return {};
@@ -30566,21 +31417,21 @@ function _objectSpread61(e) {
   for (var r = 1; r < arguments.length; r++) {
     var t = null != arguments[r] ? arguments[r] : {};
     r % 2 ? ownKeys61(Object(t), true).forEach(function(r2) {
-      _defineProperty65(e, r2, t[r2]);
+      _defineProperty63(e, r2, t[r2]);
     }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys61(Object(t)).forEach(function(r2) {
       Object.defineProperty(e, r2, Object.getOwnPropertyDescriptor(t, r2));
     });
   }
   return e;
 }
-function _defineProperty65(e, r, t) {
-  return (r = _toPropertyKey65(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: true, configurable: true, writable: true }) : e[r] = t, e;
+function _defineProperty63(e, r, t) {
+  return (r = _toPropertyKey63(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: true, configurable: true, writable: true }) : e[r] = t, e;
 }
-function _toPropertyKey65(t) {
-  var i = _toPrimitive65(t, "string");
+function _toPropertyKey63(t) {
+  var i = _toPrimitive63(t, "string");
   return "symbol" == typeof i ? i : i + "";
 }
-function _toPrimitive65(t, r) {
+function _toPrimitive63(t, r) {
   if ("object" != typeof t || !t) return t;
   var e = t[Symbol.toPrimitive];
   if (void 0 !== e) {
@@ -30631,7 +31482,7 @@ function FunnelLabelListProvider(_ref2) {
     trapezoids,
     children
   } = _ref2;
-  var labelListEntries = (0, import_react78.useMemo)(() => {
+  var labelListEntries = (0, import_react80.useMemo)(() => {
     if (!showLabels) {
       return void 0;
     }
@@ -30668,7 +31519,7 @@ function FunnelTrapezoids(props) {
     onMouseLeave: onMouseLeaveFromProps,
     shape,
     activeShape
-  } = allOtherFunnelProps, restOfAllOtherProps = _objectWithoutProperties37(allOtherFunnelProps, _excluded51);
+  } = allOtherFunnelProps, restOfAllOtherProps = _objectWithoutProperties37(allOtherFunnelProps, _excluded54);
   var onMouseEnterFromContext = useMouseEnterItemDispatch(onMouseEnterFromProps, allOtherFunnelProps.dataKey);
   var onMouseLeaveFromContext = useMouseLeaveItemDispatch(onMouseLeaveFromProps);
   var onClickFromContext = useMouseClickItemDispatch(onItemClickFromProps, allOtherFunnelProps.dataKey);
@@ -30680,14 +31531,14 @@ function FunnelTrapezoids(props) {
       isActive: isActiveIndex,
       stroke: entry.stroke
     });
-    return React71.createElement(Layer, _extends47({
+    return React71.createElement(Layer, _extends49({
+      key: "trapezoid-".concat(entry === null || entry === void 0 ? void 0 : entry.x, "-").concat(entry === null || entry === void 0 ? void 0 : entry.y, "-").concat(entry === null || entry === void 0 ? void 0 : entry.name, "-").concat(entry === null || entry === void 0 ? void 0 : entry.value),
       className: "recharts-funnel-trapezoid"
     }, adaptEventsOfChild(restOfAllOtherProps, entry, i), {
       // @ts-expect-error the types need a bit of attention
       onMouseEnter: onMouseEnterFromContext(entry, i),
       onMouseLeave: onMouseLeaveFromContext(entry, i),
-      onClick: onClickFromContext(entry, i),
-      key: "trapezoid-".concat(entry === null || entry === void 0 ? void 0 : entry.x, "-").concat(entry === null || entry === void 0 ? void 0 : entry.y, "-").concat(entry === null || entry === void 0 ? void 0 : entry.name, "-").concat(entry === null || entry === void 0 ? void 0 : entry.value)
+      onClick: onClickFromContext(entry, i)
     }), React71.createElement(FunnelTrapezoid, trapezoidProps));
   }));
 }
@@ -30706,16 +31557,16 @@ function TrapezoidsWithAnimation(_ref3) {
     onAnimationStart
   } = props;
   var prevTrapezoids = previousTrapezoidsRef.current;
-  var [isAnimating, setIsAnimating] = (0, import_react78.useState)(false);
+  var [isAnimating, setIsAnimating] = (0, import_react80.useState)(false);
   var showLabels = !isAnimating;
   var animationId = useAnimationId(trapezoids, "recharts-funnel-");
-  var handleAnimationEnd = (0, import_react78.useCallback)(() => {
+  var handleAnimationEnd = (0, import_react80.useCallback)(() => {
     if (typeof onAnimationEnd === "function") {
       onAnimationEnd();
     }
     setIsAnimating(false);
   }, [onAnimationEnd]);
-  var handleAnimationStart = (0, import_react78.useCallback)(() => {
+  var handleAnimationStart = (0, import_react80.useCallback)(() => {
     if (typeof onAnimationStart === "function") {
       onAnimationStart();
     }
@@ -30765,7 +31616,7 @@ function TrapezoidsWithAnimation(_ref3) {
   }), props.children);
 }
 function RenderTrapezoids(props) {
-  var previousTrapezoidsRef = (0, import_react78.useRef)(void 0);
+  var previousTrapezoidsRef = (0, import_react80.useRef)(void 0);
   return React71.createElement(TrapezoidsWithAnimation, {
     props,
     previousTrapezoidsRef
@@ -30794,7 +31645,7 @@ var getRealWidthHeight = (customWidth, offset) => {
     offsetY: (height - realHeight) / 2
   };
 };
-var FunnelWithState = class extends import_react78.PureComponent {
+var FunnelWithState = class extends import_react80.PureComponent {
   render() {
     var {
       className
@@ -30830,10 +31681,10 @@ function FunnelImpl(props) {
     animationEasing,
     nameKey,
     lastShapeType
-  } = _resolveDefaultProps, everythingElse = _objectWithoutProperties37(_resolveDefaultProps, _excluded217);
+  } = _resolveDefaultProps, everythingElse = _objectWithoutProperties37(_resolveDefaultProps, _excluded218);
   var presentationProps = svgPropertiesNoEvents(props);
   var cells = findAllByType(props.children, Cell);
-  var funnelSettings = (0, import_react78.useMemo)(() => ({
+  var funnelSettings = (0, import_react80.useMemo)(() => ({
     dataKey: props.dataKey,
     nameKey,
     data: props.data,
@@ -30857,7 +31708,7 @@ function FunnelImpl(props) {
     args: _objectSpread61(_objectSpread61({}, props), {}, {
       trapezoids
     })
-  }), React71.createElement(FunnelWithState, _extends47({}, everythingElse, {
+  }), React71.createElement(FunnelWithState, _extends49({}, everythingElse, {
     stroke,
     fill: fill2,
     nameKey,
@@ -30977,19 +31828,19 @@ function computeFunnelTrapezoids(_ref4) {
   }
   return trapezoids;
 }
-var Funnel = class extends import_react78.PureComponent {
+var Funnel = class extends import_react80.PureComponent {
   render() {
     return React71.createElement(FunnelImpl, this.props);
   }
 };
-_defineProperty65(Funnel, "displayName", "Funnel");
-_defineProperty65(Funnel, "defaultProps", defaultFunnelProps);
+_defineProperty63(Funnel, "displayName", "Funnel");
+_defineProperty63(Funnel, "defaultProps", defaultFunnelProps);
 
 // node_modules/recharts/es6/chart/FunnelChart.js
 var React72 = __toESM(require_react());
-var import_react79 = __toESM(require_react());
+var import_react81 = __toESM(require_react());
 var allowedTooltipTypes9 = ["item"];
-var FunnelChart = (0, import_react79.forwardRef)((props, ref) => {
+var FunnelChart = (0, import_react81.forwardRef)((props, ref) => {
   return React72.createElement(CartesianChart, {
     chartName: "FunnelChart",
     defaultTooltipEventType: "item",
@@ -31067,10 +31918,10 @@ export {
 };
 /*! Bundled license information:
 
-react-is/cjs/react-is.development.js:
+use-sync-external-store/cjs/use-sync-external-store-shim/with-selector.development.js:
   (**
    * @license React
-   * react-is.development.js
+   * use-sync-external-store-shim/with-selector.development.js
    *
    * Copyright (c) Meta Platforms, Inc. and affiliates.
    *
@@ -31078,10 +31929,10 @@ react-is/cjs/react-is.development.js:
    * LICENSE file in the root directory of this source tree.
    *)
 
-use-sync-external-store/cjs/use-sync-external-store-shim/with-selector.development.js:
+react-is/cjs/react-is.development.js:
   (**
    * @license React
-   * use-sync-external-store-shim/with-selector.development.js
+   * react-is.development.js
    *
    * Copyright (c) Meta Platforms, Inc. and affiliates.
    *

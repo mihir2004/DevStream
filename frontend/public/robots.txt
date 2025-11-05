@@ -1,14 +1,42 @@
+# ==============================
+# DevOpStream - robots.txt
+# ==============================
+# This file controls how search engines and social media bots crawl the site.
+# Best used in production; use Disallow: / in staging or dev builds.
+
+# --- Allow major search engines ---
 User-agent: Googlebot
 Allow: /
 
 User-agent: Bingbot
 Allow: /
 
-User-agent: Twitterbot
+User-agent: DuckDuckBot
 Allow: /
 
+# --- Allow social media crawlers for link previews ---
+User-agent: Twitterbot
+Allow: /
 User-agent: facebookexternalhit
 Allow: /
 
+# --- Block unnecessary bots and crawlers ---
+User-agent: AhrefsBot
+Disallow: /
+User-agent: SemrushBot
+Disallow: /
+User-agent: MJ12bot
+Disallow: /
+User-agent: Baiduspider
+Disallow: /
+
+# --- Prevent indexing of internal/non-public paths ---
 User-agent: *
+Disallow: /api/
+Disallow: /auth/
+Disallow: /settings/
+Disallow: /dashboard/private/
 Allow: /
+
+# --- Sitemap reference (helps SEO engines find pages) ---
+Sitemap: https://devopstream.vercel.app/sitemap.xml

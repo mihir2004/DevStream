@@ -1,12 +1,12 @@
 import {
+  Primitive
+} from "./chunk-2ELRAP3T.js";
+import {
   useCallbackRef
 } from "./chunk-O4TN7TGM.js";
 import {
-  Primitive
-} from "./chunk-MN6BB7LE.js";
-import {
   useComposedRefs
-} from "./chunk-RBEROBHZ.js";
+} from "./chunk-PF6AD44X.js";
 import {
   require_jsx_runtime
 } from "./chunk-67WGWSRF.js";
@@ -367,7 +367,7 @@ var hideOthers = function(originalTarget, parentNode, markerName) {
       return null;
     };
   }
-  targets.push.apply(targets, Array.from(activeParentNode.querySelectorAll("[aria-live]")));
+  targets.push.apply(targets, Array.from(activeParentNode.querySelectorAll("[aria-live], script")));
   return applyAttributeToOthers(targets, activeParentNode, markerName, "aria-hidden");
 };
 
@@ -1101,4 +1101,4 @@ export {
   hideOthers,
   Combination_default
 };
-//# sourceMappingURL=chunk-GWMUYQNB.js.map
+//# sourceMappingURL=chunk-OMXQYVI4.js.map

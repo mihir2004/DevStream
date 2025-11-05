@@ -1,33 +1,46 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState, AppDispatch } from '@/store';
-import { fetchDashboardStats } from '@/store/slices/dashboardSlice';
-import { fetchPipelines } from '@/store/slices/pipelineSlice';
-import StatCard from '@/components/dashboard/StatCard';
-import PipelineTimeline from '@/components/dashboard/PipelineTimeline';
-import RepositoryCard from '@/components/dashboard/RepositoryCard';
-import LogViewerEnhanced from '@/components/dashboard/LogViewerEnhanced';
-import { SimpleLineChart, SimplePieChart } from '@/components/charts/SimpleChart';
-import { Activity, GitBranch, Clock, TrendingUp } from 'lucide-react';
-import { useToast } from '@/hooks/use-toast';
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState, AppDispatch } from "@/store";
+import { fetchDashboardStats } from "@/store/slices/dashboardSlice";
+import { fetchPipelines } from "@/store/slices/pipelineSlice";
+import StatCard from "@/components/dashboard/StatCard";
+import PipelineTimeline from "@/components/dashboard/PipelineTimeline";
+import RepositoryCard from "@/components/dashboard/RepositoryCard";
+import LogViewerEnhanced from "@/components/dashboard/LogViewerEnhanced";
+import {
+  SimpleLineChart,
+  SimplePieChart,
+} from "@/components/charts/SimpleChart";
+import { Activity, GitBranch, Clock, TrendingUp } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 const Dashboard: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { toast } = useToast();
-  const { stats, loading: statsLoading } = useSelector((state: RootState) => state.dashboard);
-  const { pipelines, repositories, loading: pipelineLoading } = useSelector((state: RootState) => state.pipeline);
+  const { stats, loading: statsLoading } = useSelector(
+    (state: RootState) => state.dashboard
+  );
+  const {
+    pipelines,
+    repositories,
+    loading: pipelineLoading,
+  } = useSelector((state: RootState) => state.pipeline);
   const { user } = useSelector((state: RootState) => state.auth);
 
   useEffect(() => {
-    dispatch(fetchDashboardStats());
-    dispatch(fetchPipelines());
-  }, [dispatch]);
+    if (user) {
+      dispatch(fetchDashboardStats());
+      dispatch(fetchPipelines());
+    }
+  }, [dispatch, user]);
 
   useEffect(() => {
     if (user?.isMockUser) {
       toast({
-        title: 'Welcome to DevOps Dashboard',
-        description: 'Last pipeline executed successfully at ' + new Date().toLocaleTimeString(),
+        title: "Welcome to DevOps Dashboard",
+        description:
+          "Last pipeline executed successfully at " +
+          new Date().toLocaleTimeString(),
       });
     }
   }, [user, toast]);
@@ -38,7 +51,10 @@ const Dashboard: React.FC = () => {
         {/* Loading skeleton */}
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
           {[...Array(4)].map((_, i) => (
-            <div key={i} className="h-32 bg-card rounded-lg border border-border/50 shimmer" />
+            <div
+              key={i}
+              className="h-32 bg-card rounded-lg border border-border/50 shimmer"
+            />
           ))}
         </div>
         <div className="grid gap-6 md:grid-cols-2">
@@ -49,10 +65,22 @@ const Dashboard: React.FC = () => {
     );
   }
 
-  const pieChartData = stats ? [
-    { name: 'Successful', value: Math.round((stats.successRate / 100) * stats.totalRuns), color: 'hsl(var(--success))' },
-    { name: 'Failed', value: stats.totalRuns - Math.round((stats.successRate / 100) * stats.totalRuns), color: 'hsl(var(--destructive))' }
-  ] : [];
+  const pieChartData = stats
+    ? [
+        {
+          name: "Successful",
+          value: Math.round((stats.successRate / 100) * stats.totalRuns),
+          color: "hsl(var(--success))",
+        },
+        {
+          name: "Failed",
+          value:
+            stats.totalRuns -
+            Math.round((stats.successRate / 100) * stats.totalRuns),
+          color: "hsl(var(--destructive))",
+        },
+      ]
+    : [];
 
   return (
     <div className="space-y-6">
@@ -75,24 +103,24 @@ const Dashboard: React.FC = () => {
           description="Currently running"
           variant="default"
         />
-        
+
         <StatCard
           title="Success Rate"
           value={`${stats?.successRate || 0}%`}
           icon={TrendingUp}
           description="Last 30 days"
           variant="success"
-          trend={{ value: 5.2, direction: 'up', period: 'vs last month' }}
+          trend={{ value: 5.2, direction: "up", period: "vs last month" }}
         />
-        
+
         <StatCard
           title="Avg Execution Time"
-          value={stats?.avgExecutionTime || '0m'}
+          value={stats?.avgExecutionTime || "0m"}
           icon={Clock}
           description="Pipeline duration"
           variant="default"
         />
-        
+
         <StatCard
           title="Total Runs"
           value={stats?.totalRuns || 0}
@@ -106,12 +134,8 @@ const Dashboard: React.FC = () => {
       <div className="grid gap-6 lg:grid-cols-3">
         {/* Left Column - Pipeline Timeline */}
         <div className="lg:col-span-2 space-y-6">
-          {pipelines.length > 0 && (
-            <PipelineTimeline 
-              pipeline={pipelines[0]} 
-            />
-          )}
-          
+          {pipelines.length > 0 && <PipelineTimeline pipeline={pipelines[0]} />}
+
           {/* Execution History Chart */}
           {stats?.recentExecutions && (
             <SimpleLineChart
@@ -122,7 +146,7 @@ const Dashboard: React.FC = () => {
           )}
 
           {/* Enhanced Log Viewer */}
-          <LogViewerEnhanced 
+          <LogViewerEnhanced
             title="Live Pipeline Logs"
             isLive={user?.isMockUser}
             logs={pipelines[0]?.stages[0]?.logs}
@@ -136,7 +160,7 @@ const Dashboard: React.FC = () => {
           {repositories.length > 0 && (
             <RepositoryCard repository={repositories[0]} />
           )}
-          
+
           {/* Success Rate Pie Chart */}
           {pieChartData.length > 0 && (
             <SimplePieChart

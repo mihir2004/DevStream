@@ -1,24 +1,27 @@
 "use client";
 import {
   VisuallyHidden
-} from "./chunk-2PGN5VD6.js";
+} from "./chunk-4XYWEKOM.js";
 import {
   Branch,
   Portal,
   Root
-} from "./chunk-WBPGU3F6.js";
-import {
-  createCollection
-} from "./chunk-CK3TFZAI.js";
+} from "./chunk-CWRU7VJM.js";
 import {
   Presence
-} from "./chunk-VAN2PYQW.js";
+} from "./chunk-PNTSJOJY.js";
+import {
+  createCollection
+} from "./chunk-6HTS4YZF.js";
 import {
   useControllableState
 } from "./chunk-NZ3RLHHS.js";
 import {
-  composeEventHandlers
-} from "./chunk-ZMAP7OQT.js";
+  Primitive,
+  composeEventHandlers,
+  createContextScope,
+  dispatchDiscreteCustomEvent
+} from "./chunk-2ELRAP3T.js";
 import {
   useCallbackRef
 } from "./chunk-O4TN7TGM.js";
@@ -26,15 +29,8 @@ import {
   useLayoutEffect2
 } from "./chunk-GPTUHXIO.js";
 import {
-  createContextScope
-} from "./chunk-7GM5FYRG.js";
-import {
-  Primitive,
-  dispatchDiscreteCustomEvent
-} from "./chunk-MN6BB7LE.js";
-import {
   useComposedRefs
-} from "./chunk-RBEROBHZ.js";
+} from "./chunk-PF6AD44X.js";
 import {
   require_jsx_runtime
 } from "./chunk-67WGWSRF.js";
@@ -255,7 +251,6 @@ var FocusProxy = React.forwardRef(
     return (0, import_jsx_runtime.jsx)(
       VisuallyHidden,
       {
-        "aria-hidden": true,
         tabIndex: 0,
         ...proxyProps,
         ref: forwardedRef,
@@ -409,7 +404,6 @@ var ToastImpl = React.forwardRef(
           __scopeToast,
           role: "status",
           "aria-live": type === "foreground" ? "assertive" : "polite",
-          "aria-atomic": true,
           children: announceTextContent
         }
       ),
@@ -425,9 +419,6 @@ var ToastImpl = React.forwardRef(
             children: (0, import_jsx_runtime.jsx)(
               Primitive.li,
               {
-                role: "status",
-                "aria-live": "off",
-                "aria-atomic": true,
                 tabIndex: 0,
                 "data-state": open ? "open" : "closed",
                 "data-swipe-direction": context.swipeDirection,

@@ -3,7 +3,7 @@ import {
 } from "./chunk-GPTUHXIO.js";
 import {
   useComposedRefs
-} from "./chunk-RBEROBHZ.js";
+} from "./chunk-PF6AD44X.js";
 import {
   require_react
 } from "./chunk-2CLD7BNN.js";
@@ -80,7 +80,7 @@ function usePresence(present) {
       const ownerWindow = node.ownerDocument.defaultView ?? window;
       const handleAnimationEnd = (event) => {
         const currentAnimationName = getAnimationName(stylesRef.current);
-        const isCurrentAnimation = currentAnimationName.includes(event.animationName);
+        const isCurrentAnimation = currentAnimationName.includes(CSS.escape(event.animationName));
         if (event.target === node && isCurrentAnimation) {
           send("ANIMATION_END");
           if (!prevPresentRef.current) {
@@ -141,4 +141,4 @@ function getElementRef(element) {
 export {
   Presence
 };
-//# sourceMappingURL=chunk-VAN2PYQW.js.map
+//# sourceMappingURL=chunk-PNTSJOJY.js.map

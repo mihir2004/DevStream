@@ -18,13 +18,13 @@ interface DashboardState {
   error: string | null;
 }
 
-// ✅ Utility to generate live recent execution data
+// Utility to generate live recent execution data
 const generateRecentExecutions = () => {
   const now = new Date();
   return Array.from({ length: 7 }).map((_, i) => {
     const date = new Date();
     date.setDate(now.getDate() - (6 - i)); // last 7 days ending today
-    const isoDate = date.toISOString().split("T")[0]; // e.g. "2025-11-05"
+    const isoDate = date.toISOString().split("T")[0];
 
     // Add random variation for mock data realism
     const successful = Math.floor(Math.random() * 5);
@@ -34,7 +34,7 @@ const generateRecentExecutions = () => {
   });
 };
 
-// ✅ Generate mock data dynamically
+// Generate mock data dynamically
 const mockStats: DashboardStats = {
   activePipelines: 3,
   successRate: 91.6,
@@ -61,12 +61,12 @@ export const fetchDashboardStats = createAsyncThunk(
     const state = getState() as any;
     const user = state.auth.user;
 
-    // ✅ Return live mock data for mihir user
+    //Return live mock data for mihir user
     if (user?.isMockUser) {
       return mockStats;
     }
 
-    // ✅ Otherwise fetch real API data
+    // Otherwise fetch real API data
     const response = await fetch(
       `${process.env.REACT_APP_API_URL}/api/analytics/stats`,
       {
