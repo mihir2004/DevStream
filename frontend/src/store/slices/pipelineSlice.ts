@@ -1,9 +1,9 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 export interface PipelineStage {
   id: string;
   name: string;
-  status: 'pending' | 'running' | 'success' | 'failed';
+  status: "pending" | "running" | "success" | "failed";
   duration?: string;
   startTime?: string;
   endTime?: string;
@@ -15,7 +15,7 @@ export interface Pipeline {
   name: string;
   repository: string;
   branch: string;
-  status: 'pending' | 'running' | 'success' | 'failed';
+  status: "pending" | "running" | "success" | "failed";
   stages: PipelineStage[];
   totalDuration?: string;
   triggeredBy?: string;
@@ -48,65 +48,77 @@ interface PipelineState {
 
 // Mock data for mihir user
 const mockRepository: Repository = {
-  id: 'repo-broly',
-  name: 'Broly',
-  url: 'https://github.com/mihir2004/broly',
-  branch: 'main',
+  id: "repo-broly",
+  name: "Broly",
+  url: "https://github.com/mihir2004/broly",
+  branch: "main",
   totalRuns: 12,
   successfulRuns: 11,
   failedRuns: 1,
 };
 
+// Utility to format a timestamp like [2025-11-05 14:32:10]
+const formatLogTimestamp = (offsetMinutes: number) => {
+  const date = new Date(Date.now() - offsetMinutes * 60 * 1000);
+  const yyyy = date.getFullYear();
+  const MM = String(date.getMonth() + 1).padStart(2, "0");
+  const dd = String(date.getDate()).padStart(2, "0");
+  const hh = String(date.getHours()).padStart(2, "0");
+  const mm = String(date.getMinutes()).padStart(2, "0");
+  const ss = String(date.getSeconds()).padStart(2, "0");
+  return `[${yyyy}-${MM}-${dd} ${hh}:${mm}:${ss}]`;
+};
+
 const mockPipeline: Pipeline = {
-  id: 'pipeline-broly-latest',
-  name: 'Build & Deploy',
-  repository: 'Broly',
-  branch: 'main',
-  status: 'success',
-  triggeredBy: 'mihir',
+  id: "pipeline-broly-latest",
+  name: "Build & Deploy",
+  repository: "Broly",
+  branch: "main",
+  status: "success",
+  triggeredBy: "mihir",
   triggeredAt: new Date(Date.now() - 1000 * 60 * 30).toISOString(), // 30 minutes ago
-  totalDuration: '4m 25s',
+  totalDuration: "4m 25s",
   stages: [
     {
-      id: 'build',
-      name: 'Build',
-      status: 'success',
-      duration: '2m 30s',
+      id: "build",
+      name: "Build",
+      status: "success",
+      duration: "2m 30s",
       startTime: new Date(Date.now() - 1000 * 60 * 30).toISOString(),
       endTime: new Date(Date.now() - 1000 * 60 * 27.5).toISOString(),
       logs: [
-        '[2024-01-15 10:30:00] Starting build process...',
-        '[2024-01-15 10:30:05] Installing dependencies...',
-        '[2024-01-15 10:31:20] Building React application...',
-        '[2024-01-15 10:32:15] Build completed successfully!',
+        `${formatLogTimestamp(30)} Starting build process...`,
+        `${formatLogTimestamp(29.9)} Installing dependencies...`,
+        `${formatLogTimestamp(28.5)} Building React application...`,
+        `${formatLogTimestamp(27.75)} Build completed successfully!`,
       ],
     },
     {
-      id: 'test',
-      name: 'Test',
-      status: 'success',
-      duration: '45s',
+      id: "test",
+      name: "Test",
+      status: "success",
+      duration: "45s",
       startTime: new Date(Date.now() - 1000 * 60 * 27.5).toISOString(),
       endTime: new Date(Date.now() - 1000 * 60 * 26.75).toISOString(),
       logs: [
-        '[2024-01-15 10:32:30] Running test suite...',
-        '[2024-01-15 10:32:45] ✓ Unit tests passed (15/15)',
-        '[2024-01-15 10:33:00] ✓ Integration tests passed (5/5)',
-        '[2024-01-15 10:33:15] All 20 tests passed!',
+        `${formatLogTimestamp(27.5)} Running test suite...`,
+        `${formatLogTimestamp(27.25)} ✓ Unit tests passed (15/15)`,
+        `${formatLogTimestamp(27)} ✓ Integration tests passed (5/5)`,
+        `${formatLogTimestamp(26.8)} All 20 tests passed!`,
       ],
     },
     {
-      id: 'deploy',
-      name: 'Deploy',
-      status: 'success',
-      duration: '1m 10s',
+      id: "deploy",
+      name: "Deploy",
+      status: "success",
+      duration: "1m 10s",
       startTime: new Date(Date.now() - 1000 * 60 * 26.75).toISOString(),
       endTime: new Date(Date.now() - 1000 * 60 * 25.58).toISOString(),
       logs: [
-        '[2024-01-15 10:33:30] Deploying to production...',
-        '[2024-01-15 10:34:15] Uploading build artifacts...',
-        '[2024-01-15 10:34:30] Updating load balancer...',
-        '[2024-01-15 10:34:40] Deployment completed successfully!',
+        `${formatLogTimestamp(26.75)} Deploying to production...`,
+        `${formatLogTimestamp(26.5)} Uploading build artifacts...`,
+        `${formatLogTimestamp(26.25)} Updating load balancer...`,
+        `${formatLogTimestamp(25.9)} Deployment completed successfully!`,
       ],
     },
   ],
@@ -123,7 +135,7 @@ const initialState: PipelineState = {
 };
 
 export const fetchPipelines = createAsyncThunk(
-  'pipeline/fetchPipelines',
+  "pipeline/fetchPipelines",
   async (_, { getState }) => {
     const state = getState() as any;
     const user = state.auth.user;
@@ -137,14 +149,17 @@ export const fetchPipelines = createAsyncThunk(
     }
 
     // Real API call for other users
-    const response = await fetch(`${process.env.REACT_APP_API_URL}/api/pipelines`, {
-      headers: {
-        Authorization: `Bearer ${state.auth.token}`,
-      },
-    });
+    const response = await fetch(
+      `${process.env.REACT_APP_API_URL}/api/pipelines`,
+      {
+        headers: {
+          Authorization: `Bearer ${state.auth.token}`,
+        },
+      }
+    );
 
     if (!response.ok) {
-      throw new Error('Failed to fetch pipelines');
+      throw new Error("Failed to fetch pipelines");
     }
 
     return await response.json();
@@ -152,7 +167,7 @@ export const fetchPipelines = createAsyncThunk(
 );
 
 const pipelineSlice = createSlice({
-  name: 'pipeline',
+  name: "pipeline",
   initialState,
   reducers: {
     setCurrentPipeline: (state, action) => {
@@ -175,7 +190,7 @@ const pipelineSlice = createSlice({
       })
       .addCase(fetchPipelines.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message || 'Failed to fetch pipelines';
+        state.error = action.error.message || "Failed to fetch pipelines";
       });
   },
 });
