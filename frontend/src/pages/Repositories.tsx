@@ -1,16 +1,22 @@
-import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Switch } from '@/components/ui/switch';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { 
-  FolderGit, 
-  ExternalLink, 
-  GitBranch, 
+import React, { useState } from "react";
+import { useSelector } from "react-redux";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  FolderGit,
+  ExternalLink,
+  GitBranch,
   Settings as SettingsIcon,
   Plus,
   Webhook,
@@ -18,10 +24,10 @@ import {
   Bell,
   Calendar,
   TrendingUp,
-  Users
-} from 'lucide-react';
-import { RootState } from '@/store';
-import RepositoryCard from '@/components/dashboard/RepositoryCard';
+  Users,
+} from "lucide-react";
+import { RootState } from "@/store";
+import RepositoryCard from "@/components/dashboard/RepositoryCard";
 
 const Repositories: React.FC = () => {
   const [selectedRepo, setSelectedRepo] = useState<string | null>(null);
@@ -31,10 +37,10 @@ const Repositories: React.FC = () => {
   // Mock additional repositories for demo
   const mockRepositories = [
     {
-      id: 'repo-broly',
-      name: 'Broly',
-      url: 'https://github.com/mihir2004/broly',
-      branch: 'main',
+      id: "repo-broly",
+      name: "Broly",
+      url: "https://github.com/mihir2004/broly",
+      branch: "main",
       totalRuns: 12,
       successfulRuns: 11,
       failedRuns: 1,
@@ -42,13 +48,13 @@ const Repositories: React.FC = () => {
       autoDeployEnabled: true,
       lastSync: new Date().toISOString(),
       contributors: 3,
-      language: 'JavaScript'
+      language: "JavaScript",
     },
     {
-      id: 'repo-api',
-      name: 'API-Backend',
-      url: 'https://github.com/mihir2004/api-backend',
-      branch: 'develop',
+      id: "repo-api",
+      name: "API-Backend",
+      url: "https://github.com/mihir2004/",
+      branch: "develop",
       totalRuns: 25,
       successfulRuns: 23,
       failedRuns: 2,
@@ -56,13 +62,13 @@ const Repositories: React.FC = () => {
       autoDeployEnabled: false,
       lastSync: new Date(Date.now() - 1000 * 60 * 30).toISOString(),
       contributors: 5,
-      language: 'Node.js'
+      language: "Node.js",
     },
     {
-      id: 'repo-frontend',
-      name: 'Dashboard-UI',
-      url: 'https://github.com/mihir2004/dashboard-ui',
-      branch: 'main',
+      id: "repo-frontend",
+      name: "Dashboard-UI",
+      url: "https://github.com/mihir2004/DevStream",
+      branch: "main",
       totalRuns: 8,
       successfulRuns: 7,
       failedRuns: 1,
@@ -70,25 +76,27 @@ const Repositories: React.FC = () => {
       autoDeployEnabled: false,
       lastSync: new Date(Date.now() - 1000 * 60 * 60 * 2).toISOString(),
       contributors: 2,
-      language: 'React'
-    }
+      language: "React",
+    },
   ];
 
   const allRepositories = user?.isMockUser ? mockRepositories : repositories;
-  const selectedRepository = allRepositories.find(repo => repo.id === selectedRepo);
+  const selectedRepository = allRepositories.find(
+    (repo) => repo.id === selectedRepo
+  );
 
   const updateWebhook = (repoId: string, enabled: boolean) => {
-    console.log('Updating webhook for', repoId, 'to', enabled);
+    console.log("Updating webhook for", repoId, "to", enabled);
     // This would connect to your backend API
   };
 
   const updateAutoDeploy = (repoId: string, enabled: boolean) => {
-    console.log('Updating auto-deploy for', repoId, 'to', enabled);
+    console.log("Updating auto-deploy for", repoId, "to", enabled);
     // This would connect to your backend API
   };
 
   const syncRepository = (repoId: string) => {
-    console.log('Syncing repository', repoId);
+    console.log("Syncing repository", repoId);
     // This would connect to your backend API
   };
 
@@ -103,7 +111,7 @@ const Repositories: React.FC = () => {
             Manage connected repositories and their configurations
           </p>
         </div>
-        
+
         <Button className="gradient-primary text-primary-foreground">
           <Plus className="w-4 h-4 mr-2" />
           Connect Repository
@@ -120,8 +128,8 @@ const Repositories: React.FC = () => {
         <TabsContent value="overview" className="space-y-4">
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {allRepositories.map((repo) => (
-              <Card 
-                key={repo.id} 
+              <Card
+                key={repo.id}
                 className="shadow-card hover:shadow-lg transition-all duration-200 cursor-pointer"
                 onClick={() => setSelectedRepo(repo.id)}
               >
@@ -137,7 +145,7 @@ const Repositories: React.FC = () => {
                           className="p-1 h-auto text-muted-foreground hover:text-foreground"
                           onClick={(e) => {
                             e.stopPropagation();
-                            window.open(repo.url, '_blank');
+                            window.open(repo.url, "_blank");
                           }}
                         >
                           <ExternalLink className="w-3 h-3" />
@@ -145,7 +153,7 @@ const Repositories: React.FC = () => {
                       </CardTitle>
                       <CardDescription className="flex items-center space-x-2 mt-1">
                         <Badge variant="outline" className="text-xs">
-                          {repo.language || 'JavaScript'}
+                          {repo.language || "JavaScript"}
                         </Badge>
                         <span>•</span>
                         <GitBranch className="w-3 h-3" />
@@ -154,43 +162,62 @@ const Repositories: React.FC = () => {
                     </div>
                   </div>
                 </CardHeader>
-                
+
                 <CardContent className="space-y-4">
                   <div className="grid grid-cols-2 gap-4 text-sm">
                     <div className="space-y-1">
                       <div className="flex items-center space-x-1">
                         <TrendingUp className="w-3 h-3 text-success" />
                         <span className="font-medium">
-                          {((repo.successfulRuns / repo.totalRuns) * 100).toFixed(1)}%
+                          {(
+                            (repo.successfulRuns / repo.totalRuns) *
+                            100
+                          ).toFixed(1)}
+                          %
                         </span>
                       </div>
-                      <div className="text-xs text-muted-foreground">Success Rate</div>
+                      <div className="text-xs text-muted-foreground">
+                        Success Rate
+                      </div>
                     </div>
-                    
+
                     <div className="space-y-1">
                       <div className="flex items-center space-x-1">
                         <Users className="w-3 h-3" />
-                        <span className="font-medium">{repo.contributors || 0}</span>
+                        <span className="font-medium">
+                          {repo.contributors || 0}
+                        </span>
                       </div>
-                      <div className="text-xs text-muted-foreground">Contributors</div>
+                      <div className="text-xs text-muted-foreground">
+                        Contributors
+                      </div>
                     </div>
                   </div>
 
                   <div className="flex items-center justify-between text-xs text-muted-foreground">
                     <div className="flex items-center space-x-1">
                       <Calendar className="w-3 h-3" />
-                      <span>Last sync: {new Date(repo.lastSync || Date.now()).toLocaleString()}</span>
+                      <span>
+                        Last sync:{" "}
+                        {new Date(repo.lastSync || Date.now()).toLocaleString()}
+                      </span>
                     </div>
                   </div>
 
                   <div className="flex items-center space-x-2">
                     {repo.webhookEnabled && (
-                      <Badge variant="outline" className="text-xs border-success/30 text-success bg-success/10">
+                      <Badge
+                        variant="outline"
+                        className="text-xs border-success/30 text-success bg-success/10"
+                      >
                         Webhook Active
                       </Badge>
                     )}
                     {repo.autoDeployEnabled && (
-                      <Badge variant="outline" className="text-xs border-primary/30 text-primary bg-primary/10">
+                      <Badge
+                        variant="outline"
+                        className="text-xs border-primary/30 text-primary bg-primary/10"
+                      >
                         Auto Deploy
                       </Badge>
                     )}
@@ -224,7 +251,9 @@ const Repositories: React.FC = () => {
                     </div>
                     <Switch
                       checked={selectedRepository.autoDeployEnabled}
-                      onCheckedChange={(checked) => updateAutoDeploy(selectedRepository.id, checked)}
+                      onCheckedChange={(checked) =>
+                        updateAutoDeploy(selectedRepository.id, checked)
+                      }
                     />
                   </div>
 
@@ -260,7 +289,10 @@ const Repositories: React.FC = () => {
                   <Button className="gradient-primary text-primary-foreground">
                     Save Changes
                   </Button>
-                  <Button variant="outline" onClick={() => syncRepository(selectedRepository.id)}>
+                  <Button
+                    variant="outline"
+                    onClick={() => syncRepository(selectedRepository.id)}
+                  >
                     Sync Repository
                   </Button>
                 </div>
@@ -271,7 +303,10 @@ const Repositories: React.FC = () => {
               <CardContent className="py-12">
                 <div className="text-center text-muted-foreground">
                   <SettingsIcon className="w-12 h-12 mx-auto mb-4 opacity-50" />
-                  <p>Select a repository from the Overview tab to configure its settings</p>
+                  <p>
+                    Select a repository from the Overview tab to configure its
+                    settings
+                  </p>
                 </div>
               </CardContent>
             </Card>
@@ -287,24 +322,27 @@ const Repositories: React.FC = () => {
                     <div className="flex items-center space-x-2">
                       <Webhook className="w-4 h-4" />
                       <CardTitle className="text-lg">{repo.name}</CardTitle>
-                      <Badge 
-                        variant="outline" 
-                        className={repo.webhookEnabled 
-                          ? "border-success/30 text-success bg-success/10" 
-                          : "border-muted/30 text-muted-foreground bg-muted/10"
+                      <Badge
+                        variant="outline"
+                        className={
+                          repo.webhookEnabled
+                            ? "border-success/30 text-success bg-success/10"
+                            : "border-muted/30 text-muted-foreground bg-muted/10"
                         }
                       >
-                        {repo.webhookEnabled ? 'Active' : 'Inactive'}
+                        {repo.webhookEnabled ? "Active" : "Inactive"}
                       </Badge>
                     </div>
-                    
+
                     <Switch
                       checked={repo.webhookEnabled}
-                      onCheckedChange={(checked) => updateWebhook(repo.id, checked)}
+                      onCheckedChange={(checked) =>
+                        updateWebhook(repo.id, checked)
+                      }
                     />
                   </div>
                 </CardHeader>
-                
+
                 <CardContent className="space-y-4">
                   <div className="space-y-2">
                     <Label className="text-sm">Webhook URL</Label>
@@ -314,7 +352,7 @@ const Repositories: React.FC = () => {
                       className="font-mono text-xs"
                     />
                   </div>
-                  
+
                   <div className="flex items-center space-x-4 text-sm text-muted-foreground">
                     <div className="flex items-center space-x-1">
                       <Shield className="w-3 h-3" />
@@ -325,7 +363,7 @@ const Repositories: React.FC = () => {
                       <span>Push events enabled</span>
                     </div>
                   </div>
-                  
+
                   <div className="flex space-x-2">
                     <Button variant="outline" size="sm">
                       Test Webhook
